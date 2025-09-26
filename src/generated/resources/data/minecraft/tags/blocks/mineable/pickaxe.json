@@ -1,0 +1,21 @@
+{
+  "values": [
+    "create_andertech:crimschist_shaft",
+    "create_andertech:crimschist_cogwheel",
+    "create_andertech:crimschist_large_cogwheel",
+    "create_andertech:andesite_encased_crimschist_shaft",
+    "create_andertech:brass_encased_crimschist_shaft",
+    "create_andertech:andesite_encased_crimschist_cogwheel",
+    "create_andertech:brass_encased_crimschist_cogwheel",
+    "create_andertech:andesite_encased_crimschist_large_cogwheel",
+    "create_andertech:brass_encased_crimschist_large_cogwheel",
+    "create_andertech:encased_crimschist_chain_drive",
+    "create_andertech:creative_oc_motor",
+    "create_andertech:chronendite_mechanical_press",
+    "create_andertech:chronendite_mechanical_mixer",
+    "create_andertech:chronendite_mechanical_drill",
+    "create_andertech:chronendite_mechanical_saw",
+    "create_andertech:chronendite_mechanical_bearing",
+    "create_andertech:metal_girder_encased_crimschist_shaft"
+  ]
+}
