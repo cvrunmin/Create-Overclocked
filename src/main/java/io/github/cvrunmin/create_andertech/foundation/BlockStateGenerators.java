@@ -1,27 +1,69 @@
 package io.github.cvrunmin.create_andertech.foundation;
 
-import com.simibubi.create.content.decoration.girder.GirderEncasedShaftBlock;
-import com.simibubi.create.content.kinetics.chainDrive.ChainDriveBlock;
-import com.simibubi.create.content.kinetics.motor.CreativeMotorBlock;
+import com.simibubi.create.content.kinetics.belt.BeltBlock;
+import com.simibubi.create.content.kinetics.belt.BeltPart;
+import com.simibubi.create.content.kinetics.belt.BeltSlope;
 import com.simibubi.create.content.kinetics.saw.SawBlock;
-import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.SpecialBlockStateGen;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
+import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
+import io.github.cvrunmin.create_andertech.CreateAndertech;
 import io.github.cvrunmin.create_andertech.content.decoration.GirderEncasedCrimschistShaftBlock;
+import io.github.cvrunmin.create_andertech.content.kinetics.belt.OCBeltBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.chainDrive.CrimschistChainDriveBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.motor.CreativeOCMotorBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.saw.ChronenditeSawBlock;
+import io.github.cvrunmin.create_andertech.content.kinetics.speedController.ChronenditeSpeedControllerBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
 
+import java.util.Map;
 import java.util.function.BiFunction;
+import java.util.function.Function;
+
+import static com.simibubi.create.foundation.data.BlockStateGen.axisBlock;
 
 public class BlockStateGenerators {
+
+//    public static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> axisBlockProvider(
+//            boolean customItem, boolean cloned) {
+//        return (c, p) -> axisBlock(c, p, getBlockModel(customItem, c, p, cloned));
+//    }
+
+    public static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> textureOverrideAxisBlockProvider(
+            boolean customItem, String modid, String parentName, Map<String, ResourceLocation> overriddenTextures) {
+        return (c, p) -> axisBlock(c, p, getBlockModel(customItem, modid, parentName, overriddenTextures, c, p));
+    }
+
+
+    public static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> textureOverrideHorizontalBlockProvider(
+            boolean customItem, String modid, String parentName, Map<String, ResourceLocation> overriddenTextures) {
+        return (c, p) -> p.horizontalBlock(c.get(), getBlockModel(customItem, modid, parentName, overriddenTextures, c, p));
+    }
+
+    public static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> textureOverrideDirectionalBlockProvider(
+            boolean customItem, String modid, String parentName, Map<String, ResourceLocation> overriddenTextures) {
+        return (c, p) -> p.directionalBlock(c.get(), getBlockModel(customItem, modid, parentName, overriddenTextures, c, p));
+    }
+
+//    private static <T extends Block> Function<BlockState, ModelFile> getBlockModel(boolean customItem,
+//                                                                                   DataGenContext<Block, T> c, RegistrateBlockstateProvider p, boolean cloned) {
+//        if(cloned){
+//            return $ -> customItem ? AssetLookupCloned.partialBaseModel(c, p) : AssetLookupCloned.standardModel(c, p);
+//        }
+//        return $ -> customItem ? AssetLookup.partialBaseModel(c, p) : AssetLookup.standardModel(c, p);
+//    }
+
+    private static <T extends Block> Function<BlockState, ModelFile> getBlockModel(boolean customItem, String modid, String parentName, Map<String, ResourceLocation> overriddenTextures,
+                                                                                   DataGenContext<Block, T> c, RegistrateBlockstateProvider p) {
+        return $ -> customItem ? AssetLookupWithParent.partialModel(c, p, modid, parentName, overriddenTextures) : AssetLookupWithParent.standardModel(c, p, modid, parentName, overriddenTextures);
+    }
 
     public static void griderBlockStateWithShaft(DataGenContext<Block, GirderEncasedCrimschistShaftBlock> c,
                                            RegistrateBlockstateProvider p) {
@@ -137,7 +179,7 @@ public class BlockStateGenerators {
             String orientation = state.getValue(SawBlock.FACING)
                     .getAxis()
                     .isVertical() ? "vertical" : "horizontal";
-            return new ModelFile.UncheckedModelFile(new ResourceLocation("create", "block/mechanical_saw/" + orientation));
+            return prov.models().getBuilder("block/" + ctx.getName() + "/" + orientation).parent(new ModelFile.UncheckedModelFile(new ResourceLocation("create", "block/mechanical_saw/" + orientation)));
         }
     }
 
@@ -156,10 +198,125 @@ public class BlockStateGenerators {
 
         @Override
         public <T extends Block> ModelFile getModel(DataGenContext<Block, T> ctx, RegistrateBlockstateProvider prov, BlockState state) {
-            return state.getValue(CreativeMotorBlock.FACING)
-                    .getAxis()
-                    .isVertical() ? new ModelFile.UncheckedModelFile(new ResourceLocation("create", "block/creative_motor/block_vertical"))
-                    : new ModelFile.UncheckedModelFile(new ResourceLocation("create", "block/creative_motor/block"));
+            if(state.getValue(CreativeOCMotorBlock.FACING).getAxis().isVertical()){
+                return prov.models().getBuilder("block/" + ctx.getName() + "/block_vertical")
+                        .parent(new ModelFile.UncheckedModelFile(new ResourceLocation("create", "block/creative_motor/block_vertical")))
+                        .texture("1_0", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis"));
+            }
+            return prov.models().getBuilder("block/" + ctx.getName() + "/block")
+                    .parent(new ModelFile.UncheckedModelFile(new ResourceLocation("create", "block/creative_motor/block")))
+                    .texture("1_0", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis"));
+        }
+    }
+
+    public static class Belt extends SpecialBlockStateGen{
+
+        @Override
+        protected int getXRotation(BlockState state) {
+            Direction direction = state.getValue(BeltBlock.HORIZONTAL_FACING);
+            BeltSlope slope = state.getValue(BeltBlock.SLOPE);
+            return slope == BeltSlope.VERTICAL ? 90
+                    : slope == BeltSlope.SIDEWAYS && direction.getAxisDirection() == Direction.AxisDirection.NEGATIVE ? 180 : 0;
+        }
+
+        @Override
+        protected int getYRotation(BlockState state) {
+            Boolean casing = state.getValue(BeltBlock.CASING);
+            BeltSlope slope = state.getValue(BeltBlock.SLOPE);
+
+            boolean flip = slope == BeltSlope.UPWARD;
+            boolean rotate = casing && slope == BeltSlope.VERTICAL;
+            Direction direction = state.getValue(BeltBlock.HORIZONTAL_FACING);
+            return horizontalAngle(direction) + (flip ? 180 : 0) + (rotate ? 90 : 0);
+        }
+
+        @Override
+        public <T extends Block> ModelFile getModel(DataGenContext<Block, T> ctx, RegistrateBlockstateProvider prov,
+                                                    BlockState state) {
+            Boolean casing = state.getValue(OCBeltBlock.CASING);
+
+            if (!casing) {
+                return prov.models().getBuilder("block/" + ctx.getName() + "/particle").parent(new ModelFile.UncheckedModelFile(new ResourceLocation("create", "block/belt/particle")));
+            }
+
+            BeltPart part = state.getValue(OCBeltBlock.PART);
+            Direction direction = state.getValue(OCBeltBlock.HORIZONTAL_FACING);
+            BeltSlope slope = state.getValue(OCBeltBlock.SLOPE);
+            boolean downward = slope == BeltSlope.DOWNWARD;
+            boolean diagonal = slope == BeltSlope.UPWARD || downward;
+            boolean vertical = slope == BeltSlope.VERTICAL;
+            boolean pulley = part == BeltPart.PULLEY;
+            boolean sideways = slope == BeltSlope.SIDEWAYS;
+            boolean negative = direction.getAxisDirection() == Direction.AxisDirection.NEGATIVE;
+
+            if (!casing && pulley)
+                part = BeltPart.MIDDLE;
+
+            if ((vertical && negative || downward || sideways && negative) && part != BeltPart.MIDDLE && !pulley)
+                part = part == BeltPart.END ? BeltPart.START : BeltPart.END;
+
+            if (!casing && vertical)
+                slope = BeltSlope.HORIZONTAL;
+            if (casing && vertical)
+                slope = BeltSlope.SIDEWAYS;
+
+            String path = "block/" + (casing ? "belt_casing/" : "belt/");
+            String myPath = "block/" + (casing ? "speeding_belt_casing/" : "speeding_belt/");
+            String slopeName = slope.getSerializedName();
+            String partName = part.getSerializedName();
+
+            if (diagonal)
+                slopeName = "diagonal";
+
+            return prov.models().getBuilder(myPath + slopeName + "_" + partName).parent(new ModelFile.UncheckedModelFile(new ResourceLocation("create", path + slopeName + "_" + partName)));
+        }
+    }
+
+    public static class SpeedController extends SpecialBlockStateGen{
+
+        @Override
+        protected int getYRotation(BlockState state) {
+            var axis = state.getValue(ChronenditeSpeedControllerBlock.AXIS);
+            var facing = ChronenditeSpeedControllerBlock.getDirectionFromState(state);
+            if(axis.isHorizontal()){
+                if(facing.getAxis().isHorizontal()){
+                    return switch (facing){
+                        case NORTH -> -90;
+                        case SOUTH -> 90;
+                        case WEST -> 180;
+                        default -> 0;
+                    };
+                }
+                return axis == Direction.Axis.Z ? 0 : 90;
+            }
+            return facing.getAxis() == Direction.Axis.X ? 90 : 0;
+        }
+
+        @Override
+        protected int getXRotation(BlockState state) {
+            var axis = state.getValue(ChronenditeSpeedControllerBlock.AXIS);
+            var facing = ChronenditeSpeedControllerBlock.getDirectionFromState(state);
+            if(axis.isHorizontal()){
+                if(facing == Direction.UP) return 0;
+                if(facing == Direction.DOWN) return 180;
+                return 0;
+            }else{
+                return switch (facing){
+                    case NORTH, EAST -> 90;
+                    case SOUTH, WEST -> -90;
+                    default -> 0;
+                };
+            }
+        }
+
+        @Override
+        public <T extends Block> ModelFile getModel(DataGenContext<Block, T> ctx, RegistrateBlockstateProvider prov, BlockState state) {
+            var axis = state.getValue(ChronenditeSpeedControllerBlock.AXIS);
+            var facing = ChronenditeSpeedControllerBlock.getDirectionFromState(state);
+            if(axis.isHorizontal() && facing.getAxis().isHorizontal()){
+                return prov.models().getBuilder("block/" + ctx.getName() + "/block_horizontal").parent(new ModelFile.UncheckedModelFile(new ResourceLocation(CreateAndertech.MODID, "block/rotation_speed_controller/block_horizontal")));
+            }
+            return prov.models().getBuilder("block/" + ctx.getName() + "/block").parent(new ModelFile.UncheckedModelFile(new ResourceLocation("create", "block/rotation_speed_controller/block")));
         }
     }
 }

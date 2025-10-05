@@ -7,13 +7,27 @@ import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.OrientedRotatingVisual;
 import com.simibubi.create.content.kinetics.base.ShaftRenderer;
 import com.simibubi.create.content.kinetics.base.SingleAxisRotatingVisual;
+import com.simibubi.create.content.kinetics.belt.BeltBlockEntity;
+import com.simibubi.create.content.kinetics.belt.BeltRenderer;
+import com.simibubi.create.content.kinetics.belt.BeltVisual;
+import com.simibubi.create.content.kinetics.gearbox.GearboxBlockEntity;
+import com.simibubi.create.content.kinetics.gearbox.GearboxRenderer;
+import com.simibubi.create.content.kinetics.gearbox.GearboxVisual;
 import com.simibubi.create.content.kinetics.simpleRelays.SimpleKineticBlockEntity;
 import com.simibubi.create.content.kinetics.simpleRelays.encased.EncasedCogRenderer;
 import com.simibubi.create.content.kinetics.simpleRelays.encased.EncasedCogVisual;
+import com.simibubi.create.content.kinetics.speedController.SpeedControllerBlockEntity;
+import com.simibubi.create.content.kinetics.speedController.SpeedControllerRenderer;
+import com.simibubi.create.content.kinetics.transmission.SplitShaftRenderer;
+import com.simibubi.create.content.kinetics.transmission.SplitShaftVisual;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import io.github.cvrunmin.create_andertech.content.contraptions.bearing.ChronenditeMechanicalBearingBlockEntity;
+import io.github.cvrunmin.create_andertech.content.kinetics.belt.OCBeltBlockEntity;
 import io.github.cvrunmin.create_andertech.content.kinetics.drill.ChronenditeDrillBlockEntity;
 import io.github.cvrunmin.create_andertech.content.kinetics.drill.ChronenditeDrillRenderer;
+import io.github.cvrunmin.create_andertech.content.kinetics.gearbox.CrimschistGearboxBlockEntity;
+import io.github.cvrunmin.create_andertech.content.kinetics.gearbox.CrimschistGearboxRenderer;
+import io.github.cvrunmin.create_andertech.content.kinetics.gearbox.CrimschistGearboxVisual;
 import io.github.cvrunmin.create_andertech.content.kinetics.mixer.ChronenditeMechanicalMixerBlockEntity;
 import io.github.cvrunmin.create_andertech.content.kinetics.mixer.ChronenditeMechanicalMixerRenderer;
 import io.github.cvrunmin.create_andertech.content.kinetics.mixer.ChronenditeMixerVisual;
@@ -26,6 +40,10 @@ import io.github.cvrunmin.create_andertech.content.kinetics.saw.ChronenditeSawBl
 import io.github.cvrunmin.create_andertech.content.kinetics.saw.ChronenditeSawRenderer;
 import io.github.cvrunmin.create_andertech.content.kinetics.saw.ChronenditeSawVisual;
 import io.github.cvrunmin.create_andertech.content.kinetics.simpleRelays.*;
+import io.github.cvrunmin.create_andertech.content.kinetics.speedController.ChronenditeSpeedControllerBlockEntity;
+import io.github.cvrunmin.create_andertech.content.kinetics.speedController.ChronenditeSpeedControllerRenderer;
+import io.github.cvrunmin.create_andertech.content.kinetics.transmission.CrimschistClutchBlockEntity;
+import io.github.cvrunmin.create_andertech.content.kinetics.transmission.CrimschistGearshiftBlockEntity;
 
 import static io.github.cvrunmin.create_andertech.CreateAndertech.REGISTRATE;
 
@@ -42,6 +60,13 @@ public class AllBlockEntityTypes {
             .visual(() -> BracketedOCKineticBlockEntityVisual::create, false)
             .validBlocks(AllBlocks.CRIMSCHIST_SHAFT, AllBlocks.CRIMSCHIST_COGWHEEL, AllBlocks.CRIMSCHIST_LARGE_COGWHEEL)
             .renderer(() -> BracketedOCKineticBlockEntityRenderer::new)
+            .register();
+
+    public static final BlockEntityEntry<CrimschistGearboxBlockEntity> CRIMSCHIST_GEARBOX = REGISTRATE
+            .blockEntity("gearbox", CrimschistGearboxBlockEntity::new)
+            .visual(() -> CrimschistGearboxVisual::new, false)
+            .validBlocks(AllBlocks.CRIMSCHIST_GEARBOX)
+            .renderer(() -> CrimschistGearboxRenderer::new)
             .register();
 
     public static final BlockEntityEntry<OCKineticBlockEntity> ENCASED_CRIMSCHIST_SHAFT = REGISTRATE
@@ -99,6 +124,35 @@ public class AllBlockEntityTypes {
             .visual(() -> BearingVisual::new)
             .validBlocks(AllBlocks.CHRONENDITE_MECHANICAL_BEARING)
             .renderer(() -> BearingRenderer::new)
+            .register();
+
+
+    public static final BlockEntityEntry<CrimschistClutchBlockEntity> CRIMSCHIST_CLUTCH = REGISTRATE
+            .blockEntity("clutch", CrimschistClutchBlockEntity::new)
+            .visual(() -> SplitShaftVisual::new, false)
+            .validBlocks(AllBlocks.CRIMSCHIST_CLUTCH)
+            .renderer(() -> SplitShaftRenderer::new)
+            .register();
+
+    public static final BlockEntityEntry<CrimschistGearshiftBlockEntity> CRIMSCHIST_GEARSHIFT = REGISTRATE
+            .blockEntity("gearshift", CrimschistGearshiftBlockEntity::new)
+            .visual(() -> SplitShaftVisual::new, false)
+            .validBlocks(AllBlocks.CRIMSCHIST_GEARSHIFT)
+            .renderer(() -> SplitShaftRenderer::new)
+            .register();
+
+    public static final BlockEntityEntry<OCBeltBlockEntity> OC_BELT = REGISTRATE
+            .blockEntity("belt", OCBeltBlockEntity::new)
+            .visual(() -> BeltVisual::new, OCBeltBlockEntity::shouldRenderNormally)
+            .validBlocks(AllBlocks.OC_BELT)
+            .renderer(() -> BeltRenderer::new)
+            .register();
+
+    public static final BlockEntityEntry<ChronenditeSpeedControllerBlockEntity> CHRONENDITE_ROTATION_SPEED_CONTROLLER = REGISTRATE
+            .blockEntity("rotation_speed_controller", ChronenditeSpeedControllerBlockEntity::new)
+            .visual(() -> SingleAxisRotatingVisual::shaft)
+            .validBlocks(AllBlocks.CHRONENDITE_ROTATION_SPEED_CONTROLLER)
+            .renderer(() -> ChronenditeSpeedControllerRenderer::new)
             .register();
 
     public static void register(){}

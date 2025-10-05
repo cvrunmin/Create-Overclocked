@@ -1,0 +1,6 @@
+{
+  "parent": "create:block/creative_motor/block",
+  "textures": {
+    "1_0": "create_andertech:block/crimschist_axis"
+  }
+}

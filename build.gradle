@@ -56,8 +56,9 @@ legacyForge {
 
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
-//            property("mixin.env.remapRefMap", "true")
-//            property("mixin.env.refMapRemappingFile", "${projectDir}/build/createSrgToMcp/output.srg")
+//            systemProperty "mixin.env.remapRefMap", "true"
+//            systemProperty "mixin.env.refMapRemappingFile", "${projectDir}/build/createSrgToMcp/output.srg"
+//            systemProperty "mixin.debug.export", "true"
         }
 
         server {

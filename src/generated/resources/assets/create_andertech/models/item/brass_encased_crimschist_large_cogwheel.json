@@ -2,6 +2,7 @@
   "parent": "create:block/encased_large_cogwheel/item",
   "textures": {
     "1": "minecraft:block/stripped_dark_oak_log_top",
+    "1_2": "create_andertech:block/warped_large_cogwheel",
     "casing": "create:block/brass_casing",
     "particle": "create:block/brass_casing",
     "side": "create:block/brass_encased_cogwheel_side_connected"

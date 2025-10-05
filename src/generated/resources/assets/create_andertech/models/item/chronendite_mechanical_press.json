@@ -1,3 +1,7 @@
 {
-  "parent": "create:block/mechanical_press/item"
+  "parent": "create:block/mechanical_press/item",
+  "textures": {
+    "0": "create_andertech:block/crimschist_axis",
+    "1": "create_andertech:block/crimschist_axis_top"
+  }
 }

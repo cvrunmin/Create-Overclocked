@@ -1,0 +1,53 @@
+{
+  "variants": {
+    "axis=x,facing_direction=0": {
+      "model": "create_andertech:block/chronendite_rotation_speed_controller/block",
+      "y": 90
+    },
+    "axis=x,facing_direction=1": {
+      "model": "create_andertech:block/chronendite_rotation_speed_controller/block_horizontal",
+      "y": 90
+    },
+    "axis=x,facing_direction=2": {
+      "model": "create_andertech:block/chronendite_rotation_speed_controller/block",
+      "x": 180,
+      "y": 90
+    },
+    "axis=x,facing_direction=3": {
+      "model": "create_andertech:block/chronendite_rotation_speed_controller/block_horizontal",
+      "y": 270
+    },
+    "axis=y,facing_direction=0": {
+      "model": "create_andertech:block/chronendite_rotation_speed_controller/block",
+      "x": 270
+    },
+    "axis=y,facing_direction=1": {
+      "model": "create_andertech:block/chronendite_rotation_speed_controller/block",
+      "x": 270,
+      "y": 90
+    },
+    "axis=y,facing_direction=2": {
+      "model": "create_andertech:block/chronendite_rotation_speed_controller/block",
+      "x": 90
+    },
+    "axis=y,facing_direction=3": {
+      "model": "create_andertech:block/chronendite_rotation_speed_controller/block",
+      "x": 90,
+      "y": 90
+    },
+    "axis=z,facing_direction=0": {
+      "model": "create_andertech:block/chronendite_rotation_speed_controller/block_horizontal"
+    },
+    "axis=z,facing_direction=1": {
+      "model": "create_andertech:block/chronendite_rotation_speed_controller/block"
+    },
+    "axis=z,facing_direction=2": {
+      "model": "create_andertech:block/chronendite_rotation_speed_controller/block_horizontal",
+      "y": 180
+    },
+    "axis=z,facing_direction=3": {
+      "model": "create_andertech:block/chronendite_rotation_speed_controller/block",
+      "x": 180
+    }
+  }
+}

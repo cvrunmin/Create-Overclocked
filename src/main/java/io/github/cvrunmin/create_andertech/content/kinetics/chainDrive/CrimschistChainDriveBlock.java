@@ -123,7 +123,7 @@ public class CrimschistChainDriveBlock extends RotatedPillarKineticBlock
         if (axis == faceAxis)
             return stateIn;
 
-        if (!(neighbour.getBlock() instanceof CrimschistChainDriveBlock || neighbour.getBlock() instanceof ChainDriveBlock)) {
+        if (!(neighbour.getBlock() instanceof CrimschistChainDriveBlock)) {
             if (facingAlongFirst != connectionAlongFirst || part == Part.NONE)
                 return stateIn;
             if (part == Part.MIDDLE)
@@ -133,9 +133,9 @@ public class CrimschistChainDriveBlock extends RotatedPillarKineticBlock
             return stateIn;
         }
 
-        if(neighbour.getBlock() instanceof ChainDriveBlock){
-            return updateShapeWithNormalVariant(stateIn, neighbour, axis, faceAxis, part, positive, facingAlongFirst, connectionAxis);
-        }
+//        if(neighbour.getBlock() instanceof ChainDriveBlock){
+//            return updateShapeWithNormalVariant(stateIn, neighbour, axis, faceAxis, part, positive, facingAlongFirst, connectionAxis);
+//        }
 
         Part otherPart = neighbour.getValue(PART);
         Direction.Axis otherAxis = neighbour.getValue(AXIS);

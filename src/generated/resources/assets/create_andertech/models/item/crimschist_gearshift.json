@@ -1,0 +1,8 @@
+{
+  "parent": "create:block/gearshift/item",
+  "textures": {
+    "1_0": "create_andertech:block/crimschist_axis",
+    "1_1": "create_andertech:block/crimschist_axis_top",
+    "particle": "create_andertech:block/crimschist_axis"
+  }
+}

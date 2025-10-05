@@ -10,11 +10,17 @@
   "block.create_andertech.chronendite_mechanical_mixer": "Chronendite Mechanical Mixer",
   "block.create_andertech.chronendite_mechanical_press": "Chronendite Mechanical Press",
   "block.create_andertech.chronendite_mechanical_saw": "Chronendite Mechanical Saw",
+  "block.create_andertech.chronendite_rotation_speed_controller": "Chronendite Rotation Speed Controller",
   "block.create_andertech.creative_oc_motor": "Creative Overclocking Motor",
+  "block.create_andertech.crimschist_clutch": "Crimschist Clutch",
   "block.create_andertech.crimschist_cogwheel": "Crimschist Cogwheel",
+  "block.create_andertech.crimschist_gearbox": "Crimschist Gearbox",
+  "block.create_andertech.crimschist_gearshift": "Crimschist Gearshift",
   "block.create_andertech.crimschist_large_cogwheel": "Crimschist Large Cogwheel",
   "block.create_andertech.crimschist_shaft": "Crimschist Shaft",
   "block.create_andertech.encased_crimschist_chain_drive": "Encased Crimschist Chain Drive",
   "block.create_andertech.metal_girder_encased_crimschist_shaft": "Metal Girder Encased Crimschist Shaft",
+  "block.create_andertech.speeding_belt": "Speeding Belt",
+  "item.create_andertech.vertical_crimschist_gearbox": "Vertical Crimschist Gearbox",
   "itemGroup.create_andertech.main": "Create Andertech"
 }

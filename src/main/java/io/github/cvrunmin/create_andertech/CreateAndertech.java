@@ -18,7 +18,7 @@ public class CreateAndertech {
     // Define mod id in a common place for everything to reference
     public static final String MODID = "create_andertech";
     // Directly reference a slf4j logger
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MODID);
 
@@ -26,6 +26,7 @@ public class CreateAndertech {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         REGISTRATE.registerEventListeners(modEventBus);
         AllBlocks.register();
+        AllItems.register();
         AllBlockEntityTypes.register();
         AllCreativeTabs.register(modEventBus);
         modEventBus.addListener(EventPriority.LOWEST, CreateAndertech::gatherData);

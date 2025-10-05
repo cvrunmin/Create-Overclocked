@@ -7,17 +7,15 @@ import com.simibubi.create.content.kinetics.base.RotatedPillarKineticBlock;
 import com.simibubi.create.content.kinetics.simpleRelays.encased.EncasedCogCTBehaviour;
 import com.simibubi.create.content.kinetics.simpleRelays.encased.EncasedShaftBlock;
 import com.simibubi.create.foundation.block.connected.CTSpriteShiftEntry;
-import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.builders.BlockBuilder;
-import com.tterrag.registrate.builders.ItemBuilder;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateItemModelProvider;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
-import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 import io.github.cvrunmin.create_andertech.AllBlocks;
+import io.github.cvrunmin.create_andertech.CreateAndertech;
 import io.github.cvrunmin.create_andertech.content.kinetics.simpleRelays.encased.EncasedCrimschistCogwheelBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.simpleRelays.encased.EncasedCrimschistShaftBlock;
 import net.minecraft.client.renderer.RenderType;
@@ -36,8 +34,8 @@ import java.util.function.Supplier;
 import static com.simibubi.create.foundation.data.BlockStateGen.axisBlock;
 
 public class VariousBuilders {
-    public static <B extends EncasedCrimschistShaftBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> encasedShaft(String casing,
-                                                                                                                   Supplier<CTSpriteShiftEntry> casingShift) {
+    public static <B extends EncasedCrimschistShaftBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> encasedCrimschistShaft(String casing,
+                                                                                                                             Supplier<CTSpriteShiftEntry> casingShift) {
         return builder -> encasedBase(builder, AllBlocks.CRIMSCHIST_SHAFT::get)
                 .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(casingShift.get())))
                 .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, casingShift.get(),
@@ -47,8 +45,13 @@ public class VariousBuilders {
 //                        p.models().getExistingFile(p.modLoc("block/encased_shaft/block_" + casing))
                         , true))
                 .item()
-                .model(tempCustomItemModel(new ResourceLocation("create", "block/encased_shaft/item_" + casing)))
-//                .model(AssetLookup.customBlockItemModel("encased_shaft", "item_" + casing))
+                .model((c, p) -> {
+                    p.getBuilder("block/encased_crimschist_shaft/item_" + casing)
+                            .parent(new ModelFile.UncheckedModelFile(new ResourceLocation("create", "block/encased_shaft/item_" + casing)))
+                            .texture("1_0", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis"))
+                            .texture("1_1", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis_top"));
+                    p.withExistingParent(c.getName(), p.modLoc("block/encased_crimschist_shaft/item_" + casing));
+                })
                 .build();
     }
     public static <B extends EncasedCrimschistCogwheelBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> encasedCogwheel(
@@ -98,7 +101,9 @@ public class VariousBuilders {
                         .texture("casing", casingTextureLocation)
                         .texture("particle", casingTextureLocation)
                         .texture("1", strippedWoodTextureLocation)
-                        .texture("side", sideTextureLocation))
+                        .texture("side", sideTextureLocation)
+                        .texture("1_2", large ? new ResourceLocation(CreateAndertech.MODID, "block/warped_large_cogwheel") : new ResourceLocation(CreateAndertech.MODID, "block/warped_cogwheel"))
+                )
                 .build();
     }
 

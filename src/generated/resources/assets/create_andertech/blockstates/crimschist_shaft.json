@@ -1,15 +1,15 @@
 {
   "variants": {
     "axis=x": {
-      "model": "create:block/shaft",
+      "model": "create_andertech:block/crimschist_shaft",
       "x": 90,
       "y": 90
     },
     "axis=y": {
-      "model": "create:block/shaft"
+      "model": "create_andertech:block/crimschist_shaft"
     },
     "axis=z": {
-      "model": "create:block/shaft",
+      "model": "create_andertech:block/crimschist_shaft",
       "x": 90,
       "y": 180
     }

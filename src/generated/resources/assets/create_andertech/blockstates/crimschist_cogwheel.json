@@ -1,15 +1,15 @@
 {
   "variants": {
     "axis=x": {
-      "model": "create:block/cogwheel",
+      "model": "create_andertech:block/crimschist_cogwheel",
       "x": 90,
       "y": 90
     },
     "axis=y": {
-      "model": "create:block/cogwheel"
+      "model": "create_andertech:block/crimschist_cogwheel"
     },
     "axis=z": {
-      "model": "create:block/cogwheel",
+      "model": "create_andertech:block/crimschist_cogwheel",
       "x": 90,
       "y": 180
     }

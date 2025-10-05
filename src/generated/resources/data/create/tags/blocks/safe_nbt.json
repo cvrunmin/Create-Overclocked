@@ -1,6 +1,7 @@
 {
   "values": [
     "create_andertech:creative_oc_motor",
-    "create_andertech:chronendite_mechanical_bearing"
+    "create_andertech:chronendite_mechanical_bearing",
+    "create_andertech:chronendite_rotation_speed_controller"
   ]
 }

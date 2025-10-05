@@ -1,18 +1,18 @@
 {
   "variants": {
     "facing=east": {
-      "model": "create:block/mechanical_press/block",
+      "model": "create_andertech:block/chronendite_mechanical_press/block",
       "y": 90
     },
     "facing=north": {
-      "model": "create:block/mechanical_press/block"
+      "model": "create_andertech:block/chronendite_mechanical_press/block"
     },
     "facing=south": {
-      "model": "create:block/mechanical_press/block",
+      "model": "create_andertech:block/chronendite_mechanical_press/block",
       "y": 180
     },
     "facing=west": {
-      "model": "create:block/mechanical_press/block",
+      "model": "create_andertech:block/chronendite_mechanical_press/block",
       "y": 270
     }
   }
