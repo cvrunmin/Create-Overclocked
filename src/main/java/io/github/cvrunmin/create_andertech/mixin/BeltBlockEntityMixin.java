@@ -18,4 +18,9 @@ public abstract class BeltBlockEntityMixin extends KineticBlockEntity implements
     public void grandsuperTick() {
         super.tick();
     }
+
+    @Override
+    public void grandsuperInitialize() {
+        super.initialize();
+    }
 }

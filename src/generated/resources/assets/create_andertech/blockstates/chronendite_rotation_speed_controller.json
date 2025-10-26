@@ -23,7 +23,7 @@
     },
     "axis=y,facing_direction=1": {
       "model": "create_andertech:block/chronendite_rotation_speed_controller/block",
-      "x": 270,
+      "x": 90,
       "y": 90
     },
     "axis=y,facing_direction=2": {
@@ -32,7 +32,7 @@
     },
     "axis=y,facing_direction=3": {
       "model": "create_andertech:block/chronendite_rotation_speed_controller/block",
-      "x": 90,
+      "x": 270,
       "y": 90
     },
     "axis=z,facing_direction=0": {

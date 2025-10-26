@@ -25,23 +25,23 @@ public class AssetLookupWithParent {
         return sb.toString();
     }
 
-    public static ModelFile partialModel(DataGenContext<?, ?> ctx, RegistrateBlockstateProvider prov, String modid, String parentName, Map<String, ResourceLocation> overriddenTextures, String... suffix){
-        String location = makeResourceLoc("block", parentName + "/block", suffix);
-        String myLocation = makeResourceLoc("block", ctx.getName() + "/block", suffix);
-        var mf = prov.models().getBuilder(myLocation).parent(new ModelFile.UncheckedModelFile(new ResourceLocation(modid, location)));
+    public static ModelFile specifiedModel(DataGenContext<?, ?> ctx, RegistrateBlockstateProvider prov, String modelPath, String parentModid, String parentPath, Map<String, ResourceLocation> overriddenTextures){
+        var mf = prov.models().getBuilder(modelPath).parent(new ModelFile.UncheckedModelFile(new ResourceLocation(parentModid, parentPath)));
         for (Map.Entry<String, ResourceLocation> entry : overriddenTextures.entrySet()) {
             mf = mf.texture(entry.getKey(), entry.getValue());
         }
         return mf;
     }
 
+    public static ModelFile partialModel(DataGenContext<?, ?> ctx, RegistrateBlockstateProvider prov, String modid, String parentName, Map<String, ResourceLocation> overriddenTextures, String... suffix){
+        String location = makeResourceLoc("block", parentName + "/block", suffix);
+        String myLocation = makeResourceLoc("block", ctx.getName() + "/block", suffix);
+        return specifiedModel(ctx, prov, myLocation, modid, location, overriddenTextures);
+    }
+
     public static ModelFile standardModel(DataGenContext<?, ?> ctx, RegistrateBlockstateProvider prov, String modid, String parentName, Map<String, ResourceLocation> overriddenTextures){
         String location = makeResourceLoc("block", parentName);
-        var mf = prov.models().getBuilder(ctx.getName()).parent(new ModelFile.UncheckedModelFile(new ResourceLocation(modid, location)));
-        for (Map.Entry<String, ResourceLocation> entry : overriddenTextures.entrySet()) {
-            mf = mf.texture(entry.getKey(), entry.getValue());
-        }
-        return mf;
+        return specifiedModel(ctx, prov, ctx.getName(), modid, location, overriddenTextures);
     }
 
     public static Function<BlockState, ModelFile> forPowered(DataGenContext<?, ?> ctx,

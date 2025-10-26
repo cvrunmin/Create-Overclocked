@@ -1,6 +1,5 @@
 package io.github.cvrunmin.create_andertech;
 
-import com.simibubi.create.AllDisplaySources;
 import com.simibubi.create.AllSpriteShifts;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.Create;
@@ -9,18 +8,17 @@ import com.simibubi.create.content.contraptions.bearing.StabilizedBearingMovemen
 import com.simibubi.create.content.decoration.encasing.EncasedCTBehaviour;
 import com.simibubi.create.content.decoration.encasing.EncasingRegistry;
 import com.simibubi.create.content.decoration.girder.ConnectedGirderModel;
-import com.simibubi.create.content.kinetics.belt.BeltGenerator;
 import com.simibubi.create.content.kinetics.belt.BeltModel;
+import com.simibubi.create.content.kinetics.crafter.CrafterCTBehaviour;
+import com.simibubi.create.content.kinetics.crusher.CrushingWheelControllerBlock;
+import com.simibubi.create.content.kinetics.deployer.DeployerBlock;
+import com.simibubi.create.content.kinetics.deployer.DeployerMovementBehaviour;
+import com.simibubi.create.content.kinetics.deployer.DeployerMovingInteraction;
 import com.simibubi.create.content.kinetics.gearbox.GearboxBlock;
+import com.simibubi.create.content.kinetics.mechanicalArm.ArmItem;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockModel;
 import com.simibubi.create.content.kinetics.simpleRelays.CogwheelBlockItem;
 import com.simibubi.create.content.kinetics.simpleRelays.encased.EncasedCogCTBehaviour;
-import com.simibubi.create.content.kinetics.speedController.SpeedControllerBlock;
-import com.simibubi.create.content.logistics.funnel.BeltFunnelBlock;
-import com.simibubi.create.content.logistics.funnel.BeltFunnelGenerator;
-import com.simibubi.create.content.logistics.tunnel.BeltTunnelBlock;
-import com.simibubi.create.content.logistics.tunnel.BrassTunnelBlock;
-import com.simibubi.create.content.logistics.tunnel.BrassTunnelCTBehaviour;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.data.*;
 import com.simibubi.create.infrastructure.config.CStress;
@@ -31,9 +29,16 @@ import io.github.cvrunmin.create_andertech.content.contraptions.bearing.Chronend
 import io.github.cvrunmin.create_andertech.content.decoration.GirderEncasedCrimschistShaftBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.belt.OCBeltBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.chainDrive.CrimschistChainDriveBlock;
+import io.github.cvrunmin.create_andertech.content.kinetics.crafter.ChronenditeMechanicalCrafterBlock;
+import io.github.cvrunmin.create_andertech.content.kinetics.crafter.OCCrafterCTBehaviour;
+import io.github.cvrunmin.create_andertech.content.kinetics.crusher.ChronenditeCrushWheelBlock;
+import io.github.cvrunmin.create_andertech.content.kinetics.crusher.ChronenditeCrushWheelControllerBlock;
+import io.github.cvrunmin.create_andertech.content.kinetics.deployer.ChronenditeDeployerBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.drill.ChronenditeDrillBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.drill.ChronenditeDrillMovementBehaviour;
+import io.github.cvrunmin.create_andertech.content.kinetics.fan.ChronenditeEncasedFanBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.gearbox.CrimschistGearboxBlock;
+import io.github.cvrunmin.create_andertech.content.kinetics.mechanicalArm.ChronenditeArmBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.mixer.ChronenditeMechanicalMixerBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.motor.CreativeOCMotorBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.press.ChronenditeMechanicalPressBlock;
@@ -54,23 +59,22 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ModelFile;
 
 import java.util.Map;
 
-import static com.simibubi.create.AllBlocks.ANDESITE_FUNNEL;
-import static com.simibubi.create.AllBlocks.BRASS_FUNNEL;
-import static com.simibubi.create.api.behaviour.display.DisplaySource.displaySource;
+import static com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour.interactionBehaviour;
 import static com.simibubi.create.api.behaviour.movement.MovementBehaviour.movementBehaviour;
 import static com.simibubi.create.foundation.data.BlockStateGen.axisBlock;
-import static com.simibubi.create.foundation.data.CreateRegistrate.connectedTextures;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.axeOrPickaxe;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
@@ -295,6 +299,53 @@ public class AllBlocks {
                     )))
                     .register();
 
+    public static final BlockEntry<ChronenditeEncasedFanBlock> CHRONENDITE_ENCASED_FAN = REGISTRATE.block("chronendite_encased_fan", prop -> new ChronenditeEncasedFanBlock(prop, false))
+            .initialProperties(SharedProperties::stone)
+            .properties(p -> p.mapColor(MapColor.PODZOL))
+            .blockstate(BlockStateGenerators.textureOverrideDirectionalBlockProvider(true, "create", "encased_fan", Map.ofEntries()))
+            .addLayer(() -> RenderType::cutoutMipped)
+            .transform(axeOrPickaxe())
+            .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 2.0))
+            .item()
+            .transform(tempCustomItemModel(new ResourceLocation("create", "block/encased_fan/item")))
+            .register();
+
+    public static final BlockEntry<ChronenditeEncasedFanBlock> CHRONENDITE_HV_ENCASED_FAN = REGISTRATE.block("chronendite_hv_encased_fan", prop -> new ChronenditeEncasedFanBlock(prop, true))
+            .initialProperties(SharedProperties::stone)
+            .properties(p -> p.mapColor(MapColor.PODZOL))
+            .lang("Chronendite High Volume Encased Fan")
+            .blockstate(BlockStateGenerators.textureOverrideDirectionalBlockProvider(true, "create", "encased_fan", Map.ofEntries()))
+            .addLayer(() -> RenderType::cutoutMipped)
+            .transform(axeOrPickaxe())
+            .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 2.0))
+            .item()
+            .transform(tempCustomItemModel(new ResourceLocation("create", "block/encased_fan/item")))
+            .register();
+
+    public static final BlockEntry<ChronenditeCrushWheelBlock> CHRONENDITE_CRUSHING_WHEEL =
+            REGISTRATE.block("chronendite_crushing_wheel", ChronenditeCrushWheelBlock::new)
+                    .properties(p -> p.mapColor(MapColor.METAL))
+                    .initialProperties(SharedProperties::stone)
+                    .properties(BlockBehaviour.Properties::noOcclusion)
+                    .transform(pickaxeOnly())
+                    .blockstate(BlockStateGenerators.textureOverrideAxisBlockProvider(true, "create", "crushing_wheel", Map.ofEntries()))
+                    .addLayer(() -> RenderType::cutoutMipped)
+                    .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 8.0))
+                    .item()
+                    .transform(tempCustomItemModel(new ResourceLocation("create", "block/crushing_wheel/item")))
+                    .register();
+
+    public static final BlockEntry<ChronenditeCrushWheelControllerBlock> CHRONENDITE_CRUSHING_WHEEL_CONTROLLER =
+            REGISTRATE.block("chronendite_crushing_wheel_controller", ChronenditeCrushWheelControllerBlock::new)
+                    .properties(p -> p.mapColor(MapColor.STONE)
+                            .noOcclusion()
+                            .noLootTable()
+                            .air()
+                            .noCollission()
+                            .pushReaction(PushReaction.BLOCK))
+                    .blockstate((c, p) -> p.getVariantBuilder(c.get())
+                            .forAllStatesExcept(BlockStateGen.mapToAir(p), CrushingWheelControllerBlock.FACING))
+                    .register();
 
     public static final BlockEntry<ChronenditeMechanicalPressBlock> CHRONENDITE_MECHANICAL_PRESS =
             REGISTRATE.block("chronendite_mechanical_press", ChronenditeMechanicalPressBlock::new)
@@ -362,8 +413,21 @@ public class AllBlocks {
             .addLayer(() -> RenderType::cutoutMipped)
             .item()
             .tag(AllTags.AllItemTags.CONTRAPTION_CONTROLLED.tag)
-//            .transform(customItemModel())
             .transform(tempCustomItemModel(new ResourceLocation("create", "block/mechanical_saw/item")))
+            .register();
+
+
+    public static final BlockEntry<ChronenditeDeployerBlock> CHRONENDITE_DEPLOYER = REGISTRATE.block("chronendite_deployer", ChronenditeDeployerBlock::new)
+            .initialProperties(SharedProperties::stone)
+            .properties(p -> p.mapColor(MapColor.PODZOL))
+            .transform(axeOrPickaxe())
+            .blockstate(BlockStateGenerators.textureOverrideDirectionalAxisBlockProvider("create", "deployer", Map.ofEntries()))
+            .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 4.0))
+            .onRegister(movementBehaviour(new DeployerMovementBehaviour()))
+            .onRegister(interactionBehaviour(new DeployerMovingInteraction()))
+            .item(AssemblyOperatorBlockItem::new)
+            .tag(AllTags.AllItemTags.CONTRAPTION_CONTROLLED.tag)
+            .transform(tempCustomItemModel(new ResourceLocation("create", "block/deployer/item")))
             .register();
 
     public static final BlockEntry<ChronenditeMechanicalBearingBlock> CHRONENDITE_MECHANICAL_BEARING =
@@ -376,46 +440,6 @@ public class AllBlocks {
                     .onRegister(movementBehaviour(new StabilizedBearingMovementBehaviour()))
                     .register();
 
-//    public static final BlockEntry<BeltFunnelBlock> ANDESITE_OC_BELT_FUNNEL =
-//            REGISTRATE.block("andesite_speeding_belt_funnel", p -> new BeltFunnelBlock(ANDESITE_FUNNEL, p))
-//                    .addLayer(() -> RenderType::cutoutMipped)
-//                    .initialProperties(SharedProperties::stone)
-//                    .properties(p -> p.mapColor(MapColor.STONE))
-//                    .transform(pickaxeOnly())
-//                    .tag(AllTags.AllBlockTags.SAFE_NBT.tag)
-//                    .blockstate(new BeltFunnelGenerator("andesite")::generate)
-//                    .loot((p, b) -> p.dropOther(b, ANDESITE_FUNNEL.get()))
-//                    .register();
-//
-//    public static final BlockEntry<BeltFunnelBlock> BRASS_OC_BELT_FUNNEL =
-//            REGISTRATE.block("brass_speeding_belt_funnel", p -> new BeltFunnelBlock(BRASS_FUNNEL, p))
-//                    .addLayer(() -> RenderType::cutoutMipped)
-//                    .initialProperties(SharedProperties::softMetal)
-//                    .properties(p -> p.mapColor(MapColor.TERRACOTTA_YELLOW))
-//                    .transform(pickaxeOnly())
-//                    .tag(AllTags.AllBlockTags.SAFE_NBT.tag)
-//                    .blockstate(new BeltFunnelGenerator("brass")::generate)
-//                    .loot((p, b) -> p.dropOther(b, BRASS_FUNNEL.get()))
-//                    .register();
-//
-//    public static final BlockEntry<BeltTunnelBlock> ANDESITE_OC_TUNNEL =
-//            REGISTRATE.block("andesite_speeding_tunnel", BeltTunnelBlock::new)
-//                    .properties(p -> p.mapColor(MapColor.STONE))
-//                    .transform(BuilderTransformers.beltTunnel("andesite", new ResourceLocation("block/polished_andesite")))
-////                    .transform(displaySource(AllDisplaySources.ACCUMULATE_ITEMS))
-////                    .transform(displaySource(AllDisplaySources.ITEM_THROUGHPUT))
-//                    .register();
-//
-//    public static final BlockEntry<BrassTunnelBlock> BRASS_OC_TUNNEL =
-//            REGISTRATE.block("brass_speeding_tunnel", BrassTunnelBlock::new)
-//                    .properties(p -> p.mapColor(MapColor.TERRACOTTA_YELLOW))
-//                    .transform(BuilderTransformers.beltTunnel("brass", Create.asResource("block/brass_block")))
-////                    .transform(displaySource(AllDisplaySources.ACCUMULATE_ITEMS))
-////                    .transform(displaySource(AllDisplaySources.ITEM_THROUGHPUT))
-//                    .onRegister(connectedTextures(BrassTunnelCTBehaviour::new))
-//                    .register();
-
-
     public static final BlockEntry<ChronenditeSpeedControllerBlock> CHRONENDITE_ROTATION_SPEED_CONTROLLER =
         REGISTRATE.block("chronendite_rotation_speed_controller", ChronenditeSpeedControllerBlock::new)
                 .initialProperties(SharedProperties::softMetal)
@@ -427,6 +451,35 @@ public class AllBlocks {
                 .item()
                 .transform(tempCustomItemModel(new ResourceLocation("create", "block/rotation_speed_controller/item")))
                 .register();
+
+    public static final BlockEntry<ChronenditeMechanicalCrafterBlock> CHRONENDITE_MECHANICAL_CRAFTER =
+            REGISTRATE.block("chronendite_mechanical_crafter", ChronenditeMechanicalCrafterBlock::new)
+                    .initialProperties(SharedProperties::softMetal)
+                    .properties(p -> p.noOcclusion()
+                            .mapColor(MapColor.TERRACOTTA_YELLOW))
+                    .transform(axeOrPickaxe())
+                    .blockstate(BlockStateGenerators.textureOverrideHorizontalBlockProvider(true, "create", "mechanical_crafter", Map.ofEntries()))
+                    .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 2.0))
+                    .onRegister(CreateRegistrate.connectedTextures(OCCrafterCTBehaviour::new))
+                    .addLayer(() -> RenderType::cutoutMipped)
+                    .item()
+                    .transform(tempCustomItemModel(new ResourceLocation("create", "block/mechanical_crafter/item")))
+                    .register();
+
+
+    public static final BlockEntry<ChronenditeArmBlock> CHRONENDITE_MECHANICAL_ARM = REGISTRATE.block("chronendite_mechanical_arm", ChronenditeArmBlock::new)
+            .initialProperties(SharedProperties::softMetal)
+            .properties(p -> p.mapColor(MapColor.TERRACOTTA_YELLOW))
+            .transform(axeOrPickaxe())
+            .blockstate((c, p) -> p.getVariantBuilder(c.get())
+                    .forAllStates(s -> ConfiguredModel.builder()
+                            .modelFile(AssetLookupWithParent.partialModel(c, p, "create", "mechanical_arm", Map.ofEntries()))
+                            .rotationX(s.getValue(ChronenditeArmBlock.CEILING) ? 180 : 0)
+                            .build()))
+            .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 2.0))
+            .item(ArmItem::new)
+            .transform(tempCustomItemModel(new ResourceLocation("create", "block/mechanical_arm/item")))
+            .register();
 
     public static final BlockEntry<GirderEncasedCrimschistShaftBlock> METAL_GIRDER_ENCASED_CRIMSCHIST_SHAFT =
             REGISTRATE.block("metal_girder_encased_crimschist_shaft", GirderEncasedCrimschistShaftBlock::new)

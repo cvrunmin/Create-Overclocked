@@ -13,11 +13,16 @@
     "create_andertech:crimschist_gearshift",
     "create_andertech:encased_crimschist_chain_drive",
     "create_andertech:speeding_belt",
+    "create_andertech:chronendite_encased_fan",
+    "create_andertech:chronendite_hv_encased_fan",
     "create_andertech:chronendite_mechanical_press",
     "create_andertech:chronendite_mechanical_mixer",
     "create_andertech:chronendite_mechanical_drill",
     "create_andertech:chronendite_mechanical_saw",
+    "create_andertech:chronendite_deployer",
     "create_andertech:chronendite_mechanical_bearing",
-    "create_andertech:chronendite_rotation_speed_controller"
+    "create_andertech:chronendite_rotation_speed_controller",
+    "create_andertech:chronendite_mechanical_crafter",
+    "create_andertech:chronendite_mechanical_arm"
   ]
 }

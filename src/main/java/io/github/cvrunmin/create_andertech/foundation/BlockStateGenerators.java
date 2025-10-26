@@ -1,5 +1,6 @@
 package io.github.cvrunmin.create_andertech.foundation;
 
+import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.content.kinetics.belt.BeltBlock;
 import com.simibubi.create.content.kinetics.belt.BeltPart;
 import com.simibubi.create.content.kinetics.belt.BeltSlope;
@@ -28,13 +29,9 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static com.simibubi.create.foundation.data.BlockStateGen.axisBlock;
+import static com.simibubi.create.foundation.data.BlockStateGen.directionalAxisBlock;
 
 public class BlockStateGenerators {
-
-//    public static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> axisBlockProvider(
-//            boolean customItem, boolean cloned) {
-//        return (c, p) -> axisBlock(c, p, getBlockModel(customItem, c, p, cloned));
-//    }
 
     public static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> textureOverrideAxisBlockProvider(
             boolean customItem, String modid, String parentName, Map<String, ResourceLocation> overriddenTextures) {
@@ -52,13 +49,13 @@ public class BlockStateGenerators {
         return (c, p) -> p.directionalBlock(c.get(), getBlockModel(customItem, modid, parentName, overriddenTextures, c, p));
     }
 
-//    private static <T extends Block> Function<BlockState, ModelFile> getBlockModel(boolean customItem,
-//                                                                                   DataGenContext<Block, T> c, RegistrateBlockstateProvider p, boolean cloned) {
-//        if(cloned){
-//            return $ -> customItem ? AssetLookupCloned.partialBaseModel(c, p) : AssetLookupCloned.standardModel(c, p);
-//        }
-//        return $ -> customItem ? AssetLookup.partialBaseModel(c, p) : AssetLookup.standardModel(c, p);
-//    }
+    public static <T extends DirectionalAxisKineticBlock> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> textureOverrideDirectionalAxisBlockProvider(
+            String modid, String parentName, Map<String, ResourceLocation> overriddenTextures) {
+        return (c, p) -> directionalAxisBlock(c, p, ($, vertical) -> {
+                String format = "block/%s/" + (vertical ? "vertical" : "horizontal");
+                return AssetLookupWithParent.specifiedModel(c, p, String.format(format, c.getName()), modid, String.format(format, parentName), overriddenTextures);
+        });
+    }
 
     private static <T extends Block> Function<BlockState, ModelFile> getBlockModel(boolean customItem, String modid, String parentName, Map<String, ResourceLocation> overriddenTextures,
                                                                                    DataGenContext<Block, T> c, RegistrateBlockstateProvider p) {

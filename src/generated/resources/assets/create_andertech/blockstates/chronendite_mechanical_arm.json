@@ -1,0 +1,11 @@
+{
+  "variants": {
+    "ceiling=false": {
+      "model": "create_andertech:block/chronendite_mechanical_arm/block"
+    },
+    "ceiling=true": {
+      "model": "create_andertech:block/chronendite_mechanical_arm/block",
+      "x": 180
+    }
+  }
+}
