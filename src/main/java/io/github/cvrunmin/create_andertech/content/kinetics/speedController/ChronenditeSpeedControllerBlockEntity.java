@@ -1,14 +1,14 @@
 package io.github.cvrunmin.create_andertech.content.kinetics.speedController;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.simibubi.create.AllBlockEntityTypes;
+import com.simibubi.create.compat.Mods;
 import com.simibubi.create.compat.computercraft.AbstractComputerBehaviour;
 import com.simibubi.create.compat.computercraft.ComputerCraftProxy;
 import com.simibubi.create.content.kinetics.RotationPropagator;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
-import com.simibubi.create.content.kinetics.motor.KineticScrollValueBehaviour;
 import com.simibubi.create.content.kinetics.simpleRelays.CogWheelBlock;
 import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
-import com.simibubi.create.content.kinetics.speedController.SpeedControllerBlock;
 import com.simibubi.create.foundation.advancement.AllAdvancements;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxTransform;
@@ -18,7 +18,7 @@ import dev.engine_room.flywheel.lib.transform.TransformStack;
 import io.github.cvrunmin.create_andertech.AllBlocks;
 import io.github.cvrunmin.create_andertech.Constants;
 import io.github.cvrunmin.create_andertech.content.kinetics.motor.OCKineticScrollValueBehaviour;
-import io.github.cvrunmin.create_andertech.foundation.IOverspeedKineticBE;
+import io.github.cvrunmin.create_andertech.content.kinetics.simpleRelays.OCKineticBlockEntity;
 import net.createmod.catnip.math.AngleHelper;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
@@ -27,14 +27,12 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 
-public class ChronenditeSpeedControllerBlockEntity extends KineticBlockEntity implements IOverspeedKineticBE {
+public class ChronenditeSpeedControllerBlockEntity extends OCKineticBlockEntity {
 
     public static final int DEFAULT_SPEED = 256;
     public ScrollValueBehaviour targetSpeed;
@@ -46,6 +44,15 @@ public class ChronenditeSpeedControllerBlockEntity extends KineticBlockEntity im
         super(typeIn, pos, state);
     }
 
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        if (Mods.COMPUTERCRAFT.isLoaded()) {
+//            event.registerBlockEntity(
+//                    PeripheralCapability.get(),
+//                    AllBlockEntityTypes.ROTATION_SPEED_CONTROLLER.get(),
+//                    (be, context) -> be.computerBehaviour.getPeripheralCapability()
+//            );
+        }
+    }
 
     @Override
     public void lazyTick() {
@@ -142,19 +149,6 @@ public class ChronenditeSpeedControllerBlockEntity extends KineticBlockEntity im
     }
 
     @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-        if (computerBehaviour.isPeripheralCap(cap))
-            return computerBehaviour.getPeripheralCapability();
-        return super.getCapability(cap, side);
-    }
-
-    @Override
-    public void invalidateCaps() {
-        super.invalidateCaps();
-        computerBehaviour.removePeripheral();
-    }
-
-    @Override
     public boolean isCustomConnection(KineticBlockEntity other, BlockState state, BlockState otherState) {
         if(ICogWheel.isLargeCog(otherState) && AllBlocks.CHRONENDITE_ROTATION_SPEED_CONTROLLER.has(state)){
             var diff = other.getBlockPos().subtract(getBlockPos());
@@ -166,6 +160,12 @@ public class ChronenditeSpeedControllerBlockEntity extends KineticBlockEntity im
             return orthoAxis == cogAxis;
         }
         return false;
+    }
+
+    @Override
+    public void invalidate() {
+        super.invalidate();
+        computerBehaviour.removePeripheral();
     }
 
     private class ControllerValueBoxTransform extends ValueBoxTransform.Sided {

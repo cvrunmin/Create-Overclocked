@@ -40,7 +40,7 @@ public class CrimschistGearboxBlock extends RotatedPillarKineticBlock implements
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos,
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader world, BlockPos pos,
                                        Player player) {
         if (state.getValue(AXIS).isVertical())
             return super.getCloneItemStack(state, target, world, pos, player);

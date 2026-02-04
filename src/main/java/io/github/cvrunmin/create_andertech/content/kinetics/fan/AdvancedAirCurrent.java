@@ -8,6 +8,7 @@ import com.simibubi.create.foundation.advancement.AllAdvancements;
 import io.github.cvrunmin.create_andertech.mixin.AirCurrentInvoker;
 import io.github.cvrunmin.create_andertech.mixin.ServerGamePacketListenerAccessor;
 import net.createmod.catnip.math.VecHelper;
+import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -15,8 +16,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Iterator;
@@ -55,8 +54,9 @@ public class AdvancedAirCurrent extends AirCurrent {
 
             entity.setDeltaMovement(previousMotion.add(new Vec3(xIn, yIn, zIn).scale(1 / 8f)));
             entity.fallDistance = 0;
-            DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
-                    () -> () -> AirCurrentInvoker.invokeEnableClientPlayerSound(entity, Mth.clamp(speed / 128f * .4f, 0.01f, .4f)));
+            if (CatnipServices.PLATFORM.getEnv().isClient()) {
+                AirCurrentInvoker.invokeEnableClientPlayerSound(entity, Mth.clamp(speed / 128f * .4f, 0.01f, .4f));
+            }
 
             if (entity instanceof ServerPlayer)
                 ((ServerGamePacketListenerAccessor)((ServerPlayer) entity).connection).setAboveGroundTickCount(0);

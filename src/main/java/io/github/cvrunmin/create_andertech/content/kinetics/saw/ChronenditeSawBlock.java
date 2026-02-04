@@ -3,11 +3,11 @@ package io.github.cvrunmin.create_andertech.content.kinetics.saw;
 import com.google.common.base.Predicates;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
-import com.simibubi.create.content.kinetics.drill.DrillBlock;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.damageTypes.CreateDamageSources;
 import io.github.cvrunmin.create_andertech.AllBlockEntityTypes;
 import io.github.cvrunmin.create_andertech.AllBlocks;
+import io.github.cvrunmin.create_andertech.content.kinetics.drill.ChronenditeDrillBlock;
 import net.createmod.catnip.placement.IPlacementHelper;
 import net.createmod.catnip.placement.PlacementHelpers;
 import net.createmod.catnip.placement.PlacementOffset;
@@ -15,7 +15,7 @@ import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -114,25 +114,24 @@ public class ChronenditeSawBlock extends DirectionalAxisKineticBlock implements 
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn,
-                                 BlockHitResult hit) {
-        ItemStack heldItem = player.getItemInHand(handIn);
+    public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn,
+                                           BlockHitResult hit) {
         IPlacementHelper placementHelper = PlacementHelpers.get(placementHelperId);
         if (!player.isShiftKeyDown() && player.mayBuild()) {
-            if (placementHelper.matchesItem(heldItem) && placementHelper.getOffset(player, worldIn, state, pos, hit)
-                    .placeInWorld(worldIn, (BlockItem) heldItem.getItem(), player, handIn, hit)
+            if (placementHelper.matchesItem(stack) && placementHelper.getOffset(player, worldIn, state, pos, hit)
+                    .placeInWorld(worldIn, (BlockItem) stack.getItem(), player, handIn, hit)
                     .consumesAction())
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
         }
 
         if (player.isSpectator() || !player.getItemInHand(handIn)
                 .isEmpty())
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         if (state.getOptionalValue(FACING)
                 .orElse(Direction.WEST) != Direction.UP)
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
-        return onBlockEntityUse(worldIn, pos, be -> {
+        return onBlockEntityUseItemOn(worldIn, pos, be -> {
             for (int i = 0; i < be.inventory.getSlots(); i++) {
                 ItemStack heldItemStack = be.inventory.getStackInSlot(i);
                 if (!worldIn.isClientSide && !heldItemStack.isEmpty())
@@ -141,7 +140,7 @@ public class ChronenditeSawBlock extends DirectionalAxisKineticBlock implements 
             }
             be.inventory.clear();
             be.notifyUpdate();
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         });
     }
 
@@ -155,7 +154,7 @@ public class ChronenditeSawBlock extends DirectionalAxisKineticBlock implements 
         withBlockEntityDo(worldIn, pos, be -> {
             if (be.getSpeed() == 0)
                 return;
-            entityIn.hurt(CreateDamageSources.saw(worldIn), (float) DrillBlock.getDamage(be.getSpeed()));
+            entityIn.hurt(CreateDamageSources.saw(worldIn), (float) ChronenditeDrillBlock.getDamage(be.getSpeed()));
         });
     }
 
@@ -209,7 +208,7 @@ public class ChronenditeSawBlock extends DirectionalAxisKineticBlock implements 
     }
 
     @Override
-    public boolean isPathfindable(BlockState state, BlockGetter reader, BlockPos pos, PathComputationType type) {
+    protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
         return false;
     }
 

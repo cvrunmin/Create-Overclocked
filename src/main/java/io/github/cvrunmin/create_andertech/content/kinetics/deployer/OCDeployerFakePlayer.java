@@ -19,20 +19,21 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.UsernameCache;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.event.entity.EntityEvent;
-import net.minecraftforge.event.entity.living.LivingChangeTargetEvent;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
-import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.common.UsernameCache;
+import net.neoforged.neoforge.common.util.FakePlayer;
+import net.neoforged.neoforge.event.entity.EntityEvent;
+import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
+import net.neoforged.neoforge.event.entity.living.LivingExperienceDropEvent;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
@@ -40,9 +41,8 @@ import java.util.Objects;
 import java.util.OptionalInt;
 import java.util.UUID;
 
-@Mod.EventBusSubscriber
+@EventBusSubscriber
 public class OCDeployerFakePlayer extends FakePlayer {
-    private static final Connection NETWORK_MANAGER = new Connection(PacketFlow.CLIENTBOUND);
     public static final UUID fallbackID = UUID.fromString("cd0a4584-144f-490d-af00-a89a0008aa8e");
     public Pair<BlockPos, Float> blockBreakingProgress;
     public ItemStack spawnedItemEffects;
@@ -52,7 +52,6 @@ public class OCDeployerFakePlayer extends FakePlayer {
 
     public OCDeployerFakePlayer(ServerLevel world, @Nullable UUID owner) {
         super(world, new DeployerGameProfile(fallbackID, "Deployer", owner));
-        connection = new FakePlayNetHandler(world.getServer(), this);
         this.owner = owner;
     }
 
@@ -73,8 +72,8 @@ public class OCDeployerFakePlayer extends FakePlayer {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public float getEyeHeight(Pose poseIn) {
-        return 0;
+    public EntityDimensions getDefaultDimensions(Pose pose) {
+        return super.getDefaultDimensions(pose).withEyeHeight(0);
     }
 
     @Override
@@ -93,7 +92,7 @@ public class OCDeployerFakePlayer extends FakePlayer {
     }
 
     @Override
-    public ItemStack eat(Level world, ItemStack stack) {
+    public ItemStack eat(Level world, ItemStack stack, FoodProperties foodProperties) {
         stack.shrink(1);
         return stack;
     }
@@ -112,7 +111,7 @@ public class OCDeployerFakePlayer extends FakePlayer {
     @SubscribeEvent
     public static void deployerHasEyesOnHisFeet(EntityEvent.Size event) {
         if (event.getEntity() instanceof OCDeployerFakePlayer)
-            event.setNewEyeHeight(0);
+            event.setNewSize(event.getNewSize().withEyeHeight(0));
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -148,7 +147,7 @@ public class OCDeployerFakePlayer extends FakePlayer {
 
     @SubscribeEvent
     public static void entitiesDontRetaliate(LivingChangeTargetEvent event) {
-        if (!(event.getOriginalTarget() instanceof OCDeployerFakePlayer))
+        if (!(event.getOriginalAboutToBeSetTarget() instanceof OCDeployerFakePlayer))
             return;
         LivingEntity entityLiving = event.getEntity();
         if (!(entityLiving instanceof Mob mob))
@@ -205,20 +204,6 @@ public class OCDeployerFakePlayer extends FakePlayer {
             int result = id == null ? 0 : id.hashCode();
             result = 31 * result + (name == null ? 0 : name.hashCode());
             return result;
-        }
-    }
-
-    private static class FakePlayNetHandler extends ServerGamePacketListenerImpl {
-        public FakePlayNetHandler(MinecraftServer server, ServerPlayer playerIn) {
-            super(server, NETWORK_MANAGER, playerIn);
-        }
-
-        @Override
-        public void send(Packet<?> packetIn) {
-        }
-
-        @Override
-        public void send(Packet<?> p_243227_, @Nullable PacketSendListener p_243273_) {
         }
     }
 }

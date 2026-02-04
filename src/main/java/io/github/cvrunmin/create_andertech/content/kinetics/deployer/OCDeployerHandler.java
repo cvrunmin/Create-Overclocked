@@ -1,6 +1,8 @@
 package io.github.cvrunmin.create_andertech.content.kinetics.deployer;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.simibubi.create.AllDataComponents;
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
@@ -10,10 +12,14 @@ import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackH
 import com.simibubi.create.content.trains.track.ITrackBlock;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.utility.BlockHelper;
+import net.createmod.catnip.levelWrappers.WrappedLevel;
 import net.createmod.catnip.levelWrappers.WrappedServerLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerPlayerGameMode;
@@ -36,6 +42,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -48,24 +55,22 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.extensions.IForgeBaseRailBlock;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.neoforge.common.CommonHooks;
+import net.neoforged.neoforge.common.extensions.IBaseRailBlockExtension;
+import net.neoforged.neoforge.common.util.TriState;
+import net.neoforged.neoforge.event.EventHooks;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static net.minecraftforge.eventbus.api.Event.Result.DEFAULT;
-import static net.minecraftforge.eventbus.api.Event.Result.DENY;
-
 public class OCDeployerHandler {
     private static final Map<BlockPos, List<ItemEntity>> CAPTURED_BLOCK_DROPS = new HashMap<>();
     public static final Map<BlockPos, List<ItemEntity>> CAPTURED_BLOCK_DROPS_VIEW = Collections.unmodifiableMap(CAPTURED_BLOCK_DROPS);
 
-    private static final class ItemUseWorld extends WrappedServerLevel {
+    private static final class ItemUseWorld extends WrappedLevel implements ServerLevelAccessor {
         private final Direction face;
         private final BlockPos pos;
         boolean rayMode = false;
@@ -74,6 +79,11 @@ public class OCDeployerHandler {
             super(level);
             this.face = face;
             this.pos = pos;
+        }
+
+        @Override
+        public ServerLevel getLevel() {
+            return ((ServerLevel) level);
         }
 
         @Override
@@ -102,7 +112,7 @@ public class OCDeployerHandler {
                 return false;
 
         if (held.getItem() instanceof BucketItem bucketItem) {
-            Fluid fluid = bucketItem.getFluid();
+            Fluid fluid = bucketItem.content;
             if (fluid != Fluids.EMPTY && world.getFluidState(targetPos)
                     .getType() == fluid)
                 return false;
@@ -116,8 +126,11 @@ public class OCDeployerHandler {
     }
 
     static void activate(OCDeployerFakePlayer player, Vec3 vec, BlockPos clickedPos, Vec3 extensionVector, ChronenditeDeployerBlockEntity.Mode mode) {
-        Multimap<Attribute, AttributeModifier> attributeModifiers = player.getMainHandItem()
-                .getAttributeModifiers(EquipmentSlot.MAINHAND);
+        Multimap<Holder<Attribute>, AttributeModifier> attributeModifiers = HashMultimap.create();
+        player.getMainHandItem()
+                .getAttributeModifiers()
+                .modifiers()
+                .forEach(e -> attributeModifiers.put(e.attribute(), e.modifier()));
         player.getAttributes()
                 .addTransientAttributeModifiers(attributeModifiers);
         activateInner(player, vec, clickedPos, extensionVector, mode);
@@ -140,7 +153,7 @@ public class OCDeployerHandler {
         List<Entity> entities = level.getEntitiesOfClass(Entity.class, new AABB(clickedPos))
                 .stream()
                 .filter(e -> !(e instanceof AbstractContraptionEntity))
-                .collect(Collectors.toList());
+                .toList();
         InteractionHand hand = InteractionHand.MAIN_HAND;
         if (!entities.isEmpty()) {
             Entity entity = entities.get(level.random.nextInt(entities.size()));
@@ -150,7 +163,7 @@ public class OCDeployerHandler {
 
             // Use on entity
             if (mode == ChronenditeDeployerBlockEntity.Mode.USE) {
-                InteractionResult cancelResult = ForgeHooks.onInteractEntity(player, entity, hand);
+                InteractionResult cancelResult = CommonHooks.onInteractEntity(player, entity, hand);
                 if (cancelResult == InteractionResult.FAIL) {
                     entity.captureDrops(null);
                     return;
@@ -169,9 +182,9 @@ public class OCDeployerHandler {
                         success = true;
                 }
                 if (!success && entity instanceof Player playerEntity) {
-                    if (stack.isEdible()) {
+                    if (stack.has(DataComponents.FOOD)) {
                         FoodProperties foodProperties = item.getFoodProperties(stack, player);
-                        if (playerEntity.canEat(foodProperties.canAlwaysEat())) {
+                        if (foodProperties != null && playerEntity.canEat(foodProperties.canAlwaysEat())) {
                             ItemStack copy = stack.copy();
                             player.setItemInHand(hand, stack.finishUsingItem(level, playerEntity));
                             player.spawnedItemEffects = copy;
@@ -222,12 +235,12 @@ public class OCDeployerHandler {
                 return;
             }
             //noinspection removal
-            PlayerInteractEvent.LeftClickBlock event = ForgeHooks.onLeftClickBlock(player, clickedPos, face);
+            PlayerInteractEvent.LeftClickBlock event = CommonHooks.onLeftClickBlock(player, clickedPos, face, ServerboundPlayerActionPacket.Action.START_DESTROY_BLOCK);
             if (event.isCanceled())
                 return;
             if (BlockHelper.extinguishFire(level, player, clickedPos, face))
                 return;
-            if (event.getUseBlock() != DENY)
+            if (event.getUseBlock() != TriState.FALSE)
                 clickedState.attack(level, clickedPos, player);
             if (stack.isEmpty())
                 return;
@@ -260,17 +273,17 @@ public class OCDeployerHandler {
 
         // Right click
         UseOnContext itemusecontext = new UseOnContext(player, hand, result);
-        Event.Result useBlock = DEFAULT;
-        Event.Result useItem = DEFAULT;
+        TriState useBlock = TriState.DEFAULT;
+        TriState useItem = TriState.DEFAULT;
         if (!clickedState.getShape(level, clickedPos)
                 .isEmpty()) {
-            PlayerInteractEvent.RightClickBlock event = ForgeHooks.onRightClickBlock(player, hand, clickedPos, result);
+            PlayerInteractEvent.RightClickBlock event = CommonHooks.onRightClickBlock(player, hand, clickedPos, result);
             useBlock = event.getUseBlock();
             useItem = event.getUseItem();
         }
 
         // Item has custom active use
-        if (useItem != DENY) {
+        if (useItem != TriState.FALSE) {
             InteractionResult actionresult = stack.onItemUseFirst(itemusecontext);
             if (actionresult != InteractionResult.PASS)
                 return;
@@ -282,12 +295,12 @@ public class OCDeployerHandler {
                 !(player.isShiftKeyDown() && holdingSomething) || (stack.doesSneakBypassUse(level, clickedPos, player));
 
         // Use on block
-        if (useBlock != DENY && flag1
+        if (useBlock != TriState.FALSE && flag1
                 && safeOnUse(clickedState, level, clickedPos, player, hand, result).consumesAction())
             return;
         if (stack.isEmpty())
             return;
-        if (useItem == DENY)
+        if (useItem == TriState.FALSE)
             return;
         if (item instanceof CartAssemblerBlockItem
                 && clickedState.canBeReplaced(new BlockPlaceContext(itemusecontext)))
@@ -309,7 +322,7 @@ public class OCDeployerHandler {
         InteractionResult onItemUse = stack.useOn(itemusecontext);
         if (onItemUse.consumesAction()) {
             if (item instanceof BlockItem bi
-                    && (bi.getBlock() instanceof IForgeBaseRailBlock || bi.getBlock() instanceof ITrackBlock))
+                    && (bi.getBlock() instanceof IBaseRailBlockExtension || bi.getBlock() instanceof ITrackBlock))
                 player.placedTracks = true;
             return;
         }
@@ -330,14 +343,13 @@ public class OCDeployerHandler {
             bucketItem.checkExtraContent(player, level, stack, clickedPos);
 
         ItemStack resultStack = onItemRightClick.getObject();
-        if (resultStack != stack || resultStack.getCount() != stack.getCount() || resultStack.getUseDuration() > 0
+        if (resultStack != stack || resultStack.getCount() != stack.getCount() || resultStack.getUseDuration(player) > 0
                 || resultStack.getDamageValue() != stack.getDamageValue()) {
             player.setItemInHand(hand, onItemRightClick.getObject());
         }
 
-        CompoundTag tag = stack.getTag();
-        if (tag != null && stack.getItem() instanceof SandPaperItem && tag.contains("Polishing")) {
-            player.spawnedItemEffects = ItemStack.of(tag.getCompound("Polishing"));
+        if (stack.getItem() instanceof SandPaperItem && stack.has(AllDataComponents.SAND_PAPER_POLISHING)) {
+            player.spawnedItemEffects = stack.get(AllDataComponents.SAND_PAPER_POLISHING).item();
             AllSoundEvents.SANDING_SHORT.playOnServer(level, pos, .25f, 1f);
         }
 
@@ -355,13 +367,10 @@ public class OCDeployerHandler {
         BlockState blockstate = world.getBlockState(pos);
         GameType gameType = interactionManager.getGameModeForPlayer();
 
-        if (net.minecraftforge.common.ForgeHooks.onBlockBreakEvent(world, gameType, player, pos) == -1)
+        if (CommonHooks.fireBlockBreak(world, gameType, player, pos, blockstate).isCanceled())
             return false;
 
         BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (player.getMainHandItem()
-                .onBlockStartBreak(pos, player))
-            return false;
         if (player.blockActionRestricted(world, pos, gameType))
             return false;
 
@@ -371,7 +380,7 @@ public class OCDeployerHandler {
         boolean canHarvest = blockstate.canHarvestBlock(world, pos, player);
         prevHeldItem.mineBlock(world, blockstate, pos, player);
         if (prevHeldItem.isEmpty() && !heldItem.isEmpty())
-            net.minecraftforge.event.ForgeEventFactory.onPlayerDestroyItem(player, heldItem, InteractionHand.MAIN_HAND);
+            EventHooks.onPlayerDestroyItem(player, heldItem, InteractionHand.MAIN_HAND);
 
         BlockPos posUp = pos.above();
         BlockState stateUp = world.getBlockState(posUp);
@@ -380,8 +389,8 @@ public class OCDeployerHandler {
                 && stateUp.getBlock() == blockstate.getBlock()
                 && stateUp.getValue(DoublePlantBlock.HALF) == DoubleBlockHalf.UPPER) {
             // hack to prevent DoublePlantBlock from dropping a duplicate item
-            world.setBlock(pos, Blocks.AIR.defaultBlockState(), 35);
-            world.setBlock(posUp, Blocks.AIR.defaultBlockState(), 35);
+            world.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL | Block.UPDATE_SUPPRESS_DROPS);
+            world.setBlock(posUp, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL | Block.UPDATE_SUPPRESS_DROPS);
         } else {
             if (!blockstate.onDestroyedByPlayer(world, pos, player, canHarvest, world.getFluidState(pos)))
                 return true;
@@ -403,7 +412,7 @@ public class OCDeployerHandler {
         List<ItemEntity> drops = new ArrayList<>(4);
         CAPTURED_BLOCK_DROPS.put(pos, drops);
         try {
-            InteractionResult result = state.use(world, player, hand, ray);
+            InteractionResult result = BlockHelper.invokeUse(state, world, player, hand, ray);
             for (ItemEntity itemEntity : drops)
                 player.getInventory().placeItemBackInInventory(itemEntity.getItem());
             return result;

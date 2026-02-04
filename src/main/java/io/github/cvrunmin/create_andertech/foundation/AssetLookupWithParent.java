@@ -5,7 +5,7 @@ import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
 
 import java.util.Map;
 import java.util.function.Function;
@@ -26,7 +26,7 @@ public class AssetLookupWithParent {
     }
 
     public static ModelFile specifiedModel(DataGenContext<?, ?> ctx, RegistrateBlockstateProvider prov, String modelPath, String parentModid, String parentPath, Map<String, ResourceLocation> overriddenTextures){
-        var mf = prov.models().getBuilder(modelPath).parent(new ModelFile.UncheckedModelFile(new ResourceLocation(parentModid, parentPath)));
+        var mf = prov.models().getBuilder(modelPath).parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(parentModid, parentPath)));
         for (Map.Entry<String, ResourceLocation> entry : overriddenTextures.entrySet()) {
             mf = mf.texture(entry.getKey(), entry.getValue());
         }

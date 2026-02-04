@@ -2,21 +2,24 @@
   "required": true,
   "minVersion": "0.8",
   "package": "io.github.cvrunmin.create_andertech.mixin",
-  "compatibilityLevel": "JAVA_17",
+  "compatibilityLevel": "JAVA_21",
   "mixins": [
     "AirCurrentInvoker",
     "ArmBlockEntityAccessor",
-    "BeltBlockEntityMixin",
+    "AssemblyOperatorBlockItemMixin",
     "BeltConnectorHandlerMixin",
     "BeltConnectorItemMixin",
-    "BeltCrusherInteractionHandlerMixin",
     "BeltFunnelBlockMixin",
+    "BeltTunnelBlockMixin",
     "ChuteBlockEntityMixin",
     "DeployerBlockEntityAccessor",
     "DeployerBlockEntityMixin",
-    "MechanicalCraftingRecipeMixin",
+    "GroupedItemsAccessor",
     "RotationPropagatorMixin",
-    "ServerGamePacketListenerAccessor"
+    "ServerGamePacketListenerAccessor",
+    "belt.BeltBlockEntityMixin",
+    "belt.BeltCrusherInteractionHandlerMixin",
+    "belt.BeltMovementHandlerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

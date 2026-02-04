@@ -4,8 +4,7 @@ import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringB
 import com.simibubi.create.foundation.item.ItemHelper;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
 
 public class OCDeployerItemHandler implements IItemHandlerModifiable {
 
@@ -58,7 +57,7 @@ public class OCDeployerItemHandler implements IItemHandlerModifiable {
             return remainder;
         }
 
-        if (!ItemHandlerHelper.canItemStacksStack(held, stack))
+        if (!ItemStack.isSameItemSameComponents(held, stack))
             return stack;
 
         int space = held.getMaxStackSize() - held.getCount();

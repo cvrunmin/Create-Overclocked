@@ -1,7 +1,6 @@
 package io.github.cvrunmin.create_andertech.foundation;
 
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
-import com.simibubi.create.content.kinetics.belt.BeltBlock;
 import com.simibubi.create.content.kinetics.belt.BeltPart;
 import com.simibubi.create.content.kinetics.belt.BeltSlope;
 import com.simibubi.create.content.kinetics.saw.SawBlock;
@@ -20,9 +19,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.MultiPartBlockStateBuilder;
 
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -67,7 +65,7 @@ public class BlockStateGenerators {
         MultiPartBlockStateBuilder builder = p.getMultipartBuilder(c.get());
 
         builder.part()
-                .modelFile(new ModelFile.UncheckedModelFile(new ResourceLocation("create", "block/metal_girder_encased_shaft/block")))
+                .modelFile(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath("create", "block/metal_girder_encased_shaft/block")))
 //                .modelFile(AssetLookup.partialBaseModel(c, p))
                 .rotationY(0)
                 .addModel()
@@ -75,7 +73,7 @@ public class BlockStateGenerators {
                 .end();
 
         builder.part()
-                .modelFile(new ModelFile.UncheckedModelFile(new ResourceLocation("create", "block/metal_girder_encased_shaft/block")))
+                .modelFile(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath("create", "block/metal_girder_encased_shaft/block")))
 //                .modelFile(AssetLookup.partialBaseModel(c, p))
                 .rotationY(90)
                 .addModel()
@@ -83,14 +81,14 @@ public class BlockStateGenerators {
                 .end();
 
         builder.part()
-                .modelFile(new ModelFile.UncheckedModelFile(new ResourceLocation("create", "block/metal_girder_encased_shaft/block_top")))
+                .modelFile(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath("create", "block/metal_girder_encased_shaft/block_top")))
 //                .modelFile(AssetLookup.partialBaseModel(c, p, "top"))
                 .addModel()
                 .condition(GirderEncasedCrimschistShaftBlock.TOP, true)
                 .end();
 
         builder.part()
-                .modelFile(new ModelFile.UncheckedModelFile(new ResourceLocation("create", "block/metal_girder_encased_shaft/block_bottom")))
+                .modelFile(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath("create", "block/metal_girder_encased_shaft/block_bottom")))
 //                .modelFile(AssetLookup.partialBaseModel(c, p, "bottom"))
                 .addModel()
                 .condition(GirderEncasedCrimschistShaftBlock.BOTTOM, true)
@@ -176,7 +174,7 @@ public class BlockStateGenerators {
             String orientation = state.getValue(SawBlock.FACING)
                     .getAxis()
                     .isVertical() ? "vertical" : "horizontal";
-            return prov.models().getBuilder("block/" + ctx.getName() + "/" + orientation).parent(new ModelFile.UncheckedModelFile(new ResourceLocation("create", "block/mechanical_saw/" + orientation)));
+            return prov.models().getBuilder("block/" + ctx.getName() + "/" + orientation).parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath("create", "block/mechanical_saw/" + orientation)));
         }
     }
 
@@ -197,12 +195,12 @@ public class BlockStateGenerators {
         public <T extends Block> ModelFile getModel(DataGenContext<Block, T> ctx, RegistrateBlockstateProvider prov, BlockState state) {
             if(state.getValue(CreativeOCMotorBlock.FACING).getAxis().isVertical()){
                 return prov.models().getBuilder("block/" + ctx.getName() + "/block_vertical")
-                        .parent(new ModelFile.UncheckedModelFile(new ResourceLocation("create", "block/creative_motor/block_vertical")))
-                        .texture("1_0", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis"));
+                        .parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath("create", "block/creative_motor/block_vertical")))
+                        .texture("1_0", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis"));
             }
             return prov.models().getBuilder("block/" + ctx.getName() + "/block")
-                    .parent(new ModelFile.UncheckedModelFile(new ResourceLocation("create", "block/creative_motor/block")))
-                    .texture("1_0", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis"));
+                    .parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath("create", "block/creative_motor/block")))
+                    .texture("1_0", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis"));
         }
     }
 
@@ -210,20 +208,20 @@ public class BlockStateGenerators {
 
         @Override
         protected int getXRotation(BlockState state) {
-            Direction direction = state.getValue(BeltBlock.HORIZONTAL_FACING);
-            BeltSlope slope = state.getValue(BeltBlock.SLOPE);
+            Direction direction = state.getValue(OCBeltBlock.HORIZONTAL_FACING);
+            BeltSlope slope = state.getValue(OCBeltBlock.SLOPE);
             return slope == BeltSlope.VERTICAL ? 90
                     : slope == BeltSlope.SIDEWAYS && direction.getAxisDirection() == Direction.AxisDirection.NEGATIVE ? 180 : 0;
         }
 
         @Override
         protected int getYRotation(BlockState state) {
-            Boolean casing = state.getValue(BeltBlock.CASING);
-            BeltSlope slope = state.getValue(BeltBlock.SLOPE);
+            Boolean casing = state.getValue(OCBeltBlock.CASING);
+            BeltSlope slope = state.getValue(OCBeltBlock.SLOPE);
 
             boolean flip = slope == BeltSlope.UPWARD;
             boolean rotate = casing && slope == BeltSlope.VERTICAL;
-            Direction direction = state.getValue(BeltBlock.HORIZONTAL_FACING);
+            Direction direction = state.getValue(OCBeltBlock.HORIZONTAL_FACING);
             return horizontalAngle(direction) + (flip ? 180 : 0) + (rotate ? 90 : 0);
         }
 
@@ -233,7 +231,7 @@ public class BlockStateGenerators {
             Boolean casing = state.getValue(OCBeltBlock.CASING);
 
             if (!casing) {
-                return prov.models().getBuilder("block/" + ctx.getName() + "/particle").parent(new ModelFile.UncheckedModelFile(new ResourceLocation("create", "block/belt/particle")));
+                return prov.models().getBuilder("block/" + ctx.getName() + "/particle").parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath("create", "block/belt/particle")));
             }
 
             BeltPart part = state.getValue(OCBeltBlock.PART);
@@ -265,7 +263,7 @@ public class BlockStateGenerators {
             if (diagonal)
                 slopeName = "diagonal";
 
-            return prov.models().getBuilder(myPath + slopeName + "_" + partName).parent(new ModelFile.UncheckedModelFile(new ResourceLocation("create", path + slopeName + "_" + partName)));
+            return prov.models().getBuilder(myPath + slopeName + "_" + partName).parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath("create", path + slopeName + "_" + partName)));
         }
     }
 
@@ -311,9 +309,9 @@ public class BlockStateGenerators {
             var axis = state.getValue(ChronenditeSpeedControllerBlock.AXIS);
             var facing = ChronenditeSpeedControllerBlock.getDirectionFromState(state);
             if(axis.isHorizontal() && facing.getAxis().isHorizontal()){
-                return prov.models().getBuilder("block/" + ctx.getName() + "/block_horizontal").parent(new ModelFile.UncheckedModelFile(new ResourceLocation(CreateAndertech.MODID, "block/rotation_speed_controller/block_horizontal")));
+                return prov.models().getBuilder("block/" + ctx.getName() + "/block_horizontal").parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/rotation_speed_controller/block_horizontal")));
             }
-            return prov.models().getBuilder("block/" + ctx.getName() + "/block").parent(new ModelFile.UncheckedModelFile(new ResourceLocation("create", "block/rotation_speed_controller/block")));
+            return prov.models().getBuilder("block/" + ctx.getName() + "/block").parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath("create", "block/rotation_speed_controller/block")));
         }
     }
 }

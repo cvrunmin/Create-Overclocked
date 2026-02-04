@@ -64,7 +64,7 @@ public class EncasedCrimschistCogwheelBlock extends RotatedPillarKineticBlock im
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader world, BlockPos pos, Player player) {
         if (target instanceof BlockHitResult)
             return ((BlockHitResult) target).getDirection()
                     .getAxis() != getRotationAxis(state)

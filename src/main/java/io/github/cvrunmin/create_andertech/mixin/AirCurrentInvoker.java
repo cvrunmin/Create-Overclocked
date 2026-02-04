@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 @SuppressWarnings("unused")
-@Mixin(AirCurrent.class)
+@Mixin(AirCurrent.Client.class)
 public interface AirCurrentInvoker {
     @Invoker
     static void invokeEnableClientPlayerSound(Entity e, float maxVolume) {

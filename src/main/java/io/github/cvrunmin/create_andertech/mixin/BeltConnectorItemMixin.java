@@ -1,5 +1,7 @@
 package io.github.cvrunmin.create_andertech.mixin;
 
+import com.llamalad7.mixinextras.expression.Definition;
+import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -9,49 +11,56 @@ import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import com.simibubi.create.content.kinetics.belt.item.BeltConnectorItem;
 import io.github.cvrunmin.create_andertech.AllBlocks;
+import io.github.cvrunmin.create_andertech.AllDataComponents;
 import io.github.cvrunmin.create_andertech.content.kinetics.belt.OCBeltConnectorHelper;
 import io.github.cvrunmin.create_andertech.content.kinetics.simpleRelays.CrimschistShaftBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BeltConnectorItem.class)
 public class BeltConnectorItemMixin {
 
-    @Inject(method = "useOn", at = @At(value = "INVOKE", target = "Lnet/minecraft/nbt/CompoundTag;put(Ljava/lang/String;Lnet/minecraft/nbt/Tag;)Lnet/minecraft/nbt/Tag;", shift = At.Shift.AFTER), slice = @Slice(
-                from = @At(value = "INVOKE", target = "Lnet/minecraft/nbt/NbtUtils;writeBlockPos(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/nbt/CompoundTag;"),
-                to = @At("TAIL")))
-    private void createandertech$injectSaveSpeedingFlagAsNeeded(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir, @Local(name = "tag") LocalRef<CompoundTag> tag){
+    @Definition(id = "heldStack", local = @Local(type = ItemStack.class))
+    @Definition(id = "set", method = "Lnet/minecraft/world/item/ItemStack;set(Lnet/minecraft/core/component/DataComponentType;Ljava/lang/Object;)Ljava/lang/Object;")
+    @Definition(id = "BELT_FIRST_SHAFT", field = "Lcom/simibubi/create/AllDataComponents;BELT_FIRST_SHAFT:Lnet/minecraft/core/component/DataComponentType;")
+    @Expression("heldStack.set(BELT_FIRST_SHAFT, ?)")
+    @Inject(method = "useOn", at = @At("MIXINEXTRAS:EXPRESSION"))
+    private void createandertech$injectSaveSpeedingFlagAsNeeded(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir, @Local(name = "heldStack") LocalRef<ItemStack> tag){
         Level world = context.getLevel();
         BlockPos pos = context.getClickedPos();
         if(CrimschistShaftBlock.isShaft(world.getBlockState(pos))){
-            var realTag = tag.get();
-            realTag.putBoolean("IsSpeeding", true);
-            tag.set(realTag);
+            var realItemstack = tag.get();
+            realItemstack.set(AllDataComponents.BELT_IS_SPEEDING, true);
+            tag.set(realItemstack);
         }
     }
 
-    @Inject(method = "useOn", at = @At(value = "INVOKE", target = "Lnet/minecraft/nbt/CompoundTag;remove(Ljava/lang/String;)V"))
-    private void createandertech$removeSpeedingFlagWhenNeeded(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir, @Local(name = "tag") LocalRef<CompoundTag> tag){
-        var realTag = tag.get();
-        if(realTag.contains("IsSpeeding")){
-            realTag.remove("IsSpeeding");
-            tag.set(realTag);
+    @Definition(id = "heldStack", local = @Local(type = ItemStack.class))
+    @Definition(id = "remove", method = "Lnet/minecraft/world/item/ItemStack;remove(Lnet/minecraft/core/component/DataComponentType;)Ljava/lang/Object;")
+    @Definition(id = "BELT_FIRST_SHAFT", field = "Lcom/simibubi/create/AllDataComponents;BELT_FIRST_SHAFT:Lnet/minecraft/core/component/DataComponentType;")
+    @Expression("heldStack.remove(BELT_FIRST_SHAFT)")
+    @Inject(method = "useOn", at = @At("MIXINEXTRAS:EXPRESSION"))
+    private void createandertech$removeSpeedingFlagWhenNeeded(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir, @Local(name = "heldStack") LocalRef<ItemStack> tag){
+        var realItemStack = tag.get();
+        if(realItemStack.has(AllDataComponents.BELT_IS_SPEEDING)){
+            realItemStack.remove(AllDataComponents.BELT_IS_SPEEDING);
+            tag.set(realItemStack);
         }
     }
 
     @WrapOperation(method = "useOn", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/kinetics/belt/item/BeltConnectorItem;canConnect(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/BlockPos;)Z"))
-    private boolean createandertech$validateSpeedingIfNeeded(Level world, BlockPos firstPulley, BlockPos pos, Operation<Boolean> original, @Local(name = "tag") CompoundTag tag){
-        if(tag.contains("IsSpeeding") && tag.getBoolean("IsSpeeding")) return OCBeltConnectorHelper.canConnectAsSpeedingBelt(world, firstPulley, pos);
+    private boolean createandertech$validateSpeedingIfNeeded(Level world, BlockPos firstPulley, BlockPos pos, Operation<Boolean> original, @Local(name = "heldStack") ItemStack tag){
+        if(tag.getOrDefault(AllDataComponents.BELT_IS_SPEEDING, false)) return OCBeltConnectorHelper.canConnectAsSpeedingBelt(world, firstPulley, pos);
         return OCBeltConnectorHelper.isSameTypeOfShaft(world, firstPulley, pos) && original.call(world, firstPulley, pos);
     }
 

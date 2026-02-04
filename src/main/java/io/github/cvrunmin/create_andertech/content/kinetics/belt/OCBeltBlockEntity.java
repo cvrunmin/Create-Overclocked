@@ -11,6 +11,7 @@ import com.simibubi.create.content.kinetics.belt.transport.BeltTunnelInteraction
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import com.simibubi.create.content.logistics.tunnel.BrassTunnelBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import io.github.cvrunmin.create_andertech.AllBlockEntityTypes;
 import io.github.cvrunmin.create_andertech.AllBlocks;
 import io.github.cvrunmin.create_andertech.foundation.IOverspeedKineticBE;
 import io.github.cvrunmin.create_andertech.foundation.interfaces.IGrandSuperKineticBlockEntity;
@@ -22,8 +23,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +37,20 @@ import static com.simibubi.create.content.kinetics.belt.BeltSlope.HORIZONTAL;
 public class OCBeltBlockEntity extends BeltBlockEntity implements IOverspeedKineticBE {
     public OCBeltBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
+    }
+
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                AllBlockEntityTypes.OC_BELT.get(),
+                (be, context) -> {
+                    if (!OCBeltBlock.canTransportObjects(be.getBlockState()))
+                        return null;
+                    if (!be.isRemoved() && be.itemHandler == null)
+                        be.initializeItemHandler();
+                    return be.itemHandler;
+                }
+        );
     }
 
     public BeltInventory getInventoryRaw() {
@@ -224,17 +239,5 @@ public class OCBeltBlockEntity extends BeltBlockEntity implements IOverspeedKine
         nextBeltController.setChanged();
         nextBeltController.sendData();
         return empty;
-    }
-
-
-    @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-        if (!isItemHandlerCap(cap))
-            return super.getCapability(cap, side);
-        if (!OCBeltBlock.canTransportObjects(getBlockState()))
-            return super.getCapability(cap, side);
-        if (!isRemoved() && !itemHandler.isPresent())
-            initializeItemHandler();
-        return itemHandler.cast();
     }
 }

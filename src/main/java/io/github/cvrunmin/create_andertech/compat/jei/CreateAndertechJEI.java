@@ -24,7 +24,7 @@ import net.minecraft.world.item.crafting.SmokingRecipe;
 public class CreateAndertechJEI implements IModPlugin {
     @Override
     public ResourceLocation getPluginUid() {
-        return new ResourceLocation(CreateAndertech.MODID, "jei_plugin");
+        return ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "jei_plugin");
     }
 
     @Override

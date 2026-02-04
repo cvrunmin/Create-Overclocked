@@ -8,14 +8,11 @@ import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.flag.FeatureElement;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.List;
 import java.util.Set;
@@ -24,10 +21,10 @@ import java.util.function.Predicate;
 public class AllCreativeTabs {
     private static final DeferredRegister<CreativeModeTab> REGISTER = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, CreateAndertech.MODID);
 
-    public static final RegistryObject<CreativeModeTab> MAIN_TAB = REGISTER.register("main", () ->
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MAIN_TAB = REGISTER.register("main", () ->
         CreativeModeTab.builder()
                 .title(Component.translatable("itemGroup.create_andertech.main"))
-                .withTabsBefore(AllCreativeModeTabs.PALETTES_CREATIVE_TAB.getId())
+                .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
                 .icon(AllBlocks.CREATIVE_OC_MOTOR::asStack)
                 .displayItems(new MyDisplayitemGen(AllCreativeTabs.MAIN_TAB))
                 .build()
@@ -39,9 +36,9 @@ public class AllCreativeTabs {
 
     private static class MyDisplayitemGen implements CreativeModeTab.DisplayItemsGenerator{
 
-        private final RegistryObject<CreativeModeTab> tabFilter;
+        private final DeferredHolder<CreativeModeTab,CreativeModeTab> tabFilter;
 
-        public MyDisplayitemGen(RegistryObject<CreativeModeTab> tab) {
+        public MyDisplayitemGen(DeferredHolder<CreativeModeTab,CreativeModeTab> tab) {
             this.tabFilter = tab;
         }
 
@@ -56,7 +53,7 @@ public class AllCreativeTabs {
                     AllBlocks.BRASS_ENCASED_CRIMSCHIST_LARGE_COGWHEEL,
                     AllBlocks.METAL_GIRDER_ENCASED_CRIMSCHIST_SHAFT
             );
-            for (ItemProviderEntry<? extends FeatureElement> itemProviderEntry : simpleBlacklist) {
+            for (ItemProviderEntry<? extends FeatureElement, ?> itemProviderEntry : simpleBlacklist) {
                 exclusions.add(itemProviderEntry.asItem());
             }
             return exclusions::contains;
@@ -65,18 +62,18 @@ public class AllCreativeTabs {
         @Override
         public void accept(CreativeModeTab.ItemDisplayParameters itemDisplayParameters, CreativeModeTab.Output output) {
             var exclusionPredicate = makeExclusion();
-            for (RegistryEntry<Block> entry : CreateAndertech.REGISTRATE.getAll(Registries.BLOCK)) {
+                for (RegistryEntry<Block, Block> entry : CreateAndertech.REGISTRATE.getAll(Registries.BLOCK)) {
                 if(entry.get().asItem() == Items.AIR) continue;
                 if(exclusionPredicate.test(entry.get().asItem())) continue;
                 if(CreateRegistrate.isInCreativeTab(entry, tabFilter)){
-                    output.accept(entry.get());
+                    output.accept(entry.get(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
                 }
             }
-            for (RegistryEntry<Item> entry : CreateAndertech.REGISTRATE.getAll(Registries.ITEM)) {
+            for (RegistryEntry<Item, Item> entry : CreateAndertech.REGISTRATE.getAll(Registries.ITEM)) {
                 if(entry.get() instanceof BlockItem) continue;
                 if(exclusionPredicate.test(entry.get())) continue;
                 if(CreateRegistrate.isInCreativeTab(entry, tabFilter)){
-                    output.accept(entry.get());
+                    output.accept(entry.get(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
                 }
             }
         }

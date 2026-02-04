@@ -8,6 +8,7 @@ import com.simibubi.create.content.contraptions.bearing.StabilizedBearingMovemen
 import com.simibubi.create.content.decoration.encasing.EncasedCTBehaviour;
 import com.simibubi.create.content.decoration.encasing.EncasingRegistry;
 import com.simibubi.create.content.decoration.girder.ConnectedGirderModel;
+import com.simibubi.create.content.kinetics.belt.BeltBlock;
 import com.simibubi.create.content.kinetics.belt.BeltModel;
 import com.simibubi.create.content.kinetics.crafter.CrafterCTBehaviour;
 import com.simibubi.create.content.kinetics.crusher.CrushingWheelControllerBlock;
@@ -66,9 +67,9 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ItemModelBuilder;
-import net.minecraftforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
+import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
 
 import java.util.Map;
 
@@ -89,9 +90,9 @@ public class AllBlocks {
             .properties(p -> p.mapColor(MapColor.METAL).forceSolidOff())
             .transform(TagGen.pickaxeOnly())
             .blockstate(BlockStateGenerators.textureOverrideAxisBlockProvider(false, "create", "shaft", Map.ofEntries(
-                    Map.entry("particle", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis")),
-                    Map.entry("0", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis")),
-                    Map.entry("1", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis_top")))
+                    Map.entry("particle", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis")),
+                    Map.entry("0", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis")),
+                    Map.entry("1", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis_top")))
                     )
             )
             .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 0))
@@ -108,10 +109,10 @@ public class AllBlocks {
             .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 0))
             .transform(axeOrPickaxe())
             .blockstate(BlockStateGenerators.textureOverrideAxisBlockProvider(false, "create", "cogwheel", Map.ofEntries(
-                    Map.entry("0", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_cogwheel_axis")),
-                    Map.entry("3", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis_top")),
-                    Map.entry("1_2", new ResourceLocation(CreateAndertech.MODID, "block/warped_cogwheel")),
-                    Map.entry("particle", new ResourceLocation("block/stripped_warped_stem_top")))
+                    Map.entry("0", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_cogwheel_axis")),
+                    Map.entry("3", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis_top")),
+                    Map.entry("1_2", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/warped_cogwheel")),
+                    Map.entry("particle", ResourceLocation.withDefaultNamespace("block/stripped_warped_stem_top")))
                     )
             )
             .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
@@ -128,10 +129,10 @@ public class AllBlocks {
 //                    .transform(CStress.setNoImpact())
                     .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 0))
                     .blockstate(BlockStateGenerators.textureOverrideAxisBlockProvider(false, "create", "large_cogwheel", Map.ofEntries(
-                        Map.entry("0", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_cogwheel_axis")),
-                        Map.entry("3", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis_top")),
-                        Map.entry("4", new ResourceLocation(CreateAndertech.MODID, "block/warped_large_cogwheel")),
-                        Map.entry("particle", new ResourceLocation("block/stripped_warped_stem")))
+                        Map.entry("0", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_cogwheel_axis")),
+                        Map.entry("3", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis_top")),
+                        Map.entry("4", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/warped_large_cogwheel")),
+                        Map.entry("particle", ResourceLocation.withDefaultNamespace("block/stripped_warped_stem")))
                         )
                     )
                     .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
@@ -206,12 +207,12 @@ public class AllBlocks {
             .blockstate((c, p) -> axisBlock(c, p, $ -> AssetLookupWithParent.partialModel(c, p, "create", "gearbox", Map.of()), true))
             .item()
             .transform(b -> b.model((c, p) -> {
-                p.getBuilder("block/" + p.name(() -> c.getEntry().getBlock()) + "/item").parent(new ModelFile.UncheckedModelFile(new ResourceLocation("create", "block/gearbox/item")))
-                        .texture("1_0", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis"))
-                        .texture("1_1", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis_top"));
-                p.getBuilder("block/" + p.name(() -> c.getEntry().getBlock()) + "/item_vertical").parent(new ModelFile.UncheckedModelFile(new ResourceLocation("create", "block/gearbox/item_vertical")))
-                        .texture("0", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis"))
-                        .texture("1", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis_top"));
+                p.getBuilder("block/" + p.name(() -> c.getEntry().getBlock()) + "/item").parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath("create", "block/gearbox/item")))
+                        .texture("1_0", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis"))
+                        .texture("1_1", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis_top"));
+                p.getBuilder("block/" + p.name(() -> c.getEntry().getBlock()) + "/item_vertical").parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath("create", "block/gearbox/item_vertical")))
+                        .texture("0", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis"))
+                        .texture("1", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis_top"));
                 p.withExistingParent(c.getName(), p.modLoc("block/" + p.name(() -> c.getEntry().getBlock()) + "/item"));
             }))
             .build()
@@ -226,10 +227,10 @@ public class AllBlocks {
             .transform(axeOrPickaxe())
             .blockstate((c, p) -> BlockStateGen.axisBlock(c, p, AssetLookupWithParent.forPowered(c, p, "create", "clutch", Map.of())))
             .item()
-            .transform(tempCustomItemModel(new ResourceLocation("create", "block/clutch/item"), Map.ofEntries(
-                    Map.entry("particle", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis")),
-                    Map.entry("1_0", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis")),
-                    Map.entry("1_1", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis_top"))
+            .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/clutch/item"), Map.ofEntries(
+                    Map.entry("particle", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis")),
+                    Map.entry("1_0", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis")),
+                    Map.entry("1_1", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis_top"))
             )))
             .register();
 
@@ -242,10 +243,10 @@ public class AllBlocks {
             .transform(axeOrPickaxe())
             .blockstate((c, p) -> BlockStateGen.axisBlock(c, p, AssetLookupWithParent.forPowered(c, p, "create", "gearshift", Map.of())))
             .item()
-            .transform(tempCustomItemModel(new ResourceLocation("create", "block/gearshift/item"), Map.ofEntries(
-                    Map.entry("particle", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis")),
-                    Map.entry("1_0", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis")),
-                    Map.entry("1_1", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis_top"))
+            .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/gearshift/item"), Map.ofEntries(
+                    Map.entry("particle", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis")),
+                    Map.entry("1_0", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis")),
+                    Map.entry("1_1", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis_top"))
             )))
             .register();
 
@@ -258,12 +259,12 @@ public class AllBlocks {
                     .transform(axeOrPickaxe())
                     .blockstate((c, p) -> new BlockStateGenerators.ChainDrive(
                             (state, suffix) -> {
-                                return p.models().getBuilder("block/" + c.getName() + "/" + suffix).parent(new ModelFile.UncheckedModelFile(new ResourceLocation("create", "block/encased_chain_drive/" + suffix)));
+                                return p.models().getBuilder("block/" + c.getName() + "/" + suffix).parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath("create", "block/encased_chain_drive/" + suffix)));
                             }).generate(c, p))
                     .item()
-                    .transform(tempCustomItemModel(new ResourceLocation("create", "block/encased_chain_drive/item"), Map.ofEntries(
-                            Map.entry("1_0", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis")),
-                            Map.entry("1_1", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis_top"))
+                    .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/encased_chain_drive/item"), Map.ofEntries(
+                            Map.entry("1_0", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis")),
+                            Map.entry("1_1", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis_top"))
                     )))
                     .register();
 
@@ -278,6 +279,7 @@ public class AllBlocks {
             .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 0))
 //            .transform(displaySource(AllDisplaySources.ITEM_NAMES))
             .onRegister(CreateRegistrate.blockModel(() -> BeltModel::new))
+            .clientExtension(() -> () -> new BeltBlock.RenderProperties())
             .register();
 
     public static final BlockEntry<CreativeOCMotorBlock> CREATIVE_OC_MOTOR =
@@ -293,9 +295,9 @@ public class AllBlocks {
                     .onRegister(block -> BlockStressValues.CAPACITIES.register(block, () -> 131072.0))
                     .item()
                     .properties(p -> p.rarity(Rarity.EPIC))
-                    .transform(tempCustomItemModel(new ResourceLocation("create", "block/creative_motor/item"), Map.ofEntries(
-                            Map.entry("1_0", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis")),
-                            Map.entry("1_1", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis_top"))
+                    .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/creative_motor/item"), Map.ofEntries(
+                            Map.entry("1_0", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis")),
+                            Map.entry("1_1", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis_top"))
                     )))
                     .register();
 
@@ -307,7 +309,7 @@ public class AllBlocks {
             .transform(axeOrPickaxe())
             .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 2.0))
             .item()
-            .transform(tempCustomItemModel(new ResourceLocation("create", "block/encased_fan/item")))
+            .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/encased_fan/item")))
             .register();
 
     public static final BlockEntry<ChronenditeEncasedFanBlock> CHRONENDITE_HV_ENCASED_FAN = REGISTRATE.block("chronendite_hv_encased_fan", prop -> new ChronenditeEncasedFanBlock(prop, true))
@@ -319,7 +321,7 @@ public class AllBlocks {
             .transform(axeOrPickaxe())
             .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 2.0))
             .item()
-            .transform(tempCustomItemModel(new ResourceLocation("create", "block/encased_fan/item")))
+            .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/encased_fan/item")))
             .register();
 
     public static final BlockEntry<ChronenditeCrushWheelBlock> CHRONENDITE_CRUSHING_WHEEL =
@@ -332,7 +334,7 @@ public class AllBlocks {
                     .addLayer(() -> RenderType::cutoutMipped)
                     .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 8.0))
                     .item()
-                    .transform(tempCustomItemModel(new ResourceLocation("create", "block/crushing_wheel/item")))
+                    .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/crushing_wheel/item")))
                     .register();
 
     public static final BlockEntry<ChronenditeCrushWheelControllerBlock> CHRONENDITE_CRUSHING_WHEEL_CONTROLLER =
@@ -358,9 +360,9 @@ public class AllBlocks {
                     )))
                     .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 8))
                     .item(AssemblyOperatorBlockItem::new)
-                    .transform(tempCustomItemModel(new ResourceLocation("create", "block/mechanical_press/item"), Map.ofEntries(
-                            Map.entry("0", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis")),
-                            Map.entry("1", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis_top"))
+                    .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/mechanical_press/item"), Map.ofEntries(
+                            Map.entry("0", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis")),
+                            Map.entry("1", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis_top"))
                     )))
                     .register();
 
@@ -373,13 +375,13 @@ public class AllBlocks {
                     .transform(axeOrPickaxe())
                     .blockstate((c, p) -> p.simpleBlock(c.getEntry(), p.models()
                             .getBuilder("block/" + c.getName() + "/block")
-                            .parent(new ModelFile.UncheckedModelFile(new ResourceLocation(Create.ID, "block/mechanical_mixer/block")))
+                            .parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(Create.ID, "block/mechanical_mixer/block")))
                     ))
                     .addLayer(() -> RenderType::cutoutMipped)
                     .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 4))
                     .item(AssemblyOperatorBlockItem::new)
-                    .transform(tempCustomItemModel(new ResourceLocation("create", "block/mechanical_mixer/item"), Map.ofEntries(
-                            Map.entry("1_2", new ResourceLocation(CreateAndertech.MODID, "block/warped_cogwheel"))
+                    .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/mechanical_mixer/item"), Map.ofEntries(
+                            Map.entry("1_2", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/warped_cogwheel"))
                     )))
                     .register();
 
@@ -395,9 +397,9 @@ public class AllBlocks {
             .onRegister(movementBehaviour(new ChronenditeDrillMovementBehaviour()))
             .item()
             .tag(AllTags.AllItemTags.CONTRAPTION_CONTROLLED.tag)
-            .transform(tempCustomItemModel(new ResourceLocation("create", "block/mechanical_drill/item"), Map.ofEntries(
-                    Map.entry("0", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis_top")),
-                    Map.entry("1", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis"))
+            .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/mechanical_drill/item"), Map.ofEntries(
+                    Map.entry("0", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis_top")),
+                    Map.entry("1", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis"))
             )))
             .register();
 
@@ -413,7 +415,7 @@ public class AllBlocks {
             .addLayer(() -> RenderType::cutoutMipped)
             .item()
             .tag(AllTags.AllItemTags.CONTRAPTION_CONTROLLED.tag)
-            .transform(tempCustomItemModel(new ResourceLocation("create", "block/mechanical_saw/item")))
+            .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/mechanical_saw/item")))
             .register();
 
 
@@ -427,7 +429,7 @@ public class AllBlocks {
             .onRegister(interactionBehaviour(new DeployerMovingInteraction()))
             .item(AssemblyOperatorBlockItem::new)
             .tag(AllTags.AllItemTags.CONTRAPTION_CONTROLLED.tag)
-            .transform(tempCustomItemModel(new ResourceLocation("create", "block/deployer/item")))
+            .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/deployer/item")))
             .register();
 
     public static final BlockEntry<ChronenditeMechanicalBearingBlock> CHRONENDITE_MECHANICAL_BEARING =
@@ -449,7 +451,7 @@ public class AllBlocks {
                 .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 0))
                 .blockstate(new BlockStateGenerators.SpeedController()::generate)
                 .item()
-                .transform(tempCustomItemModel(new ResourceLocation("create", "block/rotation_speed_controller/item")))
+                .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/rotation_speed_controller/item")))
                 .register();
 
     public static final BlockEntry<ChronenditeMechanicalCrafterBlock> CHRONENDITE_MECHANICAL_CRAFTER =
@@ -463,7 +465,7 @@ public class AllBlocks {
                     .onRegister(CreateRegistrate.connectedTextures(OCCrafterCTBehaviour::new))
                     .addLayer(() -> RenderType::cutoutMipped)
                     .item()
-                    .transform(tempCustomItemModel(new ResourceLocation("create", "block/mechanical_crafter/item")))
+                    .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/mechanical_crafter/item")))
                     .register();
 
 
@@ -478,7 +480,7 @@ public class AllBlocks {
                             .build()))
             .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 2.0))
             .item(ArmItem::new)
-            .transform(tempCustomItemModel(new ResourceLocation("create", "block/mechanical_arm/item")))
+            .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/mechanical_arm/item")))
             .register();
 
     public static final BlockEntry<GirderEncasedCrimschistShaftBlock> METAL_GIRDER_ENCASED_CRIMSCHIST_SHAFT =

@@ -8,7 +8,6 @@ import com.simibubi.create.foundation.block.IBE;
 import io.github.cvrunmin.create_andertech.AllBlockEntityTypes;
 import io.github.cvrunmin.create_andertech.AllBlocks;
 import io.github.cvrunmin.create_andertech.CreateAndertech;
-import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.math.VoxelShaper;
 import net.createmod.catnip.placement.IPlacementHelper;
 import net.createmod.catnip.placement.PlacementHelpers;
@@ -17,7 +16,7 @@ import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -30,17 +29,13 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Predicate;
 
 public class ChronenditeSpeedControllerBlock extends RotatedPillarKineticBlock implements IBE<ChronenditeSpeedControllerBlockEntity> {
@@ -54,35 +49,6 @@ public class ChronenditeSpeedControllerBlock extends RotatedPillarKineticBlock i
 
     public ChronenditeSpeedControllerBlock(Properties properties) {
         super(properties);
-    }
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder);
-        builder.add(FACING_DIRECTION);
-    }
-
-    @Override
-    public BlockState rotate(BlockState state, Rotation rot) {
-        return state;
-    }
-
-    @Override
-    public Direction.Axis getRotationAxis(BlockState state) {
-        return state.getValue(AXIS);
-    }
-
-    private static int safeGetFacingDirection(Direction.Axis preferredAxis, Direction direction){
-        int value = AXIS_TO_DIRECTIONS.get(preferredAxis).indexOf(direction);
-        if(value == -1){
-            CreateAndertech.LOGGER.warn("Searched a wrong direction! ({} vs {})", preferredAxis, direction);
-            value = 0;
-        }
-        return value;
-    }
-
-    public static Direction getDirectionFromState(BlockState state){
-        if(!AllBlocks.CHRONENDITE_ROTATION_SPEED_CONTROLLER.has(state)) return Direction.UP;
-        return AXIS_TO_DIRECTIONS.get(state.getValue(AXIS)).get(state.getValue(FACING_DIRECTION));
     }
 
     @Override
@@ -139,6 +105,59 @@ public class ChronenditeSpeedControllerBlock extends RotatedPillarKineticBlock i
         }
     }
 
+    @Override
+    public void neighborChanged(BlockState state, Level world, BlockPos pos, Block p_220069_4_, BlockPos neighbourPos,
+                                boolean p_220069_6_) {
+        if (neighbourPos.equals(pos.relative(getDirectionFromState(state))))
+            withBlockEntityDo(world, pos, ChronenditeSpeedControllerBlockEntity::updateBracket);
+    }
+
+    @Override
+    public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
+                                           BlockHitResult ray) {
+        IPlacementHelper helper = PlacementHelpers.get(placementHelperId);
+        if (helper.matchesItem(stack))
+            return helper.getOffset(player, world, state, pos, ray).placeInWorld(world, (BlockItem) stack.getItem(), player, hand, ray);
+
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+        var direction = getDirectionFromState(state);
+        return VoxelShaper.forDirectional(AllShapes.SPEED_CONTROLLER, Direction.UP).get(direction);
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(FACING_DIRECTION);
+    }
+
+    @Override
+    public BlockState rotate(BlockState state, Rotation rot) {
+        return state;
+    }
+
+    @Override
+    public Direction.Axis getRotationAxis(BlockState state) {
+        return state.getValue(AXIS);
+    }
+
+    private static int safeGetFacingDirection(Direction.Axis preferredAxis, Direction direction){
+        int value = AXIS_TO_DIRECTIONS.get(preferredAxis).indexOf(direction);
+        if(value == -1){
+            CreateAndertech.LOGGER.warn("Searched a wrong direction! ({} vs {})", preferredAxis, direction);
+            value = 0;
+        }
+        return value;
+    }
+
+    public static Direction getDirectionFromState(BlockState state){
+        if(!AllBlocks.CHRONENDITE_ROTATION_SPEED_CONTROLLER.has(state)) return Direction.UP;
+        return AXIS_TO_DIRECTIONS.get(state.getValue(AXIS)).get(state.getValue(FACING_DIRECTION));
+    }
+
     public static Direction.Axis getOrthogonalAxis(Direction direction, Direction.Axis axis) {
         Direction.Axis preferredAxis;
         switch (axis) {
@@ -149,31 +168,6 @@ public class ChronenditeSpeedControllerBlock extends RotatedPillarKineticBlock i
         return preferredAxis;
     }
 
-    @Override
-    public void neighborChanged(BlockState state, Level world, BlockPos pos, Block p_220069_4_, BlockPos neighbourPos,
-                                boolean p_220069_6_) {
-        if (neighbourPos.equals(pos.above()))
-            withBlockEntityDo(world, pos, ChronenditeSpeedControllerBlockEntity::updateBracket);
-    }
-
-
-    @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
-                                 BlockHitResult ray) {
-
-        ItemStack heldItem = player.getItemInHand(hand);
-        IPlacementHelper helper = PlacementHelpers.get(placementHelperId);
-        if (helper.matchesItem(heldItem))
-            return helper.getOffset(player, world, state, pos, ray).placeInWorld(world, (BlockItem) heldItem.getItem(), player, hand, ray);
-
-        return InteractionResult.PASS;
-    }
-
-    @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-        var direction = getDirectionFromState(state);
-        return VoxelShaper.forDirectional(AllShapes.SPEED_CONTROLLER, Direction.UP).get(direction);
-    }
 
     @Override
     public BlockState getRotatedBlockState(BlockState originalState, Direction targetedFace) {

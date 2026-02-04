@@ -2,19 +2,25 @@ package io.github.cvrunmin.create_andertech.content.kinetics.crafter;
 
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllSoundEvents;
+import com.simibubi.create.api.contraption.transformable.TransformableBlockEntity;
+import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
+import com.simibubi.create.content.kinetics.crafter.RecipeGridHandler;
 import com.simibubi.create.foundation.advancement.AllAdvancements;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.edgeInteraction.EdgeInteractionBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.inventory.InvManipulationBehaviour;
 import com.simibubi.create.foundation.item.SmartInventory;
+import io.github.cvrunmin.create_andertech.AllBlockEntityTypes;
 import io.github.cvrunmin.create_andertech.AllBlocks;
 import io.github.cvrunmin.create_andertech.content.kinetics.simpleRelays.OCKineticBlockEntity;
+import io.github.cvrunmin.create_andertech.mixin.GroupedItemsAccessor;
 import net.createmod.catnip.math.BlockFace;
 import net.createmod.catnip.math.Pointing;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -24,13 +30,16 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.items.IItemHandler;
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -39,7 +48,7 @@ import java.util.Map;
 
 import static com.simibubi.create.content.kinetics.base.HorizontalKineticBlock.HORIZONTAL_FACING;
 
-public class ChronenditeMechanicalCrafterBlockEntity extends OCKineticBlockEntity {
+public class ChronenditeMechanicalCrafterBlockEntity extends OCKineticBlockEntity implements TransformableBlockEntity {
 
     enum Phase {
         IDLE, ACCEPTING, ASSEMBLING, EXPORTING, WAITING, CRAFTING, INSERTING;
@@ -77,17 +86,17 @@ public class ChronenditeMechanicalCrafterBlockEntity extends OCKineticBlockEntit
     }
 
     protected Inventory inventory;
-    protected OCRecipeGridHandler.GroupedItems groupedItems = new OCRecipeGridHandler.GroupedItems();
+    protected RecipeGridHandler.GroupedItems groupedItems = new RecipeGridHandler.GroupedItems();
     protected OCConnectedInputHandler.ConnectedInput input = new OCConnectedInputHandler.ConnectedInput();
-    protected LazyOptional<IItemHandler> invSupplier =
-            LazyOptional.of(() -> input.getItemHandler(level, worldPosition));
+    @Nullable
+    protected IItemHandler invCap;
     protected boolean reRender;
     protected Phase phase;
     protected int countDown;
     protected boolean covered;
     protected boolean wasPoweredBefore;
 
-    protected OCRecipeGridHandler.GroupedItems groupedItemsBeforeCraft; // for rendering on client
+    protected RecipeGridHandler.GroupedItems groupedItemsBeforeCraft; // for rendering on client
     private InvManipulationBehaviour inserting;
     private EdgeInteractionBehaviour connectivity;
 
@@ -97,20 +106,36 @@ public class ChronenditeMechanicalCrafterBlockEntity extends OCKineticBlockEntit
         super(typeIn, pos, state);
         setLazyTickRate(20);
         phase = Phase.IDLE;
-        groupedItemsBeforeCraft = new OCRecipeGridHandler.GroupedItems();
+        groupedItemsBeforeCraft = new RecipeGridHandler.GroupedItems();
         inventory = new Inventory(this);
 
         // Does not get serialized due to active checking in tick
         wasPoweredBefore = true;
     }
 
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                AllBlockEntityTypes.CHRONENDITE_MECHANICAL_CRAFTER.get(),
+                (be, context) -> be.getInvCapability()
+        );
+    }
+
+    protected IItemHandler getInvCapability() {
+        if (invCap == null) {
+            invCap = input.getItemHandler(getLevel(), getBlockPos());
+        }
+        return invCap;
+    }
+
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
         super.addBehaviours(behaviours);
         inserting = new InvManipulationBehaviour(this, this::getTargetFace);
+        //noinspection deprecation
         connectivity = new EdgeInteractionBehaviour(this, OCConnectedInputHandler::toggleConnection)
                 .connectivity(OCConnectedInputHandler::shouldConnect)
-                .require(AllItems.WRENCH.get());
+                .require(item -> item.builtInRegistryHolder().is(Tags.Items.TOOLS_WRENCH));
         behaviours.add(inserting);
         behaviours.add(connectivity);
         registerAwardables(behaviours, AllAdvancements.CRAFTER, AllAdvancements.CRAFTER_LAZY);
@@ -141,8 +166,8 @@ public class ChronenditeMechanicalCrafterBlockEntity extends OCKineticBlockEntit
     }
 
     @Override
-    public void writeSafe(CompoundTag compound) {
-        super.writeSafe(compound);
+    public void writeSafe(CompoundTag compound, HolderLookup.Provider registries) {
+        super.writeSafe(compound, registries);
         if (input == null)
             return;
 
@@ -152,22 +177,22 @@ public class ChronenditeMechanicalCrafterBlockEntity extends OCKineticBlockEntit
     }
 
     @Override
-    public void write(CompoundTag compound, boolean clientPacket) {
-        compound.put("Inventory", inventory.serializeNBT());
+    public void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
+        compound.put("Inventory", inventory.serializeNBT(registries));
 
         CompoundTag inputNBT = new CompoundTag();
         input.write(inputNBT);
         compound.put("ConnectedInput", inputNBT);
 
         CompoundTag groupedItemsNBT = new CompoundTag();
-        groupedItems.write(groupedItemsNBT);
+        groupedItems.write(groupedItemsNBT, registries);
         compound.put("GroupedItems", groupedItemsNBT);
 
         compound.putString("Phase", phase.name());
         compound.putInt("CountDown", countDown);
         compound.putBoolean("Cover", covered);
 
-        super.write(compound, clientPacket);
+        super.write(compound, registries, clientPacket);
 
         if (clientPacket && reRender) {
             compound.putBoolean("Redraw", true);
@@ -176,13 +201,13 @@ public class ChronenditeMechanicalCrafterBlockEntity extends OCKineticBlockEntit
     }
 
     @Override
-    protected void read(CompoundTag compound, boolean clientPacket) {
+    protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
         Phase phaseBefore = phase;
-        OCRecipeGridHandler.GroupedItems before = this.groupedItems;
+        RecipeGridHandler.GroupedItems before = this.groupedItems;
 
-        inventory.deserializeNBT(compound.getCompound("Inventory"));
+        inventory.deserializeNBT(registries, compound.getCompound("Inventory"));
         input.read(compound.getCompound("ConnectedInput"));
-        groupedItems = OCRecipeGridHandler.GroupedItems.read(compound.getCompound("GroupedItems"));
+        groupedItems = RecipeGridHandler.GroupedItems.read(compound.getCompound("GroupedItems"), registries);
         phase = Phase.IDLE;
         String name = compound.getString("Phase");
         for (Phase phase : Phase.values())
@@ -191,7 +216,7 @@ public class ChronenditeMechanicalCrafterBlockEntity extends OCKineticBlockEntit
                 this.phase = phase;
         countDown = compound.getInt("CountDown");
         covered = compound.getBoolean("Cover");
-        super.read(compound, clientPacket);
+        super.read(compound, registries, clientPacket);
         if (!clientPacket)
             return;
         if (compound.contains("Redraw"))
@@ -201,7 +226,7 @@ public class ChronenditeMechanicalCrafterBlockEntity extends OCKineticBlockEntit
         if (phaseBefore == Phase.EXPORTING && phase == Phase.WAITING) {
             if (before.onlyEmptyItems())
                 return;
-            Direction facing = getBlockState().getValue(ChronenditeMechanicalCrafterBlock.HORIZONTAL_FACING);
+            Direction facing = getBlockState().getValue(HORIZONTAL_FACING);
             Vec3 vec = Vec3.atLowerCornerOf(facing.getNormal())
                     .scale(.75)
                     .add(VecHelper.getCenterOf(worldPosition));
@@ -215,7 +240,7 @@ public class ChronenditeMechanicalCrafterBlockEntity extends OCKineticBlockEntit
     @Override
     public void invalidate() {
         super.invalidate();
-        invSupplier.invalidate();
+        invalidateCapabilities();
     }
 
     public int getCountDownSpeed() {
@@ -257,11 +282,11 @@ public class ChronenditeMechanicalCrafterBlockEntity extends OCKineticBlockEntit
                 }
 
                 ItemStack result =
-                        isVirtual() ? scriptedResult : OCRecipeGridHandler.tryToApplyRecipe(level, groupedItems);
+                        isVirtual() ? scriptedResult : RecipeGridHandler.tryToApplyRecipe(level, groupedItems);
 
                 if (result != null) {
                     List<ItemStack> containers = new ArrayList<>();
-                    groupedItems.grid.values()
+                    ((GroupedItemsAccessor)groupedItems).getGrid().values()
                             .forEach(stack -> {
                                 if (stack.hasCraftingRemainingItem())
                                     containers.add(stack.getCraftingRemainingItem()
@@ -271,11 +296,11 @@ public class ChronenditeMechanicalCrafterBlockEntity extends OCKineticBlockEntit
                     if (isVirtual())
                         groupedItemsBeforeCraft = groupedItems;
 
-                    groupedItems = new OCRecipeGridHandler.GroupedItems(result);
+                    groupedItems = new RecipeGridHandler.GroupedItems(result);
                     for (int i = 0; i < containers.size(); i++) {
                         ItemStack stack = containers.get(i);
-                        OCRecipeGridHandler.GroupedItems container = new OCRecipeGridHandler.GroupedItems();
-                        container.grid.put(Pair.of(i, 0), stack);
+                        RecipeGridHandler.GroupedItems container = new RecipeGridHandler.GroupedItems();
+                        ((GroupedItemsAccessor)container).getGrid().put(Pair.of(i, 0), stack);
                         container.mergeOnto(groupedItems, Pointing.LEFT);
                     }
 
@@ -306,9 +331,9 @@ public class ChronenditeMechanicalCrafterBlockEntity extends OCKineticBlockEntit
                 boolean empty = groupedItems.onlyEmptyItems();
                 Pointing pointing = getBlockState().getValue(ChronenditeMechanicalCrafterBlock.POINTING);
                 groupedItems.mergeOnto(targetingCrafter.groupedItems, pointing);
-                groupedItems = new OCRecipeGridHandler.GroupedItems();
+                groupedItems = new RecipeGridHandler.GroupedItems();
 
-                float pitch = targetingCrafter.groupedItems.grid.size() / 16f + .5f;
+                float pitch = ((GroupedItemsAccessor)targetingCrafter.groupedItems).getGrid().size() / 16f + .5f;
 
                 if (!empty)
                     AllSoundEvents.CRAFTER_CLICK.playOnServer(level, worldPosition, 1, pitch);
@@ -325,7 +350,7 @@ public class ChronenditeMechanicalCrafterBlockEntity extends OCKineticBlockEntit
         if (phase == Phase.CRAFTING) {
 
             if (onClient) {
-                Direction facing = getBlockState().getValue(ChronenditeMechanicalCrafterBlock.HORIZONTAL_FACING);
+                Direction facing = getBlockState().getValue(HORIZONTAL_FACING);
                 float progress = countDown / 2000f;
                 Vec3 facingVec = Vec3.atLowerCornerOf(facing.getNormal());
                 Vec3 vec = facingVec.scale(.65)
@@ -338,10 +363,10 @@ public class ChronenditeMechanicalCrafterBlockEntity extends OCKineticBlockEntit
                 if (progress > .5f)
                     level.addParticle(ParticleTypes.CRIT, offset.x, offset.y, offset.z, 0, 0, 0);
 
-                if (!groupedItemsBeforeCraft.grid.isEmpty() && progress < .5f) {
-                    if (groupedItems.grid.containsKey(Pair.of(0, 0))) {
-                        ItemStack stack = groupedItems.grid.get(Pair.of(0, 0));
-                        groupedItemsBeforeCraft = new OCRecipeGridHandler.GroupedItems();
+                if (!((GroupedItemsAccessor)groupedItemsBeforeCraft).getGrid().isEmpty() && progress < .5f) {
+                    if (((GroupedItemsAccessor)groupedItems).getGrid().containsKey(Pair.of(0, 0))) {
+                        ItemStack stack = ((GroupedItemsAccessor)groupedItems).getGrid().get(Pair.of(0, 0));
+                        groupedItemsBeforeCraft = new RecipeGridHandler.GroupedItems();
 
                         for (int i = 0; i < 10; i++) {
                             Vec3 randVec = VecHelper.offsetRandomly(Vec3.ZERO, level.random, .125f)
@@ -400,7 +425,7 @@ public class ChronenditeMechanicalCrafterBlockEntity extends OCKineticBlockEntit
         final List<Pair<Integer, Integer>> inserted = new LinkedList<>();
 
         DirectBeltInputBehaviour behaviour = getTargetingBelt();
-        for (Map.Entry<Pair<Integer, Integer>, ItemStack> entry : groupedItems.grid.entrySet()) {
+        for (Map.Entry<Pair<Integer, Integer>, ItemStack> entry : ((GroupedItemsAccessor)groupedItems).getGrid().entrySet()) {
             Pair<Integer, Integer> pair = entry.getKey();
             ItemStack stack = entry.getValue();
             BlockFace face = getTargetFace(level, worldPosition, getBlockState());
@@ -415,8 +440,8 @@ public class ChronenditeMechanicalCrafterBlockEntity extends OCKineticBlockEntit
             inserted.add(pair);
         }
 
-        inserted.forEach(groupedItems.grid::remove);
-        if (groupedItems.grid.isEmpty())
+        inserted.forEach(((GroupedItemsAccessor)groupedItems).getGrid()::remove);
+        if (((GroupedItemsAccessor)groupedItems).getGrid().isEmpty())
             ejectWholeGrid();
         else
             phase = Phase.INSERTING;
@@ -439,12 +464,12 @@ public class ChronenditeMechanicalCrafterBlockEntity extends OCKineticBlockEntit
                 .scale(.75f) : Vec3.ZERO;
         Vec3 ejectPos = VecHelper.getCenterOf(worldPosition)
                 .add(vec);
-        groupedItems.grid.forEach((pair, stack) -> dropItem(ejectPos, stack));
+        ((GroupedItemsAccessor) groupedItems).getGrid().forEach((pair, stack) -> dropItem(ejectPos, stack));
         if (!inventory.getItem(0)
                 .isEmpty())
             dropItem(ejectPos, inventory.getItem(0));
         phase = Phase.IDLE;
-        groupedItems = new OCRecipeGridHandler.GroupedItems();
+        groupedItems = new RecipeGridHandler.GroupedItems();
         inventory.setStackInSlot(0, ItemStack.EMPTY);
         sendData();
     }
@@ -492,7 +517,7 @@ public class ChronenditeMechanicalCrafterBlockEntity extends OCKineticBlockEntit
 
     protected void begin() {
         phase = Phase.ACCEPTING;
-        groupedItems = new OCRecipeGridHandler.GroupedItems(inventory.getItem(0));
+        groupedItems = new RecipeGridHandler.GroupedItems(inventory.getItem(0));
         inventory.setStackInSlot(0, ItemStack.EMPTY);
         if (OCRecipeGridHandler.getPrecedingCrafters(this)
                 .isEmpty()) {
@@ -517,18 +542,11 @@ public class ChronenditeMechanicalCrafterBlockEntity extends OCKineticBlockEntit
         countDown = 1;
     }
 
-    @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-        if (isItemHandlerCap(cap))
-            return invSupplier.cast();
-        return super.getCapability(cap, side);
-    }
-
     public void connectivityChanged() {
         reRender = true;
         sendData();
-        invSupplier.invalidate();
-        invSupplier = LazyOptional.of(() -> input.getItemHandler(level, worldPosition));
+        invCap = null;
+        invalidateCapabilities();
     }
 
     public Inventory getInventory() {
@@ -541,5 +559,11 @@ public class ChronenditeMechanicalCrafterBlockEntity extends OCKineticBlockEntit
 
     public OCConnectedInputHandler.ConnectedInput getInput() {
         return input;
+    }
+
+    @Override
+    public void transform(BlockEntity be, StructureTransform transform) {
+        input.data.replaceAll(transform::applyWithoutOffset);
+        notifyUpdate();
     }
 }

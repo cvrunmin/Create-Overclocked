@@ -13,9 +13,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
-import net.minecraftforge.event.entity.living.LootingLevelEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
 
 import java.util.List;
 
@@ -53,16 +52,6 @@ public class ChronenditeCrushWheelBlockEntity extends OCKineticBlockEntity {
     public void lazyTick() {
         super.lazyTick();
         fixControllers();
-    }
-
-    // This increases the drops when dropCustomDeathLoot is called, and LootingEnchantFunctionMixin increases the drops
-    // defined in the entity loot table
-    @SubscribeEvent
-    public static void crushingIsFortunate(LootingLevelEvent event) {
-        DamageSource damageSource = event.getDamageSource();
-        if (damageSource == null || !damageSource.is(AllDamageTypes.CRUSH))
-            return;
-        event.setLootingLevel(4);
     }
 
     @SubscribeEvent

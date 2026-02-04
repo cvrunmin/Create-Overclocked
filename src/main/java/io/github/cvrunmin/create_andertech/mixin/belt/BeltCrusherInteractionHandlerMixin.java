@@ -1,4 +1,4 @@
-package io.github.cvrunmin.create_andertech.mixin;
+package io.github.cvrunmin.create_andertech.mixin.belt;
 
 import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;

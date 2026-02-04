@@ -12,6 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -79,17 +80,15 @@ public class ChronenditeArmBlock extends KineticBlock implements IBE<Chronendite
     }
 
     @Override
-    public InteractionResult use(BlockState p_225533_1_, Level world, BlockPos pos, Player player,
-                                 InteractionHand hand, BlockHitResult p_225533_6_) {
-        ItemStack heldItem = player.getItemInHand(hand);
-
-        if (AllItems.GOGGLES.isIn(heldItem)) {
-            InteractionResult gogglesResult = onBlockEntityUse(world, pos, ate -> {
+    public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player,
+                                     InteractionHand hand, BlockHitResult ray) {
+        if (AllItems.GOGGLES.isIn(stack)) {
+            ItemInteractionResult gogglesResult = onBlockEntityUseItemOn(world, pos, ate -> {
                 if (((ArmBlockEntityAccessor)ate).isGoggles())
-                    return InteractionResult.PASS;
+                    return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
                 ((ArmBlockEntityAccessor)ate).setGoggles(true);
                 ate.notifyUpdate();
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             });
             if (gogglesResult.consumesAction())
                 return gogglesResult;
@@ -109,6 +108,6 @@ public class ChronenditeArmBlock extends KineticBlock implements IBE<Chronendite
             be.sendData();
         });
 
-        return success.booleanValue() ? InteractionResult.SUCCESS : InteractionResult.PASS;
+        return success.booleanValue() ? ItemInteractionResult.SUCCESS : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 }

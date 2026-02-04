@@ -3,7 +3,6 @@ package io.github.cvrunmin.create_andertech.content.kinetics.deployer;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.content.equipment.sandPaper.SandPaperItem;
-import com.simibubi.create.content.equipment.sandPaper.SandPaperPolishingRecipe;
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.belt.behaviour.BeltProcessingBehaviour;
 import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour;
@@ -16,6 +15,7 @@ import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringB
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
+import io.github.cvrunmin.create_andertech.AllBlockEntityTypes;
 import io.github.cvrunmin.create_andertech.AllBlocks;
 import io.github.cvrunmin.create_andertech.content.kinetics.simpleRelays.OCKineticBlockEntity;
 import net.createmod.catnip.animation.LerpedFloat;
@@ -24,6 +24,7 @@ import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -33,11 +34,13 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeInput;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -46,14 +49,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.items.wrapper.RecipeWrapper;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -73,7 +75,7 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
     protected FilteringBehaviour filtering;
     protected boolean redstoneLocked;
     protected UUID owner;
-    private LazyOptional<IItemHandlerModifiable> invHandler;
+    private IItemHandlerModifiable invHandler;
     private ListTag deferredInventoryList;
 
     private LerpedFloat animatedOffset;
@@ -95,6 +97,18 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
         redstoneLocked = false;
         animatedOffset = LerpedFloat.linear()
                 .startWithValue(0);
+    }
+
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                AllBlockEntityTypes.CHRONENDITE_DEPLOYER.get(),
+                (be, context) ->  {
+                    if (be.invHandler == null)
+                        be.initHandler();
+                    return be.invHandler;
+                }
+        );
     }
 
     @Override
@@ -133,7 +147,7 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
             Vec3 initialPos = VecHelper.getCenterOf(worldPosition.relative(getBlockState().getValue(FACING)));
             player.setPos(initialPos.x, initialPos.y, initialPos.z);
         }
-        invHandler = LazyOptional.of(this::createHandler);
+        invHandler = createHandler();
     }
 
     protected void onExtract(ItemStack stack) {
@@ -352,7 +366,7 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
     }
 
     @Override
-    protected void read(CompoundTag compound, boolean clientPacket) {
+    protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
         state = NBTHelper.readEnum(compound, "State", State.class);
         mode = NBTHelper.readEnum(compound, "Mode", Mode.class);
         timer = compound.getInt("Timer");
@@ -361,24 +375,24 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
             owner = compound.getUUID("Owner");
 
         deferredInventoryList = compound.getList("Inventory", Tag.TAG_COMPOUND);
-        overflowItems = NBTHelper.readItemList(compound.getList("Overflow", Tag.TAG_COMPOUND));
+        overflowItems = NBTHelper.readItemList(compound.getList("Overflow", Tag.TAG_COMPOUND), registries);
         if (compound.contains("HeldItem"))
-            heldItem = ItemStack.of(compound.getCompound("HeldItem"));
-        super.read(compound, clientPacket);
+            heldItem = ItemStack.parseOptional(registries, compound.getCompound("HeldItem"));
+        super.read(compound, registries, clientPacket);
 
         if (!clientPacket)
             return;
         fistBump = compound.getBoolean("Fistbump");
         reach = compound.getFloat("Reach");
         if (compound.contains("Particle")) {
-            ItemStack particleStack = ItemStack.of(compound.getCompound("Particle"));
+            ItemStack particleStack = ItemStack.parseOptional(registries, compound.getCompound("Particle"));
             SandPaperItem.spawnParticles(VecHelper.getCenterOf(worldPosition)
                     .add(getMovementVector().scale(reach + 1)), particleStack, this.level);
         }
     }
 
     @Override
-    public void write(CompoundTag compound, boolean clientPacket) {
+    public void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
         NBTHelper.writeEnum(compound, "Mode", mode);
         NBTHelper.writeEnum(compound, "State", state);
         compound.putInt("Timer", timer);
@@ -391,14 +405,13 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
             player.getInventory()
                     .save(invNBT);
             compound.put("Inventory", invNBT);
-            compound.put("HeldItem", player.getMainHandItem()
-                    .serializeNBT());
-            compound.put("Overflow", NBTHelper.writeItemList(overflowItems));
+            compound.put("HeldItem", player.getMainHandItem().saveOptional(registries));
+            compound.put("Overflow", NBTHelper.writeItemList(overflowItems, registries));
         } else if (deferredInventoryList != null) {
             compound.put("Inventory", deferredInventoryList);
         }
 
-        super.write(compound, clientPacket);
+        super.write(compound, registries, clientPacket);
 
         if (!clientPacket)
             return;
@@ -406,18 +419,17 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
         compound.putFloat("Reach", reach);
         if (player == null)
             return;
-        compound.put("HeldItem", player.getMainHandItem()
-                .serializeNBT());
+        compound.put("HeldItem", player.getMainHandItem().saveOptional(registries));
         if (player.spawnedItemEffects != null) {
-            compound.put("Particle", player.spawnedItemEffects.serializeNBT());
+            compound.put("Particle", player.spawnedItemEffects.saveOptional(registries));
             player.spawnedItemEffects = null;
         }
     }
 
     @Override
-    public void writeSafe(CompoundTag tag) {
+    public void writeSafe(CompoundTag tag, HolderLookup.Provider registries) {
         NBTHelper.writeEnum(tag, "Mode", mode);
-        super.writeSafe(tag);
+        super.writeSafe(tag, registries);
     }
 
     private IItemHandlerModifiable createHandler() {
@@ -459,23 +471,13 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
     public void invalidate() {
         super.invalidate();
         if (invHandler != null)
-            invHandler.invalidate();
+            invalidateCapabilities();
     }
 
     public void changeMode() {
         mode = mode == Mode.PUNCH ? Mode.USE : Mode.PUNCH;
         setChanged();
         sendData();
-    }
-
-    @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-        if (isItemHandlerCap(cap)) {
-            if (invHandler == null)
-                initHandler();
-            return invHandler.cast();
-        }
-        return super.getCapability(cap, side);
     }
 
     @Override
@@ -541,28 +543,26 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
         animatedOffset.setValue(offset);
     }
 
-    RecipeWrapper recipeInv = new RecipeWrapper(new ItemStackHandler(2));
-    SandPaperPolishingRecipe.SandPaperInv sandpaperInv = new SandPaperPolishingRecipe.SandPaperInv(ItemStack.EMPTY);
+    ItemStackHandler recipeInv = new ItemStackHandler(2);
 
     @Nullable
-    public Recipe<? extends Container> getRecipe(ItemStack stack) {
+    public RecipeHolder<? extends Recipe<? extends RecipeInput>> getRecipe(ItemStack stack) {
         if (player == null || level == null)
             return null;
 
         ItemStack heldItemMainhand = player.getMainHandItem();
         if (heldItemMainhand.getItem() instanceof SandPaperItem) {
-            sandpaperInv.setItem(0, stack);
-            Optional<? extends Recipe<? extends Container>> polishingRecipe = checkRecipe(AllRecipeTypes.SANDPAPER_POLISHING, sandpaperInv, level);
+            Optional<RecipeHolder<Recipe<RecipeInput>>> polishingRecipe = checkRecipe(AllRecipeTypes.SANDPAPER_POLISHING, new SingleRecipeInput(stack), level);
             if (polishingRecipe.isPresent()) {
                 return polishingRecipe.get();
             }
         }
 
-        recipeInv.setItem(0, stack);
-        recipeInv.setItem(1, heldItemMainhand);
+        recipeInv.setStackInSlot(0, stack);
+        recipeInv.setStackInSlot(1, heldItemMainhand);
 
         // TODO: make it really post to event bus by making a wrapper be
-        DeployerRecipeSearchEvent event = new DeployerRecipeSearchEvent(null, recipeInv);
+        DeployerRecipeSearchEvent event = new DeployerRecipeSearchEvent(null, new RecipeWrapper(recipeInv));
 
         event.addRecipe(() -> SequencedAssemblyRecipe.getRecipe(level, event.getInventory(),
                 AllRecipeTypes.DEPLOYING.getType(), DeployerApplicationRecipe.class), 100);
@@ -573,7 +573,7 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
         return event.getRecipe();
     }
 
-    private Optional<? extends Recipe<? extends Container>> checkRecipe(AllRecipeTypes type, RecipeWrapper inv, Level level) {
+    private Optional<RecipeHolder<Recipe<RecipeInput>>> checkRecipe(AllRecipeTypes type, RecipeInput inv, Level level) {
         return type.find(inv, level).filter(AllRecipeTypes.CAN_BE_AUTOMATED);
     }
 

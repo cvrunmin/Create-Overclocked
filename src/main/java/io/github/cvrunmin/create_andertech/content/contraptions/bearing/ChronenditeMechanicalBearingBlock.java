@@ -6,7 +6,9 @@ import io.github.cvrunmin.create_andertech.AllBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -18,16 +20,15 @@ public class ChronenditeMechanicalBearingBlock extends BearingBlock implements I
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn,
-                                 BlockHitResult hit) {
+    public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn,
+                                           BlockHitResult hit) {
         if (!player.mayBuild())
-            return InteractionResult.FAIL;
+            return ItemInteractionResult.FAIL;
         if (player.isShiftKeyDown())
-            return InteractionResult.FAIL;
-        if (player.getItemInHand(handIn)
-                .isEmpty()) {
+            return ItemInteractionResult.FAIL;
+        if (stack.isEmpty()) {
             if (worldIn.isClientSide)
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             withBlockEntityDo(worldIn, pos, be -> {
                 if (be.isRunning()) {
                     be.disassemble();
@@ -35,9 +36,9 @@ public class ChronenditeMechanicalBearingBlock extends BearingBlock implements I
                 }
                 be.setAssembleNextTick(true);
             });
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override

@@ -2,6 +2,7 @@ package io.github.cvrunmin.create_andertech.content.kinetics.crafter;
 
 import io.github.cvrunmin.create_andertech.AllBlocks;
 import net.createmod.catnip.data.Iterate;
+import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -11,9 +12,9 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.wrapper.CombinedInvWrapper;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -202,15 +203,20 @@ public class OCConnectedInputHandler {
         public void write(CompoundTag nbt) {
             nbt.putBoolean("Controller", isController);
             ListTag list = new ListTag();
-            data.forEach(pos -> list.add(NbtUtils.writeBlockPos(pos)));
+            data.forEach(pos -> {
+                CompoundTag data = new CompoundTag();
+                data.putInt("X", pos.getX());
+                data.putInt("Y", pos.getY());
+                data.putInt("Z", pos.getZ());
+                list.add(data);
+            });
             nbt.put("Data", list);
         }
 
         public void read(CompoundTag nbt) {
             isController = nbt.getBoolean("Controller");
-            data.clear();
-            nbt.getList("Data", Tag.TAG_COMPOUND)
-                    .forEach(inbt -> data.add(NbtUtils.readBlockPos((CompoundTag) inbt)));
+            data = NBTHelper.readCompoundList(nbt.getList("Data", Tag.TAG_COMPOUND),
+                    c -> new BlockPos(c.getInt("X"), c.getInt("Y"), c.getInt("Z")));
 
             // nbt got wiped -> reset
             if (data.isEmpty()) {

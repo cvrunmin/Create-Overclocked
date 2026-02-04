@@ -1,4 +1,4 @@
-package io.github.cvrunmin.create_andertech.mixin;
+package io.github.cvrunmin.create_andertech.mixin.belt;
 
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.belt.BeltBlockEntity;

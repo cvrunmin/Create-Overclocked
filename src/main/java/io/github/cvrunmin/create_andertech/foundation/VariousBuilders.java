@@ -27,7 +27,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraftforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
 
 import java.util.function.Supplier;
 
@@ -41,15 +41,15 @@ public class VariousBuilders {
                 .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, casingShift.get(),
                         (s, f) -> f.getAxis() != s.getValue(EncasedShaftBlock.AXIS))))
                 .blockstate((c, p) -> axisBlock(c, p, blockState ->
-                        new ModelFile.UncheckedModelFile(new ResourceLocation("create", "block/encased_shaft/block_" + casing))
+                        new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath("create", "block/encased_shaft/block_" + casing))
 //                        p.models().getExistingFile(p.modLoc("block/encased_shaft/block_" + casing))
                         , true))
                 .item()
                 .model((c, p) -> {
                     p.getBuilder("block/encased_crimschist_shaft/item_" + casing)
-                            .parent(new ModelFile.UncheckedModelFile(new ResourceLocation("create", "block/encased_shaft/item_" + casing)))
-                            .texture("1_0", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis"))
-                            .texture("1_1", new ResourceLocation(CreateAndertech.MODID, "block/crimschist_axis_top"));
+                            .parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath("create", "block/encased_shaft/item_" + casing)))
+                            .texture("1_0", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis"))
+                            .texture("1_1", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis_top"));
                     p.withExistingParent(c.getName(), p.modLoc("block/encased_crimschist_shaft/item_" + casing));
                 })
                 .build();
@@ -71,10 +71,10 @@ public class VariousBuilders {
         String blockFolder = large ? "encased_large_cogwheel" : "encased_cogwheel";
         String wood = casing.equals("brass") ? "dark_oak" : "spruce";
         String gearbox = casing.equals("brass") ? "brass_gearbox" : "gearbox";
-        ResourceLocation casingTextureLocation = new ResourceLocation("create", "block/" + casing + "_casing");
-        ResourceLocation gearboxTextureLocation = new ResourceLocation("create", "block/" + gearbox);
-        ResourceLocation strippedWoodTextureLocation = new ResourceLocation("block/stripped_" + wood + "_log_top");
-        ResourceLocation sideTextureLocation = new ResourceLocation("create", "block/" + casing + encasedSuffix);
+        ResourceLocation casingTextureLocation = ResourceLocation.fromNamespaceAndPath("create", "block/" + casing + "_casing");
+        ResourceLocation gearboxTextureLocation = ResourceLocation.fromNamespaceAndPath("create", "block/" + gearbox);
+        ResourceLocation strippedWoodTextureLocation = ResourceLocation.withDefaultNamespace("block/stripped_" + wood + "_log_top");
+        ResourceLocation sideTextureLocation = ResourceLocation.fromNamespaceAndPath("create", "block/" + casing + encasedSuffix);
         //noinspection removal
         return encasedBase(b, drop).addLayer(() -> RenderType::cutoutMipped)
                 .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, casingShift.get(),
@@ -89,7 +89,7 @@ public class VariousBuilders {
                     p.models().existingFileHelper.trackGenerated(casingTextureLocation, PackType.CLIENT_RESOURCES, ".png", "textures");
                     p.models().existingFileHelper.trackGenerated(gearboxTextureLocation, PackType.CLIENT_RESOURCES, ".png", "textures");
                     return p.models()
-                            .getBuilder(modelName).parent(new ModelFile.UncheckedModelFile(new ResourceLocation("create", "block/" + blockFolder + "/block" + suffix)))
+                            .getBuilder(modelName).parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath("create", "block/" + blockFolder + "/block" + suffix)))
                             .texture("casing", casingTextureLocation)
                             .texture("particle", casingTextureLocation)
                             .texture("4", gearboxTextureLocation)
@@ -97,12 +97,12 @@ public class VariousBuilders {
                             .texture("side", sideTextureLocation);
                 }, false))
                 .item()
-                .model((c, p) -> p.getBuilder(c.getName()).parent(new ModelFile.UncheckedModelFile(new ResourceLocation("create", "block/" + blockFolder + "/item")))
+                .model((c, p) -> p.getBuilder(c.getName()).parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath("create", "block/" + blockFolder + "/item")))
                         .texture("casing", casingTextureLocation)
                         .texture("particle", casingTextureLocation)
                         .texture("1", strippedWoodTextureLocation)
                         .texture("side", sideTextureLocation)
-                        .texture("1_2", large ? new ResourceLocation(CreateAndertech.MODID, "block/warped_large_cogwheel") : new ResourceLocation(CreateAndertech.MODID, "block/warped_cogwheel"))
+                        .texture("1_2", large ? ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/warped_large_cogwheel") : ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/warped_cogwheel"))
                 )
                 .build();
     }

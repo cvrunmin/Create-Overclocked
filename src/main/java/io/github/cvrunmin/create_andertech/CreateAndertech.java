@@ -3,14 +3,19 @@ package io.github.cvrunmin.create_andertech;
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.providers.ProviderType;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.data.event.GatherDataEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.CreativeModeTab;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.gui.ConfigurationScreen;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.slf4j.Logger;
 
 @Mod(CreateAndertech.MODID)
@@ -20,27 +25,40 @@ public class CreateAndertech {
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MODID);
+    public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MODID).defaultCreativeTab((ResourceKey<CreativeModeTab>) null);
 
-    public CreateAndertech(){
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+    public CreateAndertech(IEventBus modEventBus, ModContainer modContainer){
         REGISTRATE.registerEventListeners(modEventBus);
         AllBlocks.register();
         AllItems.register();
         AllBlockEntityTypes.register();
         AllCreativeTabs.register(modEventBus);
-        modEventBus.addListener(EventPriority.LOWEST, CreateAndertech::gatherData);
+        // Register ourselves for server and other game events we are interested in.
+        // Note that this is necessary if and only if we want *this* class (ExampleMod) to respond directly to events.
+        // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
+//        NeoForge.EVENT_BUS.register(this);
+        modEventBus.addListener(EventPriority.HIGHEST, CreateAndertech::gatherData);
     }
 
     public static void gatherData(GatherDataEvent event){
+        if (!event.getMods().contains(CreateAndertech.MODID))
+            return;
         REGISTRATE.addDataGenerator(ProviderType.LANG, provider -> {
             provider.add("itemGroup.create_andertech.main", "Create Andertech");
         });
     }
 
-    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-    public static class ClientModEvents
+    @Mod(value = CreateAndertech.MODID, dist = Dist.CLIENT)
+    @EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
+    public static class AndertechClient
     {
+        public AndertechClient(ModContainer container){
+            // Allows NeoForge to create a config screen for this mod's configs.
+            // The config screen is accessed by going to the Mods screen > clicking on your mod > clicking on config.
+            // Do not forget to add translations for your config options to the en_us.json file.
+            container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+        }
+
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {

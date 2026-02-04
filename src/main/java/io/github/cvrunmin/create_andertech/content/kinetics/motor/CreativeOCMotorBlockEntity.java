@@ -1,6 +1,8 @@
 package io.github.cvrunmin.create_andertech.content.kinetics.motor;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.simibubi.create.AllBlockEntityTypes;
+import com.simibubi.create.compat.Mods;
 import com.simibubi.create.content.kinetics.base.GeneratingKineticBlockEntity;
 import com.simibubi.create.content.kinetics.motor.CreativeMotorBlock;
 import com.simibubi.create.content.kinetics.motor.KineticScrollValueBehaviour;
@@ -20,6 +22,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 
 import java.util.List;
 
@@ -30,6 +33,16 @@ public class CreativeOCMotorBlockEntity extends GeneratingKineticBlockEntity imp
 
     public CreativeOCMotorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
+    }
+
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        if (Mods.COMPUTERCRAFT.isLoaded()) {
+//            event.registerBlockEntity(
+//                    PeripheralCapability.get(),
+//                    AllBlockEntityTypes.MOTOR.get(),
+//                    (be, context) -> be.computerBehaviour.getPeripheralCapability()
+//            );
+        }
     }
 
     @Override

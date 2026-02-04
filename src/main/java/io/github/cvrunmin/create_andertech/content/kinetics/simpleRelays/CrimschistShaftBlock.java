@@ -17,6 +17,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -76,13 +77,12 @@ public class CrimschistShaftBlock extends AbstractSimpleShaftBlock implements En
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
-                                 BlockHitResult ray) {
+    public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
+                                     BlockHitResult ray) {
         if (player.isShiftKeyDown() || !player.mayBuild())
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
-        ItemStack heldItem = player.getItemInHand(hand);
-        InteractionResult result = tryEncase(state, world, pos, heldItem, player, hand, ray);
+        ItemInteractionResult result = tryEncase(state, world, pos, stack, player, hand, ray);
         if (result.consumesAction())
             return result;
 
@@ -99,11 +99,11 @@ public class CrimschistShaftBlock extends AbstractSimpleShaftBlock implements En
 //        }
 
         IPlacementHelper helper = PlacementHelpers.get(placementHelperId);
-        if (helper.matchesItem(heldItem))
+        if (helper.matchesItem(stack))
             return helper.getOffset(player, world, state, pos, ray)
-                    .placeInWorld(world, (BlockItem) heldItem.getItem(), player, hand, ray);
+                    .placeInWorld(world, (BlockItem) stack.getItem(), player, hand, ray);
 
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @MethodsReturnNonnullByDefault

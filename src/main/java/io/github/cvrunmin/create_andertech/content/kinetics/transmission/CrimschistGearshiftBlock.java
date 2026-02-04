@@ -25,6 +25,7 @@ public class CrimschistGearshiftBlock extends AbstractEncasedShaftBlock implemen
 
     public CrimschistGearshiftBlock(Properties properties) {
         super(properties);
+        registerDefaultState(defaultBlockState().setValue(POWERED, false));
     }
 
     @Override
@@ -48,7 +49,7 @@ public class CrimschistGearshiftBlock extends AbstractEncasedShaftBlock implemen
         boolean previouslyPowered = state.getValue(POWERED);
         if (previouslyPowered != worldIn.hasNeighborSignal(pos)) {
             detachKinetics(worldIn, pos, true);
-            worldIn.setBlock(pos, state.cycle(POWERED), 2);
+            worldIn.setBlock(pos, state.cycle(POWERED), Block.UPDATE_CLIENTS);
         }
     }
 

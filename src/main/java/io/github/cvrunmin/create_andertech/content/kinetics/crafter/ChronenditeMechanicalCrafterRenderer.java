@@ -5,10 +5,12 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.AllSpriteShifts;
+import com.simibubi.create.content.kinetics.crafter.RecipeGridHandler;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
 import dev.engine_room.flywheel.api.visualization.VisualizationManager;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import dev.engine_room.flywheel.lib.transform.TransformStack;
+import io.github.cvrunmin.create_andertech.mixin.GroupedItemsAccessor;
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.math.AngleHelper;
 import net.createmod.catnip.math.Pointing;
@@ -78,7 +80,7 @@ public class ChronenditeMechanicalCrafterRenderer extends SafeBlockEntityRendere
             }
         } else {
             // render grouped items
-            OCRecipeGridHandler.GroupedItems items = be.groupedItems;
+            RecipeGridHandler.GroupedItems items = be.groupedItems;
             float distance = .5f;
 
             ms.pushPose();
@@ -92,8 +94,9 @@ public class ChronenditeMechanicalCrafterRenderer extends SafeBlockEntityRendere
                 float lateProgress = Mth.clamp(progress * 2 - 1, 0, 1);
 
                 ms.scale(1 - lateProgress, 1 - lateProgress, 1 - lateProgress);
+                GroupedItemsAccessor itemsAccessor = ((GroupedItemsAccessor) items);
                 Vec3 centering =
-                        new Vec3(-items.minX + (-items.width + 1) / 2f, -items.minY + (-items.height + 1) / 2f, 0)
+                        new Vec3(-itemsAccessor.getMinX() + (-itemsAccessor.getWidth() + 1) / 2f, -itemsAccessor.getMinY() + (-itemsAccessor.getHeight() + 1) / 2f, 0)
                                 .scale(earlyProgress);
                 ms.translate(centering.x * .5f, centering.y * .5f, 0);
                 distance += (-4 * (progress - .5f) * (progress - .5f) + 1) * .25f;
@@ -101,7 +104,7 @@ public class ChronenditeMechanicalCrafterRenderer extends SafeBlockEntityRendere
 
             boolean onlyRenderFirst = be.phase == ChronenditeMechanicalCrafterBlockEntity.Phase.INSERTING || be.phase == ChronenditeMechanicalCrafterBlockEntity.Phase.CRAFTING && be.countDown < 1000;
             final float spacing = distance;
-            items.grid.forEach((pair, stack) -> {
+            ((GroupedItemsAccessor)items).getGrid().forEach((pair, stack) -> {
                 if (onlyRenderFirst && (pair.getLeft()
                         .intValue() != 0
                         || pair.getRight()
@@ -143,7 +146,7 @@ public class ChronenditeMechanicalCrafterRenderer extends SafeBlockEntityRendere
                 ms.scale(upScaling, upScaling, upScaling);
                 ms.scale(downScaling, downScaling, downScaling);
 
-                items.grid.forEach((pair, stack) -> {
+                ((GroupedItemsAccessor)items).getGrid().forEach((pair, stack) -> {
                     if (pair.getLeft()
                             .intValue() != 0
                             || pair.getRight()

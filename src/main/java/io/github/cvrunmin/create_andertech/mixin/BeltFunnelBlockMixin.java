@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.simibubi.create.content.kinetics.belt.BeltBlock;
+import com.simibubi.create.content.kinetics.belt.BeltSlope;
 import com.simibubi.create.content.logistics.funnel.BeltFunnelBlock;
 import io.github.cvrunmin.create_andertech.AllBlocks;
 import io.github.cvrunmin.create_andertech.content.kinetics.belt.OCBeltBlock;
@@ -38,5 +39,17 @@ public class BeltFunnelBlockMixin {
     @ModifyExpressionValue(method = "onWrenched", at = @At("MIXINEXTRAS:EXPRESSION"))
     private static boolean createandertech$onWrenchedAlsoCheckForOCBelt(boolean original, @Local(ordinal = 0) BlockState belt){
         return original || belt.getBlock() instanceof OCBeltBlock;
+    }
+
+    @Definition(id = "getValue", method = "Lnet/minecraft/world/level/block/state/BlockState;getValue(Lnet/minecraft/world/level/block/state/properties/Property;)Ljava/lang/Comparable;")
+    @Definition(id = "SLOPE", field = "Lcom/simibubi/create/content/kinetics/belt/BeltBlock;SLOPE:Lnet/minecraft/world/level/block/state/properties/Property;")
+    @Definition(id = "HORIZONTAL", field = "Lcom/simibubi/create/content/kinetics/belt/BeltSlope;HORIZONTAL:Lcom/simibubi/create/content/kinetics/belt/BeltSlope;")
+    @Expression("?.getValue(SLOPE) != HORIZONTAL")
+    @ModifyExpressionValue(method = "onWrenched", at = @At("MIXINEXTRAS:EXPRESSION"))
+    private static boolean createandertech$onWrenchedReplaceWithOCBeltProperty(boolean original, @Local(ordinal = 0) BlockState belt){
+        if(belt.getBlock() instanceof OCBeltBlock){
+            return belt.getValue(OCBeltBlock.SLOPE) != BeltSlope.HORIZONTAL;
+        }
+        return original;
     }
 }

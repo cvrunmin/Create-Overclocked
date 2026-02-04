@@ -1,6 +1,8 @@
 package io.github.cvrunmin.create_andertech.content.kinetics.crusher;
 
+import com.mojang.serialization.MapCodec;
 import com.simibubi.create.AllShapes;
+import com.simibubi.create.content.kinetics.crusher.CrushingWheelControllerBlock;
 import com.simibubi.create.foundation.advancement.AllAdvancements;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.item.ItemHelper;
@@ -8,6 +10,7 @@ import io.github.cvrunmin.create_andertech.AllBlockEntityTypes;
 import io.github.cvrunmin.create_andertech.AllBlocks;
 import io.github.cvrunmin.create_andertech.content.kinetics.belt.OCBeltBlockEntity;
 import net.createmod.catnip.data.Iterate;
+import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -35,11 +38,15 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
+import static com.simibubi.create.content.kinetics.crusher.CrushingWheelControllerBlock.VALID;
+
 public class ChronenditeCrushWheelControllerBlock extends DirectionalBlock implements IBE<ChronenditeCrushWheelControllerBlockEntity> {
-    public static final BooleanProperty VALID = BooleanProperty.create("valid");
+//    public static final BooleanProperty VALID = BooleanProperty.create("valid");
+    public static final MapCodec<ChronenditeCrushWheelControllerBlock> CODEC = simpleCodec(ChronenditeCrushWheelControllerBlock::new);
 
     public ChronenditeCrushWheelControllerBlock(Properties properties) {
         super(properties);
@@ -95,7 +102,7 @@ public class ChronenditeCrushWheelControllerBlock extends DirectionalBlock imple
             return;
         CompoundTag data = entityIn.getPersistentData();
         if (data.contains("BypassCrushingWheel")) {
-            if (pos.equals(NbtUtils.readBlockPos(data.getCompound("BypassCrushingWheel"))))
+            if (pos.equals(NBTHelper.readBlockPos(data, "BypassCrushingWheel")))
                 return;
         }
         if (be.isOccupied())
@@ -178,7 +185,7 @@ public class ChronenditeCrushWheelControllerBlock extends DirectionalBlock imple
 
         CompoundTag data = entity.getPersistentData();
         if (data.contains("BypassCrushingWheel"))
-            if (pos.equals(NbtUtils.readBlockPos(data.getCompound("BypassCrushingWheel"))))
+            if (pos.equals(NBTHelper.readBlockPos(data, "BypassCrushingWheel")))
                 if (state.getValue(FACING) != Direction.UP) // Allow output items to land on top of the block rather
                     // than falling back through.
                     return Shapes.empty();
@@ -210,7 +217,12 @@ public class ChronenditeCrushWheelControllerBlock extends DirectionalBlock imple
     }
 
     @Override
-    public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type) {
+    protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
         return false;
+    }
+
+    @Override
+    protected @NotNull MapCodec<? extends DirectionalBlock> codec() {
+        return CODEC;
     }
 }
