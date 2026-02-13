@@ -1,9 +1,9 @@
 package io.github.cvrunmin.create_andertech.content.kinetics.gearbox;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 import dev.engine_room.flywheel.api.visualization.VisualizationManager;
+import io.github.cvrunmin.create_andertech.index.CAAllPartialModels;
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.data.Iterate;
 import net.createmod.catnip.render.CachedBuffers;
@@ -34,7 +34,7 @@ public class CrimschistGearboxRenderer extends KineticBlockEntityRenderer<Crimsc
             if (boxAxis == axis)
                 continue;
 
-            SuperByteBuffer shaft = CachedBuffers.partialFacing(AllPartialModels.SHAFT_HALF, be.getBlockState(), direction);
+            SuperByteBuffer shaft = CachedBuffers.partialFacing(CAAllPartialModels.CRIMSCHIST_SHAFT_HALF, be.getBlockState(), direction);
             float offset = getRotationOffsetForPosition(be, pos, axis);
             float angle = (time * be.getSpeed() * 3f / 10) % 360;
 

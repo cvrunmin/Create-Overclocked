@@ -1,9 +1,0 @@
-{
-  "parent": "create:block/large_cogwheel",
-  "textures": {
-    "0": "create_andertech:block/crimschist_cogwheel_axis",
-    "3": "create_andertech:block/crimschist_axis_top",
-    "4": "create_andertech:block/warped_large_cogwheel",
-    "particle": "minecraft:block/stripped_warped_stem"
-  }
-}

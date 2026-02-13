@@ -7,7 +7,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.simibubi.create.content.kinetics.belt.BeltBlock;
 import com.simibubi.create.content.kinetics.belt.BeltSlope;
 import com.simibubi.create.content.logistics.funnel.BeltFunnelBlock;
-import io.github.cvrunmin.create_andertech.AllBlocks;
+import io.github.cvrunmin.create_andertech.index.AllBlocks;
 import io.github.cvrunmin.create_andertech.content.kinetics.belt.OCBeltBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;

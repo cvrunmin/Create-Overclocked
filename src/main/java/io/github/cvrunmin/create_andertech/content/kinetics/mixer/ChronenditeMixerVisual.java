@@ -1,18 +1,16 @@
 package io.github.cvrunmin.create_andertech.content.kinetics.mixer;
 
-import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.RotatingInstance;
 import com.simibubi.create.content.kinetics.base.SingleAxisRotatingVisual;
-import com.simibubi.create.content.kinetics.mixer.MechanicalMixerBlockEntity;
 import com.simibubi.create.foundation.render.AllInstanceTypes;
 import dev.engine_room.flywheel.api.instance.Instance;
-import dev.engine_room.flywheel.api.model.Model;
 import dev.engine_room.flywheel.api.visual.DynamicVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.OrientedInstance;
 import dev.engine_room.flywheel.lib.model.Models;
 import dev.engine_room.flywheel.lib.visual.SimpleDynamicVisual;
+import io.github.cvrunmin.create_andertech.index.CAAllPartialModels;
 import net.minecraft.core.Direction;
 
 import java.util.function.Consumer;
@@ -23,15 +21,15 @@ public class ChronenditeMixerVisual extends SingleAxisRotatingVisual<Chronendite
     private final ChronenditeMechanicalMixerBlockEntity mixer;
 
     public ChronenditeMixerVisual(VisualizationContext context, ChronenditeMechanicalMixerBlockEntity blockEntity, float partialTick) {
-        super(context, blockEntity, partialTick, Models.partial(AllPartialModels.SHAFTLESS_COGWHEEL));
+        super(context, blockEntity, partialTick, Models.partial(CAAllPartialModels.SHAFTLESS_CRIMSCHIST_COGWHEEL));
         this.mixer = blockEntity;
 
-        mixerHead = instancerProvider().instancer(AllInstanceTypes.ROTATING, Models.partial(AllPartialModels.MECHANICAL_MIXER_HEAD))
+        mixerHead = instancerProvider().instancer(AllInstanceTypes.ROTATING, Models.partial(com.simibubi.create.AllPartialModels.MECHANICAL_MIXER_HEAD))
                 .createInstance();
 
         mixerHead.setRotationAxis(Direction.Axis.Y);
 
-        mixerPole = instancerProvider().instancer(InstanceTypes.ORIENTED, Models.partial(AllPartialModels.MECHANICAL_MIXER_POLE))
+        mixerPole = instancerProvider().instancer(InstanceTypes.ORIENTED, Models.partial(com.simibubi.create.AllPartialModels.MECHANICAL_MIXER_POLE))
                 .createInstance();
 
         animate(partialTick);

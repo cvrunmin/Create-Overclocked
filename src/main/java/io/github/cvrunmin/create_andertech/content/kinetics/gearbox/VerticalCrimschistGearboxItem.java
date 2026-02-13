@@ -1,7 +1,7 @@
 package io.github.cvrunmin.create_andertech.content.kinetics.gearbox;
 
 import com.simibubi.create.content.kinetics.base.IRotate;
-import io.github.cvrunmin.create_andertech.AllBlocks;
+import io.github.cvrunmin.create_andertech.index.AllBlocks;
 import net.createmod.catnip.data.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

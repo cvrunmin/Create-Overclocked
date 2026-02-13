@@ -5,10 +5,9 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityVisual;
-import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntity;
-import com.simibubi.create.content.kinetics.simpleRelays.SimpleKineticBlockEntity;
 import dev.engine_room.flywheel.api.visualization.VisualizationManager;
-import io.github.cvrunmin.create_andertech.AllBlocks;
+import io.github.cvrunmin.create_andertech.index.AllBlocks;
+import io.github.cvrunmin.create_andertech.index.CAAllPartialModels;
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.render.CachedBuffers;
 import net.createmod.catnip.render.SuperByteBuffer;
@@ -42,12 +41,12 @@ public class BracketedOCKineticBlockEntityRenderer extends KineticBlockEntityRen
         Direction.Axis axis = getRotationAxisOf(be);
         Direction facing = Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE);
         renderRotatingBuffer(be,
-                CachedBuffers.partialFacingVertical(AllPartialModels.SHAFTLESS_LARGE_COGWHEEL, be.getBlockState(), facing),
+                CachedBuffers.partialFacingVertical(CAAllPartialModels.SHAFTLESS_LARGE_CRIMSCHIST_COGWHEEL, be.getBlockState(), facing),
                 ms, vc, light);
 
         float angle = getAngleForLargeCogShaft(be, axis);
         SuperByteBuffer shaft =
-                CachedBuffers.partialFacingVertical(AllPartialModels.COGWHEEL_SHAFT, be.getBlockState(), facing);
+                CachedBuffers.partialFacingVertical(CAAllPartialModels.CRIMSCHIST_COGWHEEL_SHAFT, be.getBlockState(), facing);
         kineticRotationTransform(shaft, be, axis, angle, light);
         shaft.renderInto(ms, vc);
 

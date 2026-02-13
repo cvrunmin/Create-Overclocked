@@ -8,6 +8,7 @@ import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.instance.InstancerProvider;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.model.Models;
+import io.github.cvrunmin.create_andertech.index.CAAllPartialModels;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -33,11 +34,11 @@ public class ChronenditeSawVisual extends KineticBlockEntityVisual<ChronenditeSa
         // We could change this to return either an Oriented- or SingleAxisRotatingVisual
         if (axis.isHorizontal()) {
             Direction align = facing.getOpposite();
-            return instancerProvider.instancer(AllInstanceTypes.ROTATING, Models.partial(AllPartialModels.SHAFT_HALF))
+            return instancerProvider.instancer(AllInstanceTypes.ROTATING, Models.partial(CAAllPartialModels.CRIMSCHIST_SHAFT_HALF))
                     .createInstance()
                     .rotateTo(0, 0, 1, align.getStepX(), align.getStepY(), align.getStepZ());
         } else {
-            return instancerProvider.instancer(AllInstanceTypes.ROTATING, Models.partial(AllPartialModels.SHAFT))
+            return instancerProvider.instancer(AllInstanceTypes.ROTATING, Models.partial(CAAllPartialModels.CRIMSCHIST_SHAFT))
                     .createInstance()
                     .rotateToFace(state.getValue(ChronenditeSawBlock.AXIS_ALONG_FIRST_COORDINATE) ? Direction.Axis.X : Direction.Axis.Z);
         }

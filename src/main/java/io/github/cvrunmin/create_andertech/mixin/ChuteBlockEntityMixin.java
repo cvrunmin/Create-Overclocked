@@ -1,11 +1,9 @@
 package io.github.cvrunmin.create_andertech.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import com.simibubi.create.content.kinetics.fan.EncasedFanBlock;
-import com.simibubi.create.content.kinetics.fan.EncasedFanBlockEntity;
 import com.simibubi.create.content.logistics.chute.ChuteBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
-import io.github.cvrunmin.create_andertech.AllBlocks;
+import io.github.cvrunmin.create_andertech.index.AllBlocks;
 import io.github.cvrunmin.create_andertech.content.kinetics.fan.ChronenditeEncasedFanBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.fan.ChronenditeEncasedFanBlockEntity;
 import net.minecraft.core.BlockPos;

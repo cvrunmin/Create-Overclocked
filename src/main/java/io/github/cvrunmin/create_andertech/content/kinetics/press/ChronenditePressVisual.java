@@ -13,12 +13,13 @@ import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.OrientedInstance;
 import dev.engine_room.flywheel.lib.model.Models;
 import dev.engine_room.flywheel.lib.visual.SimpleDynamicVisual;
+import io.github.cvrunmin.create_andertech.content.kinetics.CrimschistShaftVisual;
 import net.createmod.catnip.math.AngleHelper;
 import org.joml.Quaternionf;
 
 import java.util.function.Consumer;
 
-public class ChronenditePressVisual extends ShaftVisual<ChronenditeMechanicalPressBlockEntity> implements SimpleDynamicVisual {
+public class ChronenditePressVisual extends CrimschistShaftVisual<ChronenditeMechanicalPressBlockEntity> implements SimpleDynamicVisual {
 
     private final OrientedInstance pressHead;
 

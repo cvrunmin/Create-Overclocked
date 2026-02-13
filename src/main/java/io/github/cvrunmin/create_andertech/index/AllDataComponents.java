@@ -1,10 +1,10 @@
-package io.github.cvrunmin.create_andertech;
+package io.github.cvrunmin.create_andertech.index;
 
 import com.mojang.serialization.Codec;
+import io.github.cvrunmin.create_andertech.CreateAndertech;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.util.ExtraCodecs;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.ApiStatus;

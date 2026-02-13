@@ -5,11 +5,10 @@ import com.simibubi.create.api.schematic.requirement.SpecialBlockItemRequirement
 import com.simibubi.create.content.decoration.girder.GirderBlock;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.content.kinetics.base.HorizontalAxisKineticBlock;
-import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import com.simibubi.create.foundation.block.IBE;
-import io.github.cvrunmin.create_andertech.AllBlockEntityTypes;
-import io.github.cvrunmin.create_andertech.AllBlocks;
+import io.github.cvrunmin.create_andertech.index.AllBlockEntityTypes;
+import io.github.cvrunmin.create_andertech.index.AllBlocks;
 import io.github.cvrunmin.create_andertech.content.kinetics.simpleRelays.OCKineticBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

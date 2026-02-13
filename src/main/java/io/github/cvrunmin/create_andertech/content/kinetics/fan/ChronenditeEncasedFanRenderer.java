@@ -2,9 +2,9 @@ package io.github.cvrunmin.create_andertech.content.kinetics.fan;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 import dev.engine_room.flywheel.api.visualization.VisualizationManager;
+import io.github.cvrunmin.create_andertech.index.CAAllPartialModels;
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.render.CachedBuffers;
 import net.createmod.catnip.render.SuperByteBuffer;
@@ -35,9 +35,9 @@ public class ChronenditeEncasedFanRenderer extends KineticBlockEntityRenderer<Ch
         int lightInFront = LevelRenderer.getLightColor(be.getLevel(), be.getBlockPos().relative(direction));
 
         SuperByteBuffer shaftHalf =
-                CachedBuffers.partialFacing(AllPartialModels.SHAFT_HALF, be.getBlockState(), direction.getOpposite());
+                CachedBuffers.partialFacing(CAAllPartialModels.CRIMSCHIST_SHAFT_HALF, be.getBlockState(), direction.getOpposite());
         SuperByteBuffer fanInner =
-                CachedBuffers.partialFacing(AllPartialModels.ENCASED_FAN_INNER, be.getBlockState(), direction.getOpposite());
+                CachedBuffers.partialFacing(com.simibubi.create.AllPartialModels.ENCASED_FAN_INNER, be.getBlockState(), direction.getOpposite());
 
         float time = AnimationTickHolder.getRenderTime(be.getLevel());
         float speed = be.getSpeed() * 5;

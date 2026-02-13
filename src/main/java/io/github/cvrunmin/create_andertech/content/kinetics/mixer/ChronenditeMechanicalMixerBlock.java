@@ -2,11 +2,10 @@ package io.github.cvrunmin.create_andertech.content.kinetics.mixer;
 
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.kinetics.base.KineticBlock;
-import com.simibubi.create.content.kinetics.mixer.MechanicalMixerBlockEntity;
 import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
 import com.simibubi.create.content.processing.basin.BasinBlock;
 import com.simibubi.create.foundation.block.IBE;
-import io.github.cvrunmin.create_andertech.AllBlockEntityTypes;
+import io.github.cvrunmin.create_andertech.index.AllBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;

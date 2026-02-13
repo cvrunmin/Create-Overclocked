@@ -1,7 +1,7 @@
 package io.github.cvrunmin.create_andertech.content.kinetics.crafter;
 
 import com.google.common.base.Predicates;
-import io.github.cvrunmin.create_andertech.AllBlocks;
+import io.github.cvrunmin.create_andertech.index.AllBlocks;
 import net.createmod.catnip.data.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

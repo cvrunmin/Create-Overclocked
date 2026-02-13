@@ -15,8 +15,8 @@ import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringB
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
-import io.github.cvrunmin.create_andertech.AllBlockEntityTypes;
-import io.github.cvrunmin.create_andertech.AllBlocks;
+import io.github.cvrunmin.create_andertech.index.AllBlockEntityTypes;
+import io.github.cvrunmin.create_andertech.index.AllBlocks;
 import io.github.cvrunmin.create_andertech.content.kinetics.simpleRelays.OCKineticBlockEntity;
 import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.catnip.math.VecHelper;

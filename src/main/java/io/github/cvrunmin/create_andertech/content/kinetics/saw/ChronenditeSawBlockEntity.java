@@ -21,7 +21,7 @@ import com.simibubi.create.foundation.recipe.RecipeConditions;
 import com.simibubi.create.foundation.recipe.RecipeFinder;
 import com.simibubi.create.foundation.utility.AbstractBlockBreakQueue;
 import com.simibubi.create.infrastructure.config.AllConfigs;
-import io.github.cvrunmin.create_andertech.AllBlockEntityTypes;
+import io.github.cvrunmin.create_andertech.index.AllBlockEntityTypes;
 import io.github.cvrunmin.create_andertech.foundation.IOverspeedKineticBE;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;

@@ -5,7 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.simibubi.create.content.kinetics.belt.item.BeltConnectorHandler;
-import io.github.cvrunmin.create_andertech.AllDataComponents;
+import io.github.cvrunmin.create_andertech.index.AllDataComponents;
 import io.github.cvrunmin.create_andertech.content.kinetics.belt.OCBeltConnectorHelper;
 import io.github.cvrunmin.create_andertech.content.kinetics.simpleRelays.CrimschistShaftBlock;
 import net.minecraft.core.BlockPos;

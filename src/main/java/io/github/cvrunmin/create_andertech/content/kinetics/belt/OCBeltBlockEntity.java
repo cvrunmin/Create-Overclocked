@@ -11,8 +11,8 @@ import com.simibubi.create.content.kinetics.belt.transport.BeltTunnelInteraction
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import com.simibubi.create.content.logistics.tunnel.BrassTunnelBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import io.github.cvrunmin.create_andertech.AllBlockEntityTypes;
-import io.github.cvrunmin.create_andertech.AllBlocks;
+import io.github.cvrunmin.create_andertech.index.AllBlockEntityTypes;
+import io.github.cvrunmin.create_andertech.index.AllBlocks;
 import io.github.cvrunmin.create_andertech.foundation.IOverspeedKineticBE;
 import io.github.cvrunmin.create_andertech.foundation.interfaces.IGrandSuperKineticBlockEntity;
 import net.minecraft.core.BlockPos;

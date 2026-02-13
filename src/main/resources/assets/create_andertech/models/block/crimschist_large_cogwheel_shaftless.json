@@ -1,0 +1,7 @@
+{
+  "parent": "create:block/large_cogwheel_shaftless",
+  "textures": {
+    "4": "create_andertech:block/warped_large_cogwheel",
+    "particle": "block/stripped_warped_stem"
+  }
+}

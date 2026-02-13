@@ -1,9 +1,9 @@
-package io.github.cvrunmin.create_andertech;
+package io.github.cvrunmin.create_andertech.index;
 
-import com.simibubi.create.AllCreativeModeTabs;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
+import io.github.cvrunmin.create_andertech.CreateAndertech;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;

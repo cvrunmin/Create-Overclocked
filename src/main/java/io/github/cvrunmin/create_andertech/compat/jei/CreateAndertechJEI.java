@@ -1,6 +1,5 @@
 package io.github.cvrunmin.create_andertech.compat.jei;
 
-import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.Create;
 import com.simibubi.create.compat.jei.category.BlockCuttingCategory;
 import com.simibubi.create.content.kinetics.crusher.CrushingRecipe;
@@ -10,7 +9,7 @@ import com.simibubi.create.content.kinetics.fan.processing.SplashingRecipe;
 import com.simibubi.create.content.kinetics.press.PressingRecipe;
 import com.simibubi.create.content.kinetics.saw.CuttingRecipe;
 import com.simibubi.create.content.processing.basin.BasinRecipe;
-import io.github.cvrunmin.create_andertech.AllBlocks;
+import io.github.cvrunmin.create_andertech.index.AllBlocks;
 import io.github.cvrunmin.create_andertech.CreateAndertech;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;

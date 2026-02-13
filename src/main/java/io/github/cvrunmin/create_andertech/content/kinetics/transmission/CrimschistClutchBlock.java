@@ -1,6 +1,6 @@
 package io.github.cvrunmin.create_andertech.content.kinetics.transmission;
 
-import io.github.cvrunmin.create_andertech.AllBlockEntityTypes;
+import io.github.cvrunmin.create_andertech.index.AllBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;

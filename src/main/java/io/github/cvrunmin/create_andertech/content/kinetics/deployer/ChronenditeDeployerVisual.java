@@ -14,6 +14,7 @@ import dev.engine_room.flywheel.lib.model.Models;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import dev.engine_room.flywheel.lib.visual.SimpleDynamicVisual;
 import dev.engine_room.flywheel.lib.visual.SimpleTickableVisual;
+import io.github.cvrunmin.create_andertech.content.kinetics.CrimschistShaftVisual;
 import net.createmod.catnip.math.AngleHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -26,7 +27,7 @@ import java.util.function.Consumer;
 import static com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE;
 import static com.simibubi.create.content.kinetics.base.DirectionalKineticBlock.FACING;
 
-public class ChronenditeDeployerVisual extends ShaftVisual<ChronenditeDeployerBlockEntity> implements SimpleDynamicVisual, SimpleTickableVisual {
+public class ChronenditeDeployerVisual extends CrimschistShaftVisual<ChronenditeDeployerBlockEntity> implements SimpleDynamicVisual, SimpleTickableVisual {
 
     final Direction facing;
     final float yRot;

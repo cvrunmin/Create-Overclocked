@@ -2,7 +2,7 @@ package io.github.cvrunmin.create_andertech.mixin;
 
 import com.simibubi.create.content.kinetics.belt.BeltSlope;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
-import io.github.cvrunmin.create_andertech.AllBlocks;
+import io.github.cvrunmin.create_andertech.index.AllBlocks;
 import io.github.cvrunmin.create_andertech.content.kinetics.belt.OCBeltBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;

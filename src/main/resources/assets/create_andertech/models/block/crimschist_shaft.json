@@ -1,6 +1,7 @@
 {
-  "parent": "create:block/gearbox/item_vertical",
+  "parent": "create:block/shaft",
   "textures": {
+    "particle": "create_andertech:block/crimschist_axis",
     "0": "create_andertech:block/crimschist_axis",
     "1": "create_andertech:block/crimschist_axis_top"
   }

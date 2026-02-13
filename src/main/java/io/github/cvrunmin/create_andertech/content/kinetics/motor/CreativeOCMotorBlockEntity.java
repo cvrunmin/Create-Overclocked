@@ -1,17 +1,15 @@
 package io.github.cvrunmin.create_andertech.content.kinetics.motor;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.simibubi.create.AllBlockEntityTypes;
 import com.simibubi.create.compat.Mods;
 import com.simibubi.create.content.kinetics.base.GeneratingKineticBlockEntity;
 import com.simibubi.create.content.kinetics.motor.CreativeMotorBlock;
-import com.simibubi.create.content.kinetics.motor.KineticScrollValueBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxTransform;
 import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
 import com.simibubi.create.foundation.utility.CreateLang;
 import dev.engine_room.flywheel.lib.transform.TransformStack;
-import io.github.cvrunmin.create_andertech.AllBlocks;
+import io.github.cvrunmin.create_andertech.index.AllBlocks;
 import io.github.cvrunmin.create_andertech.Constants;
 import io.github.cvrunmin.create_andertech.foundation.IOverspeedKineticBE;
 import net.createmod.catnip.math.AngleHelper;

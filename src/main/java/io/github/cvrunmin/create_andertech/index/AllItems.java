@@ -1,4 +1,4 @@
-package io.github.cvrunmin.create_andertech;
+package io.github.cvrunmin.create_andertech.index;
 
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.tterrag.registrate.util.entry.ItemEntry;

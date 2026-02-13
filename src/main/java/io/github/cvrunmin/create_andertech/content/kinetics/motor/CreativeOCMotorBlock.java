@@ -3,7 +3,7 @@ package io.github.cvrunmin.create_andertech.content.kinetics.motor;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.kinetics.base.DirectionalKineticBlock;
 import com.simibubi.create.foundation.block.IBE;
-import io.github.cvrunmin.create_andertech.AllBlockEntityTypes;
+import io.github.cvrunmin.create_andertech.index.AllBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;

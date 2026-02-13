@@ -3,6 +3,7 @@ package io.github.cvrunmin.create_andertech;
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.providers.ProviderType;
+import io.github.cvrunmin.create_andertech.index.*;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.api.distmarker.Dist;
@@ -46,6 +47,7 @@ public class CreateAndertech {
         REGISTRATE.addDataGenerator(ProviderType.LANG, provider -> {
             provider.add("itemGroup.create_andertech.main", "Create Andertech");
         });
+        REGISTRATE.addDataGenerator(ProviderType.BLOCKSTATE, AllExtraModels::genBlockStates);
     }
 
     @Mod(value = CreateAndertech.MODID, dist = Dist.CLIENT)
@@ -62,7 +64,7 @@ public class CreateAndertech {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
-
+            CAAllPartialModels.init();
         }
     }
 }

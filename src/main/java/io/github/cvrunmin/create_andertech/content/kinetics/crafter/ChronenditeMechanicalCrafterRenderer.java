@@ -3,13 +3,13 @@ package io.github.cvrunmin.create_andertech.content.kinetics.crafter;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.AllSpriteShifts;
 import com.simibubi.create.content.kinetics.crafter.RecipeGridHandler;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
 import dev.engine_room.flywheel.api.visualization.VisualizationManager;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import dev.engine_room.flywheel.lib.transform.TransformStack;
+import io.github.cvrunmin.create_andertech.index.CAAllPartialModels;
 import io.github.cvrunmin.create_andertech.mixin.GroupedItemsAccessor;
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.math.AngleHelper;
@@ -170,7 +170,7 @@ public class ChronenditeMechanicalCrafterRenderer extends SafeBlockEntityRendere
         VertexConsumer vb = buffer.getBuffer(RenderType.solid());
 
         if (!VisualizationManager.supportsVisualization(be.getLevel())) {
-            SuperByteBuffer superBuffer = CachedBuffers.partial(AllPartialModels.SHAFTLESS_COGWHEEL, blockState);
+            SuperByteBuffer superBuffer = CachedBuffers.partial(CAAllPartialModels.SHAFTLESS_CRIMSCHIST_COGWHEEL, blockState);
             standardKineticRotationTransform(superBuffer, be, light);
             superBuffer.rotateCentered((float) (blockState.getValue(HORIZONTAL_FACING)
                     .getAxis() != Direction.Axis.X ? 0 : Math.PI / 2), Direction.UP);
@@ -182,15 +182,15 @@ public class ChronenditeMechanicalCrafterRenderer extends SafeBlockEntityRendere
         BlockPos pos = be.getBlockPos();
 
         if ((be.covered || be.phase != ChronenditeMechanicalCrafterBlockEntity.Phase.IDLE) && be.phase != ChronenditeMechanicalCrafterBlockEntity.Phase.CRAFTING && be.phase != ChronenditeMechanicalCrafterBlockEntity.Phase.INSERTING) {
-            SuperByteBuffer lidBuffer = renderAndTransform(AllPartialModels.MECHANICAL_CRAFTER_LID, blockState);
+            SuperByteBuffer lidBuffer = renderAndTransform(com.simibubi.create.AllPartialModels.MECHANICAL_CRAFTER_LID, blockState);
             lidBuffer.light(light)
                     .renderInto(ms, vb);
         }
 
         if (ChronenditeMechanicalCrafterBlock.isValidTarget(be.getLevel(), pos.relative(targetDirection), blockState)) {
-            SuperByteBuffer beltBuffer = renderAndTransform(AllPartialModels.MECHANICAL_CRAFTER_BELT, blockState);
+            SuperByteBuffer beltBuffer = renderAndTransform(com.simibubi.create.AllPartialModels.MECHANICAL_CRAFTER_BELT, blockState);
             SuperByteBuffer beltFrameBuffer =
-                    renderAndTransform(AllPartialModels.MECHANICAL_CRAFTER_BELT_FRAME, blockState);
+                    renderAndTransform(com.simibubi.create.AllPartialModels.MECHANICAL_CRAFTER_BELT_FRAME, blockState);
 
             if (be.phase == ChronenditeMechanicalCrafterBlockEntity.Phase.EXPORTING) {
                 int textureIndex = (int) ((be.getCountDownSpeed() / 128f * AnimationTickHolder.getTicks()));
@@ -203,7 +203,7 @@ public class ChronenditeMechanicalCrafterRenderer extends SafeBlockEntityRendere
                     .renderInto(ms, vb);
 
         } else {
-            SuperByteBuffer arrowBuffer = renderAndTransform(AllPartialModels.MECHANICAL_CRAFTER_ARROW, blockState);
+            SuperByteBuffer arrowBuffer = renderAndTransform(com.simibubi.create.AllPartialModels.MECHANICAL_CRAFTER_ARROW, blockState);
             arrowBuffer.light(light)
                     .renderInto(ms, vb);
         }

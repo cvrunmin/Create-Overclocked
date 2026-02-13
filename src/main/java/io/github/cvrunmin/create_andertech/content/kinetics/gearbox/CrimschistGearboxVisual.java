@@ -1,6 +1,5 @@
 package io.github.cvrunmin.create_andertech.content.kinetics.gearbox;
 
-import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityVisual;
 import com.simibubi.create.content.kinetics.base.RotatingInstance;
 import com.simibubi.create.foundation.render.AllInstanceTypes;
@@ -9,6 +8,7 @@ import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.AbstractInstance;
 import dev.engine_room.flywheel.lib.instance.FlatLit;
 import dev.engine_room.flywheel.lib.model.Models;
+import io.github.cvrunmin.create_andertech.index.CAAllPartialModels;
 import net.createmod.catnip.data.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -29,7 +29,7 @@ public class CrimschistGearboxVisual extends KineticBlockEntityVisual<Crimschist
 
         updateSourceFacing();
 
-        var instancer = instancerProvider().instancer(AllInstanceTypes.ROTATING, Models.partial(AllPartialModels.SHAFT_HALF));
+        var instancer = instancerProvider().instancer(AllInstanceTypes.ROTATING, Models.partial(CAAllPartialModels.CRIMSCHIST_SHAFT_HALF));
 
         for (Direction direction : Iterate.directions) {
             final Direction.Axis axis = direction.getAxis();

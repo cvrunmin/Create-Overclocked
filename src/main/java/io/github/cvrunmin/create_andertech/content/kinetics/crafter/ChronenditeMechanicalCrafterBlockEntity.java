@@ -1,6 +1,5 @@
 package io.github.cvrunmin.create_andertech.content.kinetics.crafter;
 
-import com.simibubi.create.AllItems;
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.api.contraption.transformable.TransformableBlockEntity;
 import com.simibubi.create.content.contraptions.StructureTransform;
@@ -11,8 +10,8 @@ import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour
 import com.simibubi.create.foundation.blockEntity.behaviour.edgeInteraction.EdgeInteractionBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.inventory.InvManipulationBehaviour;
 import com.simibubi.create.foundation.item.SmartInventory;
-import io.github.cvrunmin.create_andertech.AllBlockEntityTypes;
-import io.github.cvrunmin.create_andertech.AllBlocks;
+import io.github.cvrunmin.create_andertech.index.AllBlockEntityTypes;
+import io.github.cvrunmin.create_andertech.index.AllBlocks;
 import io.github.cvrunmin.create_andertech.content.kinetics.simpleRelays.OCKineticBlockEntity;
 import io.github.cvrunmin.create_andertech.mixin.GroupedItemsAccessor;
 import net.createmod.catnip.math.BlockFace;

@@ -1,12 +1,12 @@
 package io.github.cvrunmin.create_andertech.content.kinetics.fan;
 
-import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityVisual;
 import com.simibubi.create.content.kinetics.base.RotatingInstance;
 import com.simibubi.create.foundation.render.AllInstanceTypes;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.model.Models;
+import io.github.cvrunmin.create_andertech.index.CAAllPartialModels;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -27,9 +27,9 @@ public class OCFanVisual extends KineticBlockEntityVisual<ChronenditeEncasedFanB
         direction = blockState.getValue(FACING);
 
         opposite = direction.getOpposite();
-        shaft = instancerProvider().instancer(AllInstanceTypes.ROTATING, Models.partial(AllPartialModels.SHAFT_HALF))
+        shaft = instancerProvider().instancer(AllInstanceTypes.ROTATING, Models.partial(CAAllPartialModels.CRIMSCHIST_SHAFT_HALF))
                 .createInstance();
-        fan = instancerProvider().instancer(AllInstanceTypes.ROTATING, Models.partial(AllPartialModels.ENCASED_FAN_INNER))
+        fan = instancerProvider().instancer(AllInstanceTypes.ROTATING, Models.partial(com.simibubi.create.AllPartialModels.ENCASED_FAN_INNER))
                 .createInstance();
 
         shaft.setup(blockEntity)

@@ -14,6 +14,7 @@ import com.simibubi.create.foundation.virtualWorld.VirtualRenderWorld;
 import dev.engine_room.flywheel.api.visualization.VisualizationManager;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import dev.engine_room.flywheel.lib.transform.TransformStack;
+import io.github.cvrunmin.create_andertech.index.CAAllPartialModels;
 import net.createmod.catnip.math.AngleHelper;
 import net.createmod.catnip.math.VecHelper;
 import net.createmod.catnip.render.CachedBuffers;
@@ -177,7 +178,7 @@ public class ChronenditeSawRenderer extends SafeBlockEntityRenderer<ChronenditeS
         if (state.getValue(FACING)
                 .getAxis()
                 .isHorizontal())
-            return CachedBuffers.partialFacing(AllPartialModels.SHAFT_HALF,
+            return CachedBuffers.partialFacing(CAAllPartialModels.CRIMSCHIST_SHAFT_HALF,
                     state.rotate(be.getLevel(), be.getBlockPos(), Rotation.CLOCKWISE_180));
         return CachedBuffers.block(KineticBlockEntityRenderer.KINETIC_BLOCK, getRenderedBlockState(be));
     }

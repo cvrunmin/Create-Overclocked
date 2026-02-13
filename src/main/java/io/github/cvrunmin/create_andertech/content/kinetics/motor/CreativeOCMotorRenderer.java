@@ -1,7 +1,7 @@
 package io.github.cvrunmin.create_andertech.content.kinetics.motor;
 
-import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
+import io.github.cvrunmin.create_andertech.index.CAAllPartialModels;
 import net.createmod.catnip.render.CachedBuffers;
 import net.createmod.catnip.render.SuperByteBuffer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -15,6 +15,6 @@ public class CreativeOCMotorRenderer extends KineticBlockEntityRenderer<Creative
 
     @Override
     protected SuperByteBuffer getRotatedModel(CreativeOCMotorBlockEntity be, BlockState state) {
-        return CachedBuffers.partialFacing(AllPartialModels.SHAFT_HALF, state);
+        return CachedBuffers.partialFacing(CAAllPartialModels.CRIMSCHIST_SHAFT_HALF, state);
     }
 }
