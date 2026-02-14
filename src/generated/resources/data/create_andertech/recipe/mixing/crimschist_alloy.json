@@ -1,0 +1,27 @@
+{
+  "type": "create:mixing",
+  "heat_requirement": "heated",
+  "ingredients": [
+    {
+      "tag": "c:ingots/copper"
+    },
+    {
+      "tag": "c:ingots/copper"
+    },
+    {
+      "tag": "c:ingots/copper"
+    },
+    {
+      "item": "minecraft:warped_wart_block"
+    },
+    {
+      "item": "minecraft:warped_wart_block"
+    }
+  ],
+  "results": [
+    {
+      "count": 2,
+      "id": "create_andertech:crimschist_alloy"
+    }
+  ]
+}

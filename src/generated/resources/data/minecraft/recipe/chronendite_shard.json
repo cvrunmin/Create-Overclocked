@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "create_andertech:chronendite_orb"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "create_andertech:chronendite_shard"
+  }
+}

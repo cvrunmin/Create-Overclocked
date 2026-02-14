@@ -1,8 +1,8 @@
 package io.github.cvrunmin.create_andertech.content.kinetics.crafter;
 
-import com.simibubi.create.AllSpriteShifts;
 import com.simibubi.create.foundation.block.connected.CTSpriteShiftEntry;
 import com.simibubi.create.foundation.block.connected.ConnectedTextureBehaviour;
+import io.github.cvrunmin.create_andertech.index.CAAllSpriteShifts;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -45,7 +45,7 @@ public class OCCrafterCTBehaviour extends ConnectedTextureBehaviour.Base {
         boolean isVertical = direction.getAxis()
                 .isVertical();
         boolean facingX = facing.getAxis() == Direction.Axis.X;
-        return isFront ? AllSpriteShifts.BRASS_CASING
-                : isVertical && !facingX ? AllSpriteShifts.CRAFTER_OTHERSIDE : AllSpriteShifts.CRAFTER_SIDE;
+        return isFront ? CAAllSpriteShifts.CHRONENDITE_CASING
+                : isVertical && !facingX ? CAAllSpriteShifts.CHRONENDITE_CRAFTER_OTHERSIDE : CAAllSpriteShifts.CHRONENDITE_CRAFTER_SIDE;
     }
 }

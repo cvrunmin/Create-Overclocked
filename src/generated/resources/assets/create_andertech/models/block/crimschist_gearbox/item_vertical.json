@@ -1,0 +1,10 @@
+{
+  "parent": "create:block/gearbox/item_vertical",
+  "textures": {
+    "0": "create_andertech:block/crimschist_axis",
+    "1": "create_andertech:block/crimschist_axis_top",
+    "gearbox": "create_andertech:block/crimschist_gearbox",
+    "gearbox_top": "create_andertech:block/crimschist_casing",
+    "particle": "create_andertech:block/crimschist_casing"
+  }
+}

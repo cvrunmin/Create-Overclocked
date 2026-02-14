@@ -2,8 +2,8 @@ package io.github.cvrunmin.create_andertech;
 
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.tterrag.registrate.providers.ProviderType;
 import io.github.cvrunmin.create_andertech.index.*;
+import io.github.cvrunmin.create_andertech.infrastructure.data.CADataGen;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.api.distmarker.Dist;
@@ -16,7 +16,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
-import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.slf4j.Logger;
 
 @Mod(CreateAndertech.MODID)
@@ -32,22 +31,15 @@ public class CreateAndertech {
         REGISTRATE.registerEventListeners(modEventBus);
         AllBlocks.register();
         AllItems.register();
+        AllFluids.register();
         AllBlockEntityTypes.register();
         AllCreativeTabs.register(modEventBus);
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (ExampleMod) to respond directly to events.
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
 //        NeoForge.EVENT_BUS.register(this);
-        modEventBus.addListener(EventPriority.HIGHEST, CreateAndertech::gatherData);
-    }
-
-    public static void gatherData(GatherDataEvent event){
-        if (!event.getMods().contains(CreateAndertech.MODID))
-            return;
-        REGISTRATE.addDataGenerator(ProviderType.LANG, provider -> {
-            provider.add("itemGroup.create_andertech.main", "Create Andertech");
-        });
-        REGISTRATE.addDataGenerator(ProviderType.BLOCKSTATE, AllExtraModels::genBlockStates);
+        modEventBus.addListener(EventPriority.HIGHEST, CADataGen::gatherDataHighPriority);
+        modEventBus.addListener(CADataGen::gatherData);
     }
 
     @Mod(value = CreateAndertech.MODID, dist = Dist.CLIENT)

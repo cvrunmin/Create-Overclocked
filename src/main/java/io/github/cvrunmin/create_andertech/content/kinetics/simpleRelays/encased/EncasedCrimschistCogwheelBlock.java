@@ -42,8 +42,8 @@ import net.minecraft.world.phys.HitResult;
 import java.util.function.Supplier;
 
 public class EncasedCrimschistCogwheelBlock extends RotatedPillarKineticBlock implements IBE<SimpleOCKineticBlockEntity>, ICogWheel, SpecialBlockItemRequirement, TransformableBlock, EncasedBlock {
-    public static final BooleanProperty TOP_SHAFT = BooleanProperty.create("top_shaft");
-    public static final BooleanProperty BOTTOM_SHAFT = BooleanProperty.create("bottom_shaft");
+    public static final BooleanProperty TOP_SHAFT = EncasedCogwheelBlock.TOP_SHAFT;
+    public static final BooleanProperty BOTTOM_SHAFT = EncasedCogwheelBlock.BOTTOM_SHAFT;
 
     protected final boolean isLarge;
     private final Supplier<Block> casing;

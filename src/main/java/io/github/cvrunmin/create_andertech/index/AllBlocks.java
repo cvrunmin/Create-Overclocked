@@ -5,6 +5,7 @@ import com.simibubi.create.AllTags;
 import com.simibubi.create.Create;
 import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.content.contraptions.bearing.StabilizedBearingMovementBehaviour;
+import com.simibubi.create.content.decoration.encasing.CasingBlock;
 import com.simibubi.create.content.decoration.encasing.EncasedCTBehaviour;
 import com.simibubi.create.content.decoration.encasing.EncasingRegistry;
 import com.simibubi.create.content.decoration.girder.ConnectedGirderModel;
@@ -75,7 +76,6 @@ import java.util.Map;
 import static com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour.interactionBehaviour;
 import static com.simibubi.create.api.behaviour.movement.MovementBehaviour.movementBehaviour;
 import static com.simibubi.create.foundation.data.BlockStateGen.axisBlock;
-import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.axeOrPickaxe;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 import static io.github.cvrunmin.create_andertech.CreateAndertech.REGISTRATE;
@@ -189,8 +189,8 @@ public class AllBlocks {
                     .mapColor(MapColor.PODZOL))
             .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 0))
             .transform(axeOrPickaxe())
-            .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(AllSpriteShifts.ANDESITE_CASING)))
-            .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, AllSpriteShifts.ANDESITE_CASING,
+            .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(CAAllSpriteShifts.CRIMSCHIST_CASING)))
+            .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, CAAllSpriteShifts.CRIMSCHIST_CASING,
                     (s, f) -> f.getAxis() == s.getValue(GearboxBlock.AXIS))))
             .blockstate((c, p) -> axisBlock(c, p, $ -> AssetLookupWithParent.partialModel(c, p, "create", "gearbox", Map.ofEntries(
                     Map.entry("0", p.modLoc("block/crimschist_casing")),
@@ -517,6 +517,16 @@ public class AllBlocks {
             .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 2.0))
             .item(ArmItem::new)
             .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/mechanical_arm/item")))
+            .register();
+
+    public static final BlockEntry<CasingBlock> CRIMSCHIST_CASING = REGISTRATE.block("crimschist_casing", CasingBlock::new)
+            .properties(p -> p.mapColor(MapColor.WARPED_NYLIUM))
+            .transform(BuilderTransformers.casing(() -> CAAllSpriteShifts.CRIMSCHIST_CASING))
+            .register();
+
+    public static final BlockEntry<CasingBlock> CHRONENDITE_CASING = REGISTRATE.block("chronendite_casing", CasingBlock::new)
+            .properties(p -> p.mapColor(MapColor.SAND))
+            .transform(BuilderTransformers.casing(() -> CAAllSpriteShifts.CHRONENDITE_CASING))
             .register();
 
     public static final BlockEntry<GirderEncasedCrimschistShaftBlock> METAL_GIRDER_ENCASED_CRIMSCHIST_SHAFT =

@@ -45,10 +45,14 @@ import io.github.cvrunmin.create_andertech.content.kinetics.saw.ChronenditeSawBl
 import io.github.cvrunmin.create_andertech.content.kinetics.saw.ChronenditeSawRenderer;
 import io.github.cvrunmin.create_andertech.content.kinetics.saw.ChronenditeSawVisual;
 import io.github.cvrunmin.create_andertech.content.kinetics.simpleRelays.*;
+import io.github.cvrunmin.create_andertech.content.kinetics.simpleRelays.encased.EncasedCrimschistCogRenderer;
+import io.github.cvrunmin.create_andertech.content.kinetics.simpleRelays.encased.EncasedCrimschistCogVisual;
 import io.github.cvrunmin.create_andertech.content.kinetics.speedController.ChronenditeSpeedControllerBlockEntity;
 import io.github.cvrunmin.create_andertech.content.kinetics.speedController.ChronenditeSpeedControllerRenderer;
 import io.github.cvrunmin.create_andertech.content.kinetics.transmission.CrimschistClutchBlockEntity;
 import io.github.cvrunmin.create_andertech.content.kinetics.transmission.CrimschistGearshiftBlockEntity;
+import io.github.cvrunmin.create_andertech.content.kinetics.transmission.OCSplitShaftRenderer;
+import io.github.cvrunmin.create_andertech.content.kinetics.transmission.OCSplitShaftVisual;
 
 import static io.github.cvrunmin.create_andertech.CreateAndertech.REGISTRATE;
 
@@ -84,16 +88,16 @@ public class AllBlockEntityTypes {
 
     public static final BlockEntityEntry<SimpleOCKineticBlockEntity> ENCASED_CRIMSCHIST_COGWHEEL = REGISTRATE
             .blockEntity("encased_crimschist_cogwheel", SimpleOCKineticBlockEntity::new)
-            .visual(() -> EncasedCogVisual::small, false)
+            .visual(() -> EncasedCrimschistCogVisual::small, false)
             .validBlocks(AllBlocks.ANDESITE_ENCASED_CRIMSCHIST_COGWHEEL, AllBlocks.BRASS_ENCASED_CRIMSCHIST_COGWHEEL)
-            .renderer(() -> EncasedCogRenderer::small)
+            .renderer(() -> EncasedCrimschistCogRenderer::small)
             .register();
 
     public static final BlockEntityEntry<SimpleOCKineticBlockEntity> ENCASED_CRIMSCHIST_LARGE_COGWHEEL = REGISTRATE
             .blockEntity("encased_crimschist_large_cogwheel", SimpleOCKineticBlockEntity::new)
-            .visual(() -> EncasedCogVisual::large, false)
+            .visual(() -> EncasedCrimschistCogVisual::large, false)
             .validBlocks(AllBlocks.ANDESITE_ENCASED_CRIMSCHIST_LARGE_COGWHEEL, AllBlocks.BRASS_ENCASED_CRIMSCHIST_LARGE_COGWHEEL)
-            .renderer(() -> EncasedCogRenderer::large)
+            .renderer(() -> EncasedCrimschistCogRenderer::large)
             .register();
 
     public static final BlockEntityEntry<ChronenditeCrushWheelBlockEntity> CHRONENDITE_CRUSHING_WHEEL = REGISTRATE
@@ -167,16 +171,16 @@ public class AllBlockEntityTypes {
 
     public static final BlockEntityEntry<CrimschistClutchBlockEntity> CRIMSCHIST_CLUTCH = REGISTRATE
             .blockEntity("clutch", CrimschistClutchBlockEntity::new)
-            .visual(() -> SplitShaftVisual::new, false)
+            .visual(() -> OCSplitShaftVisual::new, false)
             .validBlocks(AllBlocks.CRIMSCHIST_CLUTCH)
-            .renderer(() -> SplitShaftRenderer::new)
+            .renderer(() -> OCSplitShaftRenderer::new)
             .register();
 
     public static final BlockEntityEntry<CrimschistGearshiftBlockEntity> CRIMSCHIST_GEARSHIFT = REGISTRATE
             .blockEntity("gearshift", CrimschistGearshiftBlockEntity::new)
-            .visual(() -> SplitShaftVisual::new, false)
+            .visual(() -> OCSplitShaftVisual::new, false)
             .validBlocks(AllBlocks.CRIMSCHIST_GEARSHIFT)
-            .renderer(() -> SplitShaftRenderer::new)
+            .renderer(() -> OCSplitShaftRenderer::new)
             .register();
 
     public static final BlockEntityEntry<OCBeltBlockEntity> OC_BELT = REGISTRATE

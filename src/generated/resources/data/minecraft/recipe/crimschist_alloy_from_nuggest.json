@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "crimschist_alloy",
+  "key": {
+    "#": {
+      "item": "create_andertech:crimschist_nugget"
+    }
+  },
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "create_andertech:crimschist_alloy"
+  }
+}

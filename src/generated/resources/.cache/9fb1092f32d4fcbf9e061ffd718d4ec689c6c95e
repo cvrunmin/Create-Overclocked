@@ -1,0 +1,9 @@
+// 1.21.1	2026-02-14T21:30:21.6521775	Recipes
+9dd1640db59a91afe10168be9c67df85032e42fe data/minecraft/advancement/recipes/misc/chronendite_orb_from_shards.json
+60f95d834b6f53682337e0ff11c0aeeedadda8d7 data/minecraft/advancement/recipes/misc/chronendite_shard.json
+cb5cf29bbfc195651ae90002e2abfde368d0d75b data/minecraft/advancement/recipes/misc/crimschist_alloy_from_nuggest.json
+f66972c4a43919cf3e79746faa449e99f12b56e2 data/minecraft/advancement/recipes/misc/crimschist_nugget.json
+50619d2073b066bd1711836ee03f74e2ea17c7d5 data/minecraft/recipe/chronendite_orb_from_shards.json
+322202fce2dd5ee55b9dd347f071e6e9d90421d8 data/minecraft/recipe/chronendite_shard.json
+5c167d233c73c4afd646018cfac28c8c648d10b0 data/minecraft/recipe/crimschist_alloy_from_nuggest.json
+41617984344a726c17fac8fc5f526ead8e83803a data/minecraft/recipe/crimschist_nugget.json
