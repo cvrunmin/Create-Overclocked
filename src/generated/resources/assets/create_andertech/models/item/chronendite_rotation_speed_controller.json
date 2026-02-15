@@ -1,3 +1,13 @@
 {
-  "parent": "create:block/rotation_speed_controller/item"
+  "parent": "create:block/rotation_speed_controller/item",
+  "textures": {
+    "0": "create_andertech:block/crimschist_axis",
+    "1_0": "create_andertech:block/chronendite_rotation_speed_controller",
+    "1_5": "create_andertech:block/chronendite_rotation_speed_controller_top",
+    "3": "create_andertech:block/crimschist_axis_top",
+    "4": "create_andertech:block/chronendite_gearbox",
+    "7": "create_andertech:block/chronendite_funnel_neutral",
+    "9": "create_andertech:block/chronendite_block",
+    "particle": "create_andertech:block/chronendite_gearbox"
+  }
 }

@@ -6,6 +6,7 @@ import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
 import dev.engine_room.flywheel.api.visualization.VisualizationManager;
+import io.github.cvrunmin.create_andertech.index.CAAllPartialModels;
 import net.createmod.catnip.render.CachedBuffers;
 import net.createmod.catnip.render.SuperByteBuffer;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -40,7 +41,7 @@ public class ChronenditeSpeedControllerRenderer extends SmartBlockEntityRenderer
         BlockState blockState = blockEntity.getBlockState();
         Direction facing = ChronenditeSpeedControllerBlock.getDirectionFromState(blockState);
         Direction.Axis axis = blockState.getValue(ChronenditeSpeedControllerBlock.AXIS);
-        SuperByteBuffer bracket = CachedBuffers.partial(AllPartialModels.SPEED_CONTROLLER_BRACKET, blockState);
+        SuperByteBuffer bracket = CachedBuffers.partial(CAAllPartialModels.CHRONENDITE_SPEED_CONTROLLER_BRACKET, blockState);
         bracket.translate(facing.getNormal());
 //        bracket.rotateTo(Direction.UP, facing);
         if(facing.getAxis() == Direction.Axis.Y){

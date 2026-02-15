@@ -119,8 +119,8 @@ public class VariousBuilders {
         ResourceLocation baseBlockModelLocation = Create.asResource("block/bearing/block");
         ResourceLocation baseItemModelLocation = Create.asResource("block/bearing/item");
         ResourceLocation topTextureLocation = Create.asResource("block/bearing_top");
-        ResourceLocation sideTextureLocation = Create.asResource("block/" + prefix + "_bearing_side");
-        ResourceLocation backTextureLocation = Create.asResource("block/" + backTexture);
+        ResourceLocation sideTextureLocation = ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/" + prefix + "_bearing_side");
+        ResourceLocation backTextureLocation = ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/" + backTexture);
         return b ->
                 b.initialProperties(SharedProperties::stone)
                         .properties(BlockBehaviour.Properties::noOcclusion)

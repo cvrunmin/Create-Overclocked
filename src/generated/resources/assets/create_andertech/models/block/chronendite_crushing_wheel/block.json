@@ -1,3 +1,8 @@
 {
-  "parent": "create:block/crushing_wheel/block"
+  "parent": "create:block/crushing_wheel/block",
+  "textures": {
+    "axis": "create_andertech:block/crimschist_axis",
+    "axis_top": "create_andertech:block/crimschist_axis_top",
+    "spruce_log_top": "minecraft:block/warped_stem_top"
+  }
 }

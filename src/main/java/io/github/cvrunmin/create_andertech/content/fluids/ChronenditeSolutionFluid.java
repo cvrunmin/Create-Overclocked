@@ -12,6 +12,11 @@ public abstract class ChronenditeSolutionFluid extends BaseFlowingFluid {
         super(properties);
     }
 
+    @Override
+    public float getOwnHeight(FluidState state) {
+        return (float)state.getAmount() / 7.0F;
+    }
+
     public static class Source extends ChronenditeSolutionFluid{
 
         public Source(Properties properties) {

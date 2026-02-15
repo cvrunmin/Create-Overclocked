@@ -1,3 +1,9 @@
 {
-  "parent": "create:block/mechanical_mixer/block"
+  "parent": "create:block/mechanical_mixer/block",
+  "textures": {
+    "11": "create_andertech:block/chronendite_mechanical_press_top",
+    "2": "create_andertech:block/smooth_birch_log_top",
+    "4": "create_andertech:block/chronendite_mixer_base_side",
+    "particle": "create_andertech:block/chronendite_mixer_base_side"
+  }
 }

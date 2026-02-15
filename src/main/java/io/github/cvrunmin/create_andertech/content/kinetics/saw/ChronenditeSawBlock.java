@@ -3,6 +3,7 @@ package io.github.cvrunmin.create_andertech.content.kinetics.saw;
 import com.google.common.base.Predicates;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
+import com.simibubi.create.content.kinetics.saw.SawBlock;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.damageTypes.CreateDamageSources;
 import io.github.cvrunmin.create_andertech.index.AllBlockEntityTypes;
@@ -43,7 +44,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class ChronenditeSawBlock extends DirectionalAxisKineticBlock implements IBE<ChronenditeSawBlockEntity> {
-    public static final BooleanProperty FLIPPED = BooleanProperty.create("flipped");
+    public static final BooleanProperty FLIPPED = SawBlock.FLIPPED;
 
     private static final int placementHelperId = PlacementHelpers.register(new PlacementHelper());
 

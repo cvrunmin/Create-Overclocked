@@ -8,6 +8,7 @@ import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
 import dev.engine_room.flywheel.lib.model.Models;
+import io.github.cvrunmin.create_andertech.index.CAAllPartialModels;
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.math.AngleHelper;
 import net.createmod.catnip.math.VecHelper;
@@ -28,7 +29,7 @@ public class ChronenditeDrillActorVisual extends ActorVisual {
 
         facing = state.getValue(ChronenditeDrillBlock.FACING);
 
-        drillHead = instancerProvider.instancer(InstanceTypes.TRANSFORMED, Models.partial(AllPartialModels.DRILL_HEAD))
+        drillHead = instancerProvider.instancer(InstanceTypes.TRANSFORMED, Models.partial(CAAllPartialModels.CHRONENDITE_DRILL_HEAD))
                 .createInstance();
     }
 

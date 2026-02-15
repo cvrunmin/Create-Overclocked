@@ -5,6 +5,7 @@ import com.simibubi.create.content.contraptions.behaviour.MovementContext;
 import com.simibubi.create.content.contraptions.render.ContraptionMatrices;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 import com.simibubi.create.foundation.virtualWorld.VirtualRenderWorld;
+import io.github.cvrunmin.create_andertech.index.CAAllPartialModels;
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.math.AngleHelper;
 import net.createmod.catnip.math.VecHelper;
@@ -24,13 +25,13 @@ public class ChronenditeDrillRenderer extends KineticBlockEntityRenderer<Chronen
 
     @Override
     protected SuperByteBuffer getRotatedModel(ChronenditeDrillBlockEntity be, BlockState state) {
-        return CachedBuffers.partialFacing(AllPartialModels.DRILL_HEAD, state);
+        return CachedBuffers.partialFacing(CAAllPartialModels.CHRONENDITE_DRILL_HEAD, state);
     }
 
     public static void renderInContraption(MovementContext context, VirtualRenderWorld renderWorld,
                                            ContraptionMatrices matrices, MultiBufferSource buffer) {
         BlockState state = context.state;
-        SuperByteBuffer superBuffer = CachedBuffers.partial(AllPartialModels.DRILL_HEAD, state);
+        SuperByteBuffer superBuffer = CachedBuffers.partial(CAAllPartialModels.CHRONENDITE_DRILL_HEAD, state);
         Direction facing = state.getValue(ChronenditeDrillBlock.FACING);
 
         float speed = (float) (context.contraption.stalled

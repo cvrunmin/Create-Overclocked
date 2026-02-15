@@ -1,6 +1,7 @@
 {
   "parent": "create:block/encased_chain_drive/middle_vertical",
   "textures": {
+    "1": "create_andertech:block/crimschist_encased_chain_drive_middle",
     "particle": "create_andertech:block/encased_crimschist_chain_drive",
     "side": "create_andertech:block/encased_crimschist_chain_drive"
   }

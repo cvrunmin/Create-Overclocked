@@ -1,3 +1,9 @@
 {
-  "parent": "create:block/encased_fan/block"
+  "parent": "create:block/encased_fan/block",
+  "textures": {
+    "3": "create_andertech:block/chronendite_funnel_frame",
+    "back": "create_andertech:block/chronendite_gearbox",
+    "fan_side": "create_andertech:block/chronendite_fan_side",
+    "particle": "create_andertech:block/chronendite_fan_side"
+  }
 }

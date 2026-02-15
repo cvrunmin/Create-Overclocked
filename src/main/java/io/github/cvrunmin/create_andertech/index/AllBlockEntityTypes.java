@@ -15,7 +15,10 @@ import com.simibubi.create.content.kinetics.transmission.SplitShaftVisual;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import dev.engine_room.flywheel.lib.model.Models;
 import io.github.cvrunmin.create_andertech.content.contraptions.bearing.ChronenditeMechanicalBearingBlockEntity;
+import io.github.cvrunmin.create_andertech.content.contraptions.bearing.OCBearingRenderer;
 import io.github.cvrunmin.create_andertech.content.kinetics.belt.OCBeltBlockEntity;
+import io.github.cvrunmin.create_andertech.content.kinetics.belt.OCBeltRenderer;
+import io.github.cvrunmin.create_andertech.content.kinetics.belt.OCBeltVisual;
 import io.github.cvrunmin.create_andertech.content.kinetics.crafter.ChronenditeMechanicalCrafterBlockEntity;
 import io.github.cvrunmin.create_andertech.content.kinetics.crafter.ChronenditeMechanicalCrafterRenderer;
 import io.github.cvrunmin.create_andertech.content.kinetics.crusher.ChronenditeCrushWheelBlockEntity;
@@ -102,7 +105,7 @@ public class AllBlockEntityTypes {
 
     public static final BlockEntityEntry<ChronenditeCrushWheelBlockEntity> CHRONENDITE_CRUSHING_WHEEL = REGISTRATE
             .blockEntity("crushing_wheel", ChronenditeCrushWheelBlockEntity::new)
-            .visual(() -> SingleAxisRotatingVisual.of(AllPartialModels.CRUSHING_WHEEL), false)
+            .visual(() -> SingleAxisRotatingVisual.of(CAAllPartialModels.CHRONENDITE_CRUSHING_WHEEL), false)
             .validBlocks(AllBlocks.CHRONENDITE_CRUSHING_WHEEL)
             .renderer(() -> KineticBlockEntityRenderer::new)
             .register();
@@ -129,7 +132,7 @@ public class AllBlockEntityTypes {
 
     public static final BlockEntityEntry<ChronenditeDrillBlockEntity> CHRONENDITE_DRILL = REGISTRATE
             .blockEntity("drill", ChronenditeDrillBlockEntity::new)
-            .visual(() -> OrientedRotatingVisual.of(AllPartialModels.DRILL_HEAD), false)
+            .visual(() -> OrientedRotatingVisual.of(CAAllPartialModels.CHRONENDITE_DRILL_HEAD), false)
             .validBlocks(AllBlocks.CHRONENDITE_MECHANICAL_DRILL)
             .renderer(() -> ChronenditeDrillRenderer::new)
             .register();
@@ -152,7 +155,7 @@ public class AllBlockEntityTypes {
             .blockEntity("mechanical_bearing", ChronenditeMechanicalBearingBlockEntity::new)
             .visual(() -> BearingVisual::new)
             .validBlocks(AllBlocks.CHRONENDITE_MECHANICAL_BEARING)
-            .renderer(() -> BearingRenderer::new)
+            .renderer(() -> OCBearingRenderer::new)
             .register();
 
     public static final BlockEntityEntry<ChronenditeEncasedFanBlockEntity> CHRONENDITE_ENCASED_FAN = REGISTRATE
@@ -185,9 +188,9 @@ public class AllBlockEntityTypes {
 
     public static final BlockEntityEntry<OCBeltBlockEntity> OC_BELT = REGISTRATE
             .blockEntity("belt", OCBeltBlockEntity::new)
-            .visual(() -> BeltVisual::new, OCBeltBlockEntity::shouldRenderNormally)
+            .visual(() -> OCBeltVisual::new, OCBeltBlockEntity::shouldRenderNormally)
             .validBlocks(AllBlocks.OC_BELT)
-            .renderer(() -> BeltRenderer::new)
+            .renderer(() -> OCBeltRenderer::new)
             .register();
 
     public static final BlockEntityEntry<ChronenditeArmBlockEntity> CHRONENDITE_MECHANICAL_ARM = REGISTRATE

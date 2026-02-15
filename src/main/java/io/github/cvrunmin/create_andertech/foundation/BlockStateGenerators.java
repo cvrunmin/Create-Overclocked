@@ -19,6 +19,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.MultiPartBlockStateBuilder;
 
@@ -171,10 +172,23 @@ public class BlockStateGenerators {
 
         @Override
         public <T extends Block> ModelFile getModel(DataGenContext<Block, T> ctx, RegistrateBlockstateProvider prov, BlockState state) {
-            String orientation = state.getValue(SawBlock.FACING)
-                    .getAxis()
-                    .isVertical() ? "vertical" : "horizontal";
-            return prov.models().getBuilder("block/" + ctx.getName() + "/" + orientation).parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath("create", "block/mechanical_saw/" + orientation)));
+            boolean vertical = state.getValue(SawBlock.FACING).getAxis().isVertical();
+            String orientation = vertical ? "vertical" : "horizontal";
+
+            BlockModelBuilder modelBuilder = prov.models().getBuilder("block/" + ctx.getName() + "/" + orientation)
+                    .parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath("create", "block/mechanical_saw/" + orientation)))
+                    .texture("gearbox_top", prov.modLoc("block/chronendite_gearbox_top"))
+                    .texture("gearbox", prov.modLoc("block/chronendite_gearbox"))
+                    .texture("andesite_casing_short", prov.modLoc("block/chronendite_casing_short"));
+            if(vertical){
+                modelBuilder = modelBuilder.texture("mechanical_saw_top", prov.modLoc("block/chronendite_mechanical_saw_top"))
+                        .texture("particle", prov.modLoc("block/chronendite_mechanical_saw_top"));
+            }else{
+                modelBuilder = modelBuilder.texture("slit", prov.modLoc("block/chronendite_mechanical_saw_top_no_slot"))
+                        .texture("particle", prov.modLoc("block/chronendite_gearbox_top"))
+                        .texture("encased_belt", prov.modLoc("block/chronendite_encased_chain_drive"));
+            }
+            return modelBuilder;
         }
     }
 
@@ -309,9 +323,22 @@ public class BlockStateGenerators {
             var axis = state.getValue(ChronenditeSpeedControllerBlock.AXIS);
             var facing = ChronenditeSpeedControllerBlock.getDirectionFromState(state);
             if(axis.isHorizontal() && facing.getAxis().isHorizontal()){
-                return prov.models().getBuilder("block/" + ctx.getName() + "/block_horizontal").parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/rotation_speed_controller/block_horizontal")));
+                return prov.models().getBuilder("block/" + ctx.getName() + "/block_horizontal")
+                        .parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/rotation_speed_controller/block_horizontal")))
+                        .texture("0", prov.modLoc("block/chronendite_rotation_speed_controller"))
+                        .texture("5", prov.modLoc("block/chronendite_rotation_speed_controller_top"))
+                        .texture("6", prov.modLoc("block/chronendite_block"))
+                        .texture("7", prov.modLoc("block/chronendite_funnel_neutral"))
+                        .texture("particle", prov.modLoc("block/chronendite_block"));
             }
-            return prov.models().getBuilder("block/" + ctx.getName() + "/block").parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath("create", "block/rotation_speed_controller/block")));
+            return prov.models().getBuilder("block/" + ctx.getName() + "/block")
+                    .parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath("create", "block/rotation_speed_controller/block")))
+                    .texture("0", prov.modLoc("block/chronendite_rotation_speed_controller"))
+                    .texture("4", prov.modLoc("block/chronendite_gearbox"))
+                    .texture("5", prov.modLoc("block/chronendite_rotation_speed_controller_top"))
+                    .texture("6", prov.modLoc("block/chronendite_block"))
+                    .texture("7", prov.modLoc("block/chronendite_funnel_neutral"))
+                    .texture("particle", prov.modLoc("block/chronendite_block"));
         }
     }
 }

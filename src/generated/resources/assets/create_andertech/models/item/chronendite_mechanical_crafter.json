@@ -1,3 +1,11 @@
 {
-  "parent": "create:block/mechanical_crafter/item"
+  "parent": "create:block/mechanical_crafter/item",
+  "textures": {
+    "4": "create_andertech:block/chronendite_crafter_side",
+    "5": "create_andertech:block/chronendite_casing",
+    "7": "create_andertech:block/chronendite_block",
+    "8": "create_andertech:block/smooth_birch_log_top",
+    "9": "create_andertech:block/warped_cogwheel",
+    "particle": "create_andertech:block/chronendite_casing"
+  }
 }

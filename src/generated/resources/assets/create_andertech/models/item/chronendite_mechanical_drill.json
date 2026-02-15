@@ -2,6 +2,8 @@
   "parent": "create:block/mechanical_drill/item",
   "textures": {
     "0": "create_andertech:block/crimschist_axis_top",
-    "1": "create_andertech:block/crimschist_axis"
+    "1": "create_andertech:block/crimschist_axis",
+    "10": "create_andertech:block/chronendite_casing_very_short",
+    "gearbox": "create_andertech:block/chronendite_gearbox"
   }
 }

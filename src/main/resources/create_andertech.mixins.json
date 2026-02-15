@@ -19,7 +19,8 @@
     "ServerGamePacketListenerAccessor",
     "belt.BeltBlockEntityMixin",
     "belt.BeltCrusherInteractionHandlerMixin",
-    "belt.BeltMovementHandlerMixin"
+    "belt.BeltMovementHandlerMixin",
+    "belt.BeltVisualMixin"
   ],
   "injectors": {
     "defaultRequire": 1

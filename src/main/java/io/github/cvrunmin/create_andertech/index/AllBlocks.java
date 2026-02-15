@@ -1,5 +1,6 @@
 package io.github.cvrunmin.create_andertech.index;
 
+import com.simibubi.create.AllDisplaySources;
 import com.simibubi.create.AllSpriteShifts;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.Create;
@@ -73,6 +74,7 @@ import net.neoforged.neoforge.client.model.generators.ModelFile;
 
 import java.util.Map;
 
+import static com.simibubi.create.api.behaviour.display.DisplaySource.displaySource;
 import static com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour.interactionBehaviour;
 import static com.simibubi.create.api.behaviour.movement.MovementBehaviour.movementBehaviour;
 import static com.simibubi.create.foundation.data.BlockStateGen.axisBlock;
@@ -186,7 +188,7 @@ public class AllBlocks {
     public static final BlockEntry<CrimschistGearboxBlock> CRIMSCHIST_GEARBOX = REGISTRATE.block("crimschist_gearbox", CrimschistGearboxBlock::new)
             .initialProperties(SharedProperties::stone)
             .properties(p -> p.noOcclusion()
-                    .mapColor(MapColor.PODZOL))
+                    .mapColor(MapColor.WARPED_NYLIUM))
             .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 0))
             .transform(axeOrPickaxe())
             .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(CAAllSpriteShifts.CRIMSCHIST_CASING)))
@@ -289,8 +291,13 @@ public class AllBlocks {
                                         .texture("side", p.modLoc("block/encased_crimschist_chain_drive"))
                                         .texture("particle", p.modLoc("block/encased_crimschist_chain_drive"))
                                         ;
-                                if(state.getValue(CrimschistChainDriveBlock.PART) == CrimschistChainDriveBlock.Part.NONE){
+                                CrimschistChainDriveBlock.Part stateValue = state.getValue(CrimschistChainDriveBlock.PART);
+                                if(stateValue == CrimschistChainDriveBlock.Part.NONE){
                                     modelBuilder.texture("1", p.modLoc("block/crimschist_gearbox"));
+                                } else if (stateValue == CrimschistChainDriveBlock.Part.MIDDLE) {
+                                    modelBuilder.texture("1", p.modLoc("block/crimschist_encased_chain_drive_middle"));
+                                } else if (stateValue == CrimschistChainDriveBlock.Part.START || stateValue == CrimschistChainDriveBlock.Part.END) {
+                                    modelBuilder.texture("2", p.modLoc("block/crimschist_encased_chain_drive_end"));
                                 }
                                 return modelBuilder;
                             }).generate(c, p))
@@ -313,9 +320,9 @@ public class AllBlocks {
             .transform(axeOrPickaxe())
             .blockstate(new BlockStateGenerators.Belt()::generate)
             .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 0))
-//            .transform(displaySource(AllDisplaySources.ITEM_NAMES))
+            .transform(displaySource(AllDisplaySources.ITEM_NAMES))
             .onRegister(CreateRegistrate.blockModel(() -> BeltModel::new))
-            .clientExtension(() -> () -> new BeltBlock.RenderProperties())
+            .clientExtension(() -> OCBeltBlock.RenderProperties::new)
             .register();
 
     public static final BlockEntry<CreativeOCMotorBlock> CREATIVE_OC_MOTOR =
@@ -340,24 +347,46 @@ public class AllBlocks {
     public static final BlockEntry<ChronenditeEncasedFanBlock> CHRONENDITE_ENCASED_FAN = REGISTRATE.block("chronendite_encased_fan", prop -> new ChronenditeEncasedFanBlock(prop, false))
             .initialProperties(SharedProperties::stone)
             .properties(p -> p.mapColor(MapColor.PODZOL))
-            .blockstate(BlockStateGenerators.textureOverrideDirectionalBlockProvider(true, "create", "encased_fan", Map.ofEntries()))
+            .blockstate(BlockStateGenerators.textureOverrideDirectionalBlockProvider(true, "create", "encased_fan", Map.ofEntries(
+                    Map.entry("3", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_funnel_frame")),
+                    Map.entry("back", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_gearbox")),
+                    Map.entry("fan_side", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_fan_side")),
+                    Map.entry("particle", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_fan_side"))
+            )))
             .addLayer(() -> RenderType::cutoutMipped)
             .transform(axeOrPickaxe())
             .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 2.0))
             .item()
-            .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/encased_fan/item")))
+            .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/encased_fan/item"), Map.ofEntries(
+                    Map.entry("axis", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis")),
+                    Map.entry("axis_top", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis_top")),
+                    Map.entry("2", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_gearbox")),
+                    Map.entry("fan_side", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_fan_side")),
+                    Map.entry("particle", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_fan_side"))
+            )))
             .register();
 
     public static final BlockEntry<ChronenditeEncasedFanBlock> CHRONENDITE_HV_ENCASED_FAN = REGISTRATE.block("chronendite_hv_encased_fan", prop -> new ChronenditeEncasedFanBlock(prop, true))
             .initialProperties(SharedProperties::stone)
             .properties(p -> p.mapColor(MapColor.PODZOL))
             .lang("Chronendite High Volume Encased Fan")
-            .blockstate(BlockStateGenerators.textureOverrideDirectionalBlockProvider(true, "create", "encased_fan", Map.ofEntries()))
+            .blockstate(BlockStateGenerators.textureOverrideDirectionalBlockProvider(true, "create", "encased_fan", Map.ofEntries(
+                    Map.entry("3", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_funnel_frame")),
+                    Map.entry("back", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_gearbox")),
+                    Map.entry("fan_side", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_fan_side_hv")),
+                    Map.entry("particle", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_fan_side_hv"))
+            )))
             .addLayer(() -> RenderType::cutoutMipped)
             .transform(axeOrPickaxe())
             .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 2.0))
             .item()
-            .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/encased_fan/item")))
+            .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/encased_fan/item"), Map.ofEntries(
+                    Map.entry("axis", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis")),
+                    Map.entry("axis_top", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis_top")),
+                    Map.entry("2", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_gearbox")),
+                    Map.entry("fan_side", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_fan_side_hv")),
+                    Map.entry("particle", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_fan_side_hv"))
+            )))
             .register();
 
     public static final BlockEntry<ChronenditeCrushWheelBlock> CHRONENDITE_CRUSHING_WHEEL =
@@ -366,11 +395,19 @@ public class AllBlocks {
                     .initialProperties(SharedProperties::stone)
                     .properties(BlockBehaviour.Properties::noOcclusion)
                     .transform(pickaxeOnly())
-                    .blockstate(BlockStateGenerators.textureOverrideAxisBlockProvider(true, "create", "crushing_wheel", Map.ofEntries()))
+                    .blockstate(BlockStateGenerators.textureOverrideAxisBlockProvider(true, "create", "crushing_wheel", Map.ofEntries(
+                            Map.entry("axis", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis")),
+                            Map.entry("axis_top", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis_top")),
+                            Map.entry("spruce_log_top", ResourceLocation.withDefaultNamespace("block/warped_stem_top"))
+                    )))
                     .addLayer(() -> RenderType::cutoutMipped)
                     .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 8.0))
                     .item()
-                    .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/crushing_wheel/item")))
+                    .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/crushing_wheel/item"), Map.ofEntries(
+                            Map.entry("axis", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis")),
+                            Map.entry("axis_top", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis_top")),
+                            Map.entry("spruce_log_top", ResourceLocation.withDefaultNamespace("block/warped_stem_top"))
+                    )))
                     .register();
 
     public static final BlockEntry<ChronenditeCrushWheelControllerBlock> CHRONENDITE_CRUSHING_WHEEL_CONTROLLER =
@@ -389,14 +426,25 @@ public class AllBlocks {
             REGISTRATE.block("chronendite_mechanical_press", ChronenditeMechanicalPressBlock::new)
                     .initialProperties(SharedProperties::stone)
                     .properties(p -> p.noOcclusion()
-                            .mapColor(MapColor.PODZOL))
+                            .mapColor(MapColor.SAND))
                     .transform(axeOrPickaxe())
                     .blockstate(BlockStateGenerators.textureOverrideHorizontalBlockProvider(true, "create", "mechanical_press", Map.ofEntries(
-
+                        Map.entry("4", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_mechanical_press_side")),
+                        Map.entry("particle", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_mechanical_press_side")),
+                        Map.entry("gearbox_top", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_gearbox_top")),
+                        Map.entry("gearbox", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_gearbox")),
+                        Map.entry("mechanical_press_top", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_mechanical_press_top")),
+                        Map.entry("mechanical_press_bottom", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_mechanical_press_bottom"))
                     )))
                     .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 8))
                     .item(AssemblyOperatorBlockItem::new)
                     .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/mechanical_press/item"), Map.ofEntries(
+                            Map.entry("8", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_mechanical_press_side")),
+                            Map.entry("particle", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_mechanical_press_side")),
+                            Map.entry("gearbox_top", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_gearbox_top")),
+                            Map.entry("gearbox", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_gearbox")),
+                            Map.entry("mechanical_press_top", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_mechanical_press_top")),
+                            Map.entry("mechanical_press_bottom", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_mechanical_press_bottom")),
                             Map.entry("0", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis")),
                             Map.entry("1", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis_top"))
                     )))
@@ -412,22 +460,33 @@ public class AllBlocks {
                     .blockstate((c, p) -> p.simpleBlock(c.getEntry(), p.models()
                             .getBuilder("block/" + c.getName() + "/block")
                             .parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(Create.ID, "block/mechanical_mixer/block")))
+                            .texture("2", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/smooth_birch_log_top"))
+                            .texture("4", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_mixer_base_side"))
+                            .texture("11", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_mechanical_press_top"))
+                            .texture("particle", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_mixer_base_side"))
                     ))
                     .addLayer(() -> RenderType::cutoutMipped)
                     .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 4))
                     .item(AssemblyOperatorBlockItem::new)
                     .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/mechanical_mixer/item"), Map.ofEntries(
-                            Map.entry("1_2", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/warped_cogwheel"))
+                            Map.entry("1_2", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/warped_cogwheel")),
+                            Map.entry("2", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/smooth_birch_log_top")),
+                            Map.entry("4", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_mixer_base_side")),
+                            Map.entry("11", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_mechanical_press_top")),
+                            Map.entry("particle", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_mixer_base_side"))
                     )))
                     .register();
 
 
     public static final BlockEntry<ChronenditeDrillBlock> CHRONENDITE_MECHANICAL_DRILL = REGISTRATE.block("chronendite_mechanical_drill", ChronenditeDrillBlock::new)
             .initialProperties(SharedProperties::stone)
-            .properties(p -> p.mapColor(MapColor.PODZOL))
+            .properties(p -> p.mapColor(MapColor.SAND))
             .transform(axeOrPickaxe())
             .blockstate(BlockStateGenerators.textureOverrideDirectionalBlockProvider(true, "create", "mechanical_drill", Map.ofEntries(
-
+                Map.entry("10", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_casing_very_short")),
+                Map.entry("gearbox_top", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_gearbox_top")),
+                Map.entry("particle", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_gearbox")),
+                Map.entry("gearbox", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_gearbox"))
             )))
             .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 4))
             .onRegister(movementBehaviour(new ChronenditeDrillMovementBehaviour()))
@@ -435,7 +494,9 @@ public class AllBlocks {
             .tag(AllTags.AllItemTags.CONTRAPTION_CONTROLLED.tag)
             .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/mechanical_drill/item"), Map.ofEntries(
                     Map.entry("0", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis_top")),
-                    Map.entry("1", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis"))
+                    Map.entry("1", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis")),
+                    Map.entry("10", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_casing_very_short")),
+                    Map.entry("gearbox", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_gearbox"))
             )))
             .register();
 
@@ -443,7 +504,7 @@ public class AllBlocks {
     public static final BlockEntry<ChronenditeSawBlock> CHRONENDITE_MECHANICAL_SAW = REGISTRATE.block("chronendite_mechanical_saw", ChronenditeSawBlock::new)
             .initialProperties(SharedProperties::stone)
             .addLayer(() -> RenderType::cutoutMipped)
-            .properties(p -> p.mapColor(MapColor.PODZOL))
+            .properties(p -> p.mapColor(MapColor.SAND))
             .transform(axeOrPickaxe())
             .blockstate(new BlockStateGenerators.Saw()::generate)
             .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 4))
@@ -451,7 +512,14 @@ public class AllBlocks {
             .addLayer(() -> RenderType::cutoutMipped)
             .item()
             .tag(AllTags.AllItemTags.CONTRAPTION_CONTROLLED.tag)
-            .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/mechanical_saw/item")))
+            .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/mechanical_saw/item"), Map.ofEntries(
+                    Map.entry("slit", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_mechanical_saw_top_no_slot")),
+                    Map.entry("particle", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_gearbox_top")),
+                    Map.entry("gearbox_top", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_gearbox_top")),
+                    Map.entry("encased_belt", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_encased_chain_drive")),
+                    Map.entry("gearbox", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_gearbox")),
+                    Map.entry("andesite_casing_short", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_casing_short"))
+            )))
             .register();
 
 
@@ -459,20 +527,39 @@ public class AllBlocks {
             .initialProperties(SharedProperties::stone)
             .properties(p -> p.mapColor(MapColor.PODZOL))
             .transform(axeOrPickaxe())
-            .blockstate(BlockStateGenerators.textureOverrideDirectionalAxisBlockProvider("create", "deployer", Map.ofEntries()))
+            .blockstate(BlockStateGenerators.textureOverrideDirectionalAxisBlockProvider("create", "deployer", Map.ofEntries(
+                    Map.entry("5", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_casing_piston")),
+                    Map.entry("6", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_piston_bottom")),
+                    Map.entry("7", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_piston_inner")),
+                    Map.entry("particle", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_gearbox_top")),
+                    Map.entry("gearbox_top", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_gearbox_top")),
+                    Map.entry("gearbox", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_gearbox")),
+                    Map.entry("andesite_casing_short", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_casing_short"))
+            )))
             .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 4.0))
             .onRegister(movementBehaviour(new DeployerMovementBehaviour()))
             .onRegister(interactionBehaviour(new DeployerMovingInteraction()))
             .item(AssemblyOperatorBlockItem::new)
             .tag(AllTags.AllItemTags.CONTRAPTION_CONTROLLED.tag)
-            .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/deployer/item")))
+            .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/deployer/item"), Map.ofEntries(
+                    Map.entry("0", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis_top")),
+                    Map.entry("1", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis")),
+                    Map.entry("6", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_piston_bottom")),
+                    Map.entry("7", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_piston_inner")),
+                    Map.entry("10", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_casing_piston")),
+                    Map.entry("particle", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis")),
+                    Map.entry("gearbox_top", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_gearbox_top")),
+                    Map.entry("gearbox", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_gearbox")),
+                    Map.entry("andesite_casing_short", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_casing_short"))
+
+            )))
             .register();
 
     public static final BlockEntry<ChronenditeMechanicalBearingBlock> CHRONENDITE_MECHANICAL_BEARING =
             REGISTRATE.block("chronendite_mechanical_bearing", ChronenditeMechanicalBearingBlock::new)
                     .properties(p -> p.mapColor(MapColor.PODZOL))
                     .transform(axeOrPickaxe())
-                    .transform(VariousBuilders.chronenditeBearing("mechanical", "gearbox"))
+                    .transform(VariousBuilders.chronenditeBearing("chronendite_mechanical", "chronendite_gearbox"))
                     .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 4))
                     .tag(AllTags.AllBlockTags.SAFE_NBT.tag)
                     .onRegister(movementBehaviour(new StabilizedBearingMovementBehaviour()))
@@ -487,7 +574,16 @@ public class AllBlocks {
                 .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 0))
                 .blockstate(new BlockStateGenerators.SpeedController()::generate)
                 .item()
-                .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/rotation_speed_controller/item")))
+                .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/rotation_speed_controller/item"),Map.ofEntries(
+                        Map.entry("0", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis")),
+                        Map.entry("3", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis_top")),
+                        Map.entry("4", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_gearbox")),
+                        Map.entry("7", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_funnel_neutral")),
+                        Map.entry("9", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_block")),
+                        Map.entry("particle", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_gearbox")),
+                        Map.entry("1_0", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_rotation_speed_controller")),
+                        Map.entry("1_5", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_rotation_speed_controller_top"))
+                )))
                 .register();
 
     public static final BlockEntry<ChronenditeMechanicalCrafterBlock> CHRONENDITE_MECHANICAL_CRAFTER =
@@ -496,12 +592,25 @@ public class AllBlocks {
                     .properties(p -> p.noOcclusion()
                             .mapColor(MapColor.TERRACOTTA_YELLOW))
                     .transform(axeOrPickaxe())
-                    .blockstate(BlockStateGenerators.textureOverrideHorizontalBlockProvider(true, "create", "mechanical_crafter", Map.ofEntries()))
+                    .blockstate(BlockStateGenerators.textureOverrideHorizontalBlockProvider(true, "create", "mechanical_crafter", Map.ofEntries(
+                            Map.entry("4", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_crafter_side")),
+                            Map.entry("5", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_casing")),
+                            Map.entry("7", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_block")),
+                            Map.entry("8", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/smooth_birch_log_top")),
+                            Map.entry("particle", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_casing"))
+                    )))
                     .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 2.0))
                     .onRegister(CreateRegistrate.connectedTextures(OCCrafterCTBehaviour::new))
                     .addLayer(() -> RenderType::cutoutMipped)
                     .item()
-                    .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/mechanical_crafter/item")))
+                    .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/mechanical_crafter/item"), Map.ofEntries(
+                            Map.entry("4", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_crafter_side")),
+                            Map.entry("5", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_casing")),
+                            Map.entry("7", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_block")),
+                            Map.entry("8", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/smooth_birch_log_top")),
+                            Map.entry("9", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/warped_cogwheel")),
+                            Map.entry("particle", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_casing"))
+                    )))
                     .register();
 
 

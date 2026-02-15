@@ -1,3 +1,9 @@
 {
-  "parent": "create:block/mechanical_drill/block"
+  "parent": "create:block/mechanical_drill/block",
+  "textures": {
+    "10": "create_andertech:block/chronendite_casing_very_short",
+    "gearbox": "create_andertech:block/chronendite_gearbox",
+    "gearbox_top": "create_andertech:block/chronendite_gearbox_top",
+    "particle": "create_andertech:block/chronendite_gearbox"
+  }
 }
