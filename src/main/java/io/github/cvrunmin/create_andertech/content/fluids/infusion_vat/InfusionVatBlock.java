@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -21,6 +22,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class InfusionVatBlock extends Block implements IWrenchable, IBE<InfusionVatBlockEntity> {
     public static final BooleanProperty TOP = BooleanProperty.create("top");
@@ -58,6 +62,23 @@ public class InfusionVatBlock extends Block implements IWrenchable, IBE<Infusion
         if (movedByPiston)
             return;
         withBlockEntityDo(level, pos, InfusionVatBlockEntity::updateConnectivity);
+    }
+
+
+    static final VoxelShape CLIP = Block.box(0, 0.1, 0, 16, 16, 16);
+
+    @Override
+    public VoxelShape getCollisionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos,
+                                        CollisionContext pContext) {
+        if (pContext == CollisionContext.empty())
+            return Block.box(0, 0.1, 0, 16, 16, 16);
+//            return CLIP;
+        return pState.getShape(pLevel, pPos);
+    }
+
+    @Override
+    public VoxelShape getBlockSupportShape(BlockState pState, BlockGetter pReader, BlockPos pPos) {
+        return Shapes.block();
     }
 
     @Override

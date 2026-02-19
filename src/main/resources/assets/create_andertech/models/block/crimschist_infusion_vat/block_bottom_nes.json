@@ -1,0 +1,81 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"1": "create_andertech:block/crimschist_fluid_tank",
+		"2": "create_andertech:block/crimschist_fluid_tank_inner",
+		"3": "create_andertech:block/crimschist_fluid_tank_top",
+		"4": "create_andertech:block/crimschist_infusion_vat_window_pane",
+		"particle": "create_andertech:block/crimschist_fluid_tank"
+	},
+	"elements": [
+		{
+			"name": "Bottom",
+			"from": [0, 0, 0],
+			"to": [16, 3, 16],
+			"faces": {
+				"north": {"uv": [0, 13, 16, 16], "texture": "#1", "cullface": "north"},
+				"east": {"uv": [0, 13, 16, 16], "texture": "#1", "cullface": "east"},
+				"south": {"uv": [0, 13, 16, 16], "texture": "#1", "cullface": "south"},
+				"west": {"uv": [0, 13, 16, 16], "texture": "#1", "cullface": "west"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#2"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#3", "cullface": "down"}
+			}
+		},
+		{
+			"name": "Frame",
+			"from": [14, 3, 14],
+			"to": [16, 16, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [14, 3, 14]},
+			"faces": {
+				"north": {"uv": [0, 0, 2, 13], "texture": "#1", "cullface": "north"},
+				"east": {"uv": [0, 0, 2, 13], "texture": "#1"},
+				"south": {"uv": [14, 0, 16, 13], "texture": "#1"},
+				"west": {"uv": [14, 0, 16, 13], "texture": "#1", "cullface": "west"}
+			}
+		},
+		{
+			"name": "Frame",
+			"from": [14, 3, 0],
+			"to": [16, 16, 2],
+			"rotation": {"angle": 0, "axis": "y", "origin": [14, 3, 0]},
+			"faces": {
+				"north": {"uv": [0, 0, 2, 13], "texture": "#1", "cullface": "north"},
+				"east": {"uv": [14, 0, 16, 13], "texture": "#1", "cullface": "east"},
+				"south": {"uv": [14, 0, 16, 13], "texture": "#1"},
+				"west": {"uv": [0, 0, 2, 13], "texture": "#1"}
+			}
+		},
+		{
+			"name": "Frame_window",
+			"from": [14, 3, 2],
+			"to": [15, 16, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"east": {"uv": [8, 1, 14, 7.5], "texture": "#4", "cullface": "north"},
+				"west": {"uv": [8, 1, 14, 7.5], "texture": "#4"}
+			}
+		},
+		{
+			"name": "Frame_window",
+			"from": [0, 3, 14],
+			"to": [14, 16, 15],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [0, 1, 7, 7.5], "texture": "#4"},
+				"south": {"uv": [1, 1, 8, 7.5], "texture": "#4", "cullface": "east"}
+			}
+		},
+		{
+			"name": "Frame_window",
+			"from": [0, 3, 1],
+			"to": [14, 16, 2],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [0, 1, 7, 7.5], "texture": "#4", "cullface": "west"},
+				"south": {"uv": [1, 1, 8, 7.5], "texture": "#4"}
+			}
+		}
+	]
+}

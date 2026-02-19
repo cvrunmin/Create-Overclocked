@@ -7,7 +7,7 @@
 		"2": "create_andertech:block/crimschist_fluid_tank_inner",
 		"3": "create_andertech:block/crimschist_fluid_tank_top",
 		"4": "create_andertech:block/crimschist_infusion_vat_window_pane",
-		"particle": "create_andertech:block/crimschist_infusion_vat_window_pane"
+		"particle": "create_andertech:block/crimschist_fluid_tank"
 	},
 	"elements": [
 		{

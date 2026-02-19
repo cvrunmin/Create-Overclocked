@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/air",
+  "textures": {
+    "particle": "create_andertech:block/crimschist_fluid_tank"
+  }
+}

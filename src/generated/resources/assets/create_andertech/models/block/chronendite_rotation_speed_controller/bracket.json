@@ -1,5 +1,5 @@
 {
-  "parent": "create:block/rotation_speed_controller",
+  "parent": "create:block/rotation_speed_controller/bracket",
   "textures": {
     "2": "create_andertech:block/chronendite_casing",
     "4": "create_andertech:block/chronendite_block",

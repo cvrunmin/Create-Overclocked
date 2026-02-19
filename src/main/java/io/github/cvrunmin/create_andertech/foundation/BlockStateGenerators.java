@@ -455,11 +455,13 @@ public class BlockStateGenerators {
                 if (south && (north || east && west)) corner += "s";
                 if (west) corner += "w";
             }
-            if(!top && !bottom && corner.length() == 1){
+            if(!top && !bottom && corner.length() == 1 && !corner.equals("c")){
                 corner = "n"; // either 'n', 'e', 's', or 'w'. simplify to 'n'
             }
             String modelName = shapeName + (corner.isEmpty() ? "" : "_" + corner);
-            if(!bottom && center) return prov.models().getExistingFile(prov.mcLoc("block/air"));
+            if(!bottom && center) return AssetLookupWithParent.specifiedModel(ctx, prov, "block/" + ctx.getName() + "/block_" + modelName, "minecraft", "block/air", Map.ofEntries(
+                    Map.entry("particle", ResourceLocation.parse("create_andertech:block/crimschist_fluid_tank"))
+            ));
             return AssetLookup.partialBaseModel(ctx, prov, modelName);
         }
     }

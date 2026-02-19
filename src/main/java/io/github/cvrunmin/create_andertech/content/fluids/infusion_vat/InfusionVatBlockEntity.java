@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 
 import java.util.List;
 import java.util.Objects;
@@ -267,5 +268,14 @@ public class InfusionVatBlockEntity extends SmartBlockEntity implements IHaveGog
         refreshCapability();
         setChanged();
         sendData();
+    }
+
+
+    @Override
+    protected AABB createRenderBoundingBox() {
+        if (isController())
+            return super.createRenderBoundingBox().expandTowards(xLen - 1, height - 1, zLen - 1);
+        else
+            return super.createRenderBoundingBox();
     }
 }

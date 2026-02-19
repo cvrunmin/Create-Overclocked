@@ -1,4 +1,4 @@
-// 1.21.1	2026-02-19T14:17:59.8927639	Registrate Provider for create_andertech [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
+// 1.21.1	2026-02-19T19:44:14.7664014	Registrate Provider for create_andertech [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
 98d26546200e4b2c0a00643fc9f027b49ef4594b assets/create_andertech/blockstates/andesite_encased_crimschist_cogwheel.json
 4dc0142d21221d69b52fb1acf47b46dc184a78a0 assets/create_andertech/blockstates/andesite_encased_crimschist_large_cogwheel.json
 4946d26000065d09b51752b6ad34d0050f829a0d assets/create_andertech/blockstates/andesite_encased_crimschist_shaft.json
@@ -27,7 +27,7 @@ c0d4a77d594569587d6399288a31630ff8c0e6e4 assets/create_andertech/blockstates/cri
 a0a776bf02e5f5b84ceda1dca66ee5e821f826c1 assets/create_andertech/blockstates/crimschist_fluid_tank.json
 5d10469b8afbb06760e54671e44b73e9e8af55ba assets/create_andertech/blockstates/crimschist_gearbox.json
 909f45332d6688ba3f7c6ea147c8a926937f3a6f assets/create_andertech/blockstates/crimschist_gearshift.json
-8f9595862f1d72a51bd9fb379aadcde894575f20 assets/create_andertech/blockstates/crimschist_infusion_vat.json
+c808263c80d12b95873c28baf46388f9d0822017 assets/create_andertech/blockstates/crimschist_infusion_vat.json
 a736e133ef198e680128c4980e908a1b7842271c assets/create_andertech/blockstates/crimschist_large_cogwheel.json
 c4ec6bd94d2a2a9df47e7c822f82f5a1b2105780 assets/create_andertech/blockstates/crimschist_shaft.json
 93af5f7fc6b6c063bcbfbf7eb375320b351df13d assets/create_andertech/blockstates/encased_crimschist_chain_drive.json
@@ -68,7 +68,7 @@ b28a2b5d512bf62b7d33d142323e2cc61a7956f3 assets/create_andertech/models/block/ch
 93293c4f6f116884d05bf3dd56f5c76c899e4824 assets/create_andertech/models/block/chronendite_mechanical_saw/vertical.json
 a2fa0dfc65b0af0c4faf93e14e6891b0bf79dcc9 assets/create_andertech/models/block/chronendite_rotation_speed_controller/block.json
 fd0a366591e357bdc0e0f7ca7b5d9ee12588e43f assets/create_andertech/models/block/chronendite_rotation_speed_controller/block_horizontal.json
-3990bdadfdc89a468bf531b8fef69c3365e6fcd9 assets/create_andertech/models/block/chronendite_rotation_speed_controller/bracket.json
+1fa65efc8a3aebde5fa69dded2167950005b8ffc assets/create_andertech/models/block/chronendite_rotation_speed_controller/bracket.json
 67d2a7e32a6b98c330c4e02da034437d8b088f11 assets/create_andertech/models/block/chronendite_solution.json
 75a91f9370eb40c341c806673099e5fb913728ae assets/create_andertech/models/block/creative_oc_motor/block.json
 24074bd560a447049d318790c546f94a965f56be assets/create_andertech/models/block/creative_oc_motor/block_vertical.json
@@ -105,6 +105,8 @@ f350263bdef210dd3f6797d2ade1a092808e004d assets/create_andertech/models/block/cr
 da200f084a5d72c0f16ce75badbb9dc7679e7e9b assets/create_andertech/models/block/crimschist_gearbox/item_vertical.json
 1fb440e25de719ea188f16ff5d7eeb7148eccc52 assets/create_andertech/models/block/crimschist_gearshift/block.json
 ef48bab1c8d6fbd3398a6eddf156ab4389aa3059 assets/create_andertech/models/block/crimschist_gearshift/block_powered.json
+586c6476762637e3459486fdf19632f596a932d9 assets/create_andertech/models/block/crimschist_infusion_vat/block_middle_c.json
+586c6476762637e3459486fdf19632f596a932d9 assets/create_andertech/models/block/crimschist_infusion_vat/block_top_c.json
 42f4c3ee154539b4526ddec8e4fe9ab72f9879d0 assets/create_andertech/models/block/crimschist_large_cogwheel.json
 796170edec24d0c79c8379e175142bd91ca2a230 assets/create_andertech/models/block/encased_crimschist_chain_drive/end_horizontal.json
 da0bcec2dec61a92304f90f5b95c5c81f3bd3784 assets/create_andertech/models/block/encased_crimschist_chain_drive/end_vertical.json

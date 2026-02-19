@@ -1,0 +1,79 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"1": "create_andertech:block/crimschist_fluid_tank",
+		"4": "create_andertech:block/crimschist_infusion_vat_window_pane_side",
+		"particle": "create_andertech:block/crimschist_fluid_tank"
+	},
+	"elements": [
+		{
+			"name": "Frame",
+			"from": [14, 0, 14],
+			"to": [16, 16, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [14, 3, 14]},
+			"faces": {
+				"north": {"uv": [0, 0, 2, 16], "texture": "#1", "cullface": "north"},
+				"east": {"uv": [0, 0, 2, 16], "texture": "#1"},
+				"south": {"uv": [14, 0, 16, 16], "texture": "#1"},
+				"west": {"uv": [14, 0, 16, 16], "texture": "#1", "cullface": "west"}
+			}
+		},
+		{
+			"name": "Frame",
+			"from": [0, 0, 14],
+			"to": [2, 16, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 3, 14]},
+			"faces": {
+				"north": {"uv": [14, 0, 16, 16], "texture": "#1", "cullface": "north"},
+				"east": {"uv": [0, 0, 2, 16], "texture": "#1", "cullface": "east"},
+				"south": {"uv": [0, 0, 2, 16], "texture": "#1"},
+				"west": {"uv": [14, 0, 16, 16], "texture": "#1"}
+			}
+		},
+		{
+			"name": "Frame_window",
+			"from": [2, 0, 14],
+			"to": [14, 16, 15],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [8, 8, 14, 16], "texture": "#4"},
+				"south": {"uv": [8, 8, 14, 16], "texture": "#4", "cullface": "north"}
+			}
+		},
+		{
+			"name": "Frame_window",
+			"from": [1, 0, 0],
+			"to": [2, 16, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"east": {"uv": [8, 0, 15, 8], "texture": "#4"},
+				"west": {"uv": [9, 0, 16, 8], "texture": "#4", "cullface": "east"}
+			}
+		},
+		{
+			"name": "Frame_window",
+			"from": [14, 0, 0],
+			"to": [15, 16, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"east": {"uv": [8, 0, 15, 8], "texture": "#4", "cullface": "west"},
+				"west": {"uv": [9, 0, 16, 8], "texture": "#4"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "Top",
+			"origin": [8, 13, 8],
+			"color": 0,
+			"children": []
+		},
+		0,
+		1,
+		2,
+		3,
+		4
+	]
+}

@@ -1,0 +1,199 @@
+{
+  "variants": {
+    "bottom=false,east=false,north=false,south=false,top=false,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_middle_c"
+    },
+    "bottom=false,east=false,north=false,south=false,top=false,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_middle_n",
+      "y": 270
+    },
+    "bottom=false,east=false,north=false,south=false,top=true,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_top_c"
+    },
+    "bottom=false,east=false,north=false,south=false,top=true,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_top_w"
+    },
+    "bottom=false,east=false,north=false,south=true,top=false,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_middle_n",
+      "y": 180
+    },
+    "bottom=false,east=false,north=false,south=true,top=false,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_middle_sw"
+    },
+    "bottom=false,east=false,north=false,south=true,top=true,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_top_s"
+    },
+    "bottom=false,east=false,north=false,south=true,top=true,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_top_sw"
+    },
+    "bottom=false,east=false,north=true,south=false,top=false,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_middle_n"
+    },
+    "bottom=false,east=false,north=true,south=false,top=false,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_middle_nw"
+    },
+    "bottom=false,east=false,north=true,south=false,top=true,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_top_n"
+    },
+    "bottom=false,east=false,north=true,south=false,top=true,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_top_nw"
+    },
+    "bottom=false,east=false,north=true,south=true,top=false,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_middle_ns"
+    },
+    "bottom=false,east=false,north=true,south=true,top=false,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_middle_nsw"
+    },
+    "bottom=false,east=false,north=true,south=true,top=true,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_top_ns"
+    },
+    "bottom=false,east=false,north=true,south=true,top=true,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_top_nsw"
+    },
+    "bottom=false,east=true,north=false,south=false,top=false,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_middle_n",
+      "y": 90
+    },
+    "bottom=false,east=true,north=false,south=false,top=false,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_middle_ew"
+    },
+    "bottom=false,east=true,north=false,south=false,top=true,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_top_e"
+    },
+    "bottom=false,east=true,north=false,south=false,top=true,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_top_ew"
+    },
+    "bottom=false,east=true,north=false,south=true,top=false,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_middle_se"
+    },
+    "bottom=false,east=true,north=false,south=true,top=false,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_middle_esw"
+    },
+    "bottom=false,east=true,north=false,south=true,top=true,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_top_se"
+    },
+    "bottom=false,east=true,north=false,south=true,top=true,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_top_esw"
+    },
+    "bottom=false,east=true,north=true,south=false,top=false,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_middle_ne"
+    },
+    "bottom=false,east=true,north=true,south=false,top=false,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_middle_new"
+    },
+    "bottom=false,east=true,north=true,south=false,top=true,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_top_ne"
+    },
+    "bottom=false,east=true,north=true,south=false,top=true,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_top_new"
+    },
+    "bottom=false,east=true,north=true,south=true,top=false,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_middle_nes"
+    },
+    "bottom=false,east=true,north=true,south=true,top=false,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_middle"
+    },
+    "bottom=false,east=true,north=true,south=true,top=true,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_top_nes"
+    },
+    "bottom=false,east=true,north=true,south=true,top=true,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_top"
+    },
+    "bottom=true,east=false,north=false,south=false,top=false,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_bottom_c"
+    },
+    "bottom=true,east=false,north=false,south=false,top=false,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_bottom_w"
+    },
+    "bottom=true,east=false,north=false,south=false,top=true,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_single_c"
+    },
+    "bottom=true,east=false,north=false,south=false,top=true,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_single_w"
+    },
+    "bottom=true,east=false,north=false,south=true,top=false,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_bottom_s"
+    },
+    "bottom=true,east=false,north=false,south=true,top=false,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_bottom_sw"
+    },
+    "bottom=true,east=false,north=false,south=true,top=true,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_single_s"
+    },
+    "bottom=true,east=false,north=false,south=true,top=true,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_single_sw"
+    },
+    "bottom=true,east=false,north=true,south=false,top=false,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_bottom_n"
+    },
+    "bottom=true,east=false,north=true,south=false,top=false,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_bottom_nw"
+    },
+    "bottom=true,east=false,north=true,south=false,top=true,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_single_n"
+    },
+    "bottom=true,east=false,north=true,south=false,top=true,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_single_nw"
+    },
+    "bottom=true,east=false,north=true,south=true,top=false,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_bottom_ns"
+    },
+    "bottom=true,east=false,north=true,south=true,top=false,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_bottom_nsw"
+    },
+    "bottom=true,east=false,north=true,south=true,top=true,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_single_ns"
+    },
+    "bottom=true,east=false,north=true,south=true,top=true,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_single_nsw"
+    },
+    "bottom=true,east=true,north=false,south=false,top=false,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_bottom_e"
+    },
+    "bottom=true,east=true,north=false,south=false,top=false,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_bottom_ew"
+    },
+    "bottom=true,east=true,north=false,south=false,top=true,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_single_e"
+    },
+    "bottom=true,east=true,north=false,south=false,top=true,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_single_ew"
+    },
+    "bottom=true,east=true,north=false,south=true,top=false,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_bottom_se"
+    },
+    "bottom=true,east=true,north=false,south=true,top=false,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_bottom_esw"
+    },
+    "bottom=true,east=true,north=false,south=true,top=true,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_single_se"
+    },
+    "bottom=true,east=true,north=false,south=true,top=true,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_single_esw"
+    },
+    "bottom=true,east=true,north=true,south=false,top=false,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_bottom_ne"
+    },
+    "bottom=true,east=true,north=true,south=false,top=false,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_bottom_new"
+    },
+    "bottom=true,east=true,north=true,south=false,top=true,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_single_ne"
+    },
+    "bottom=true,east=true,north=true,south=false,top=true,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_single_new"
+    },
+    "bottom=true,east=true,north=true,south=true,top=false,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_bottom_nes"
+    },
+    "bottom=true,east=true,north=true,south=true,top=false,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_bottom"
+    },
+    "bottom=true,east=true,north=true,south=true,top=true,west=false": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_single_nes"
+    },
+    "bottom=true,east=true,north=true,south=true,top=true,west=true": {
+      "model": "create_andertech:block/crimschist_infusion_vat/block_single"
+    }
+  }
+}
