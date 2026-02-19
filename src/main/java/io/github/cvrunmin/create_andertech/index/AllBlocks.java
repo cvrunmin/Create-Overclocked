@@ -1,15 +1,14 @@
 package io.github.cvrunmin.create_andertech.index;
 
-import com.simibubi.create.AllDisplaySources;
-import com.simibubi.create.AllSpriteShifts;
+import com.simibubi.create.*;
 import com.simibubi.create.AllTags;
-import com.simibubi.create.Create;
 import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.content.contraptions.bearing.StabilizedBearingMovementBehaviour;
 import com.simibubi.create.content.decoration.encasing.CasingBlock;
 import com.simibubi.create.content.decoration.encasing.EncasedCTBehaviour;
 import com.simibubi.create.content.decoration.encasing.EncasingRegistry;
 import com.simibubi.create.content.decoration.girder.ConnectedGirderModel;
+import com.simibubi.create.content.fluids.tank.*;
 import com.simibubi.create.content.kinetics.belt.BeltBlock;
 import com.simibubi.create.content.kinetics.belt.BeltModel;
 import com.simibubi.create.content.kinetics.crusher.CrushingWheelControllerBlock;
@@ -29,6 +28,8 @@ import io.github.cvrunmin.create_andertech.Constants;
 import io.github.cvrunmin.create_andertech.CreateAndertech;
 import io.github.cvrunmin.create_andertech.content.contraptions.bearing.ChronenditeMechanicalBearingBlock;
 import io.github.cvrunmin.create_andertech.content.decoration.GirderEncasedCrimschistShaftBlock;
+import io.github.cvrunmin.create_andertech.content.fluids.tank.CrimschistFluidTankBlock;
+import io.github.cvrunmin.create_andertech.content.fluids.tank.CrimschistFluidTankItem;
 import io.github.cvrunmin.create_andertech.content.kinetics.belt.OCBeltBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.chainDrive.CrimschistChainDriveBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.crafter.ChronenditeMechanicalCrafterBlock;
@@ -55,6 +56,7 @@ import io.github.cvrunmin.create_andertech.content.kinetics.transmission.Crimsch
 import io.github.cvrunmin.create_andertech.content.kinetics.transmission.CrimschistGearshiftBlock;
 import io.github.cvrunmin.create_andertech.foundation.AssetLookupWithParent;
 import io.github.cvrunmin.create_andertech.foundation.BlockStateGenerators;
+import io.github.cvrunmin.create_andertech.foundation.CullableCTModel;
 import io.github.cvrunmin.create_andertech.foundation.VariousBuilders;
 import net.createmod.catnip.data.Couple;
 import net.minecraft.client.renderer.RenderType;
@@ -77,6 +79,7 @@ import java.util.Map;
 import static com.simibubi.create.api.behaviour.display.DisplaySource.displaySource;
 import static com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour.interactionBehaviour;
 import static com.simibubi.create.api.behaviour.movement.MovementBehaviour.movementBehaviour;
+import static com.simibubi.create.api.contraption.storage.fluid.MountedFluidStorageType.mountedFluidStorage;
 import static com.simibubi.create.foundation.data.BlockStateGen.axisBlock;
 import static com.simibubi.create.foundation.data.TagGen.axeOrPickaxe;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
@@ -553,6 +556,21 @@ public class AllBlocks {
                     Map.entry("andesite_casing_short", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/chronendite_casing_short"))
 
             )))
+            .register();
+
+    public static final BlockEntry<CrimschistFluidTankBlock> CRIMSCHIST_FLUID_TANK = REGISTRATE.block("crimschist_fluid_tank", CrimschistFluidTankBlock::new)
+            .properties(p -> p.mapColor(MapColor.WARPED_NYLIUM).requiresCorrectToolForDrops().strength(3.0F, 6.0F).noOcclusion()
+                    .isRedstoneConductor((p1, p2, p3) -> true))
+            .transform(pickaxeOnly())
+            .blockstate(new BlockStateGenerators.FluidTank()::generate)
+            .onRegister(CreateRegistrate.blockModel(() -> ((bakedModel) -> new CullableCTModel(bakedModel, new FluidTankCTBehaviour(CAAllSpriteShifts.CRIMSCHIST_FLUID_TANK, CAAllSpriteShifts.CRIMSCHIST_FLUID_TANK_TOP, CAAllSpriteShifts.CRIMSCHIST_FLUID_TANK_INNER)))))
+            .transform(displaySource(AllDisplaySources.BOILER))
+            .transform(mountedFluidStorage(AllMountedStorageTypes.FLUID_TANK))
+            .onRegister(movementBehaviour(new FluidTankMovementBehavior()))
+            .addLayer(() -> RenderType::cutoutMipped)
+            .item(CrimschistFluidTankItem::new)
+            .model(AssetLookup.customBlockItemModel("_", "block_single_window"))
+            .build()
             .register();
 
     public static final BlockEntry<ChronenditeMechanicalBearingBlock> CHRONENDITE_MECHANICAL_BEARING =

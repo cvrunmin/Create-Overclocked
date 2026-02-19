@@ -13,6 +13,10 @@ public class CAAllSpriteShifts {
     public static final CTSpriteShiftEntry CRIMSCHIST_CASING = getCT(AllCTTypes.OMNIDIRECTIONAL, "crimschist_casing");
     public static final CTSpriteShiftEntry CHRONENDITE_CASING = getCT(AllCTTypes.OMNIDIRECTIONAL, "chronendite_casing");
 
+    public static final CTSpriteShiftEntry CRIMSCHIST_FLUID_TANK = getCT(AllCTTypes.RECTANGLE, "crimschist_fluid_tank");
+    public static final CTSpriteShiftEntry CRIMSCHIST_FLUID_TANK_TOP = getCT(AllCTTypes.RECTANGLE, "crimschist_fluid_tank_top");
+    public static final CTSpriteShiftEntry CRIMSCHIST_FLUID_TANK_INNER = getCT(AllCTTypes.RECTANGLE, "crimschist_fluid_tank_inner");
+
     private static CTSpriteShiftEntry getCT(CTType type, String blockTextureName) {
         return getCT(type, blockTextureName, blockTextureName);
     }

@@ -1,0 +1,20 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"textures": {
+		"4": "create_andertech:block/crimschist_infusion_vat_window_pane_side",
+		"particle": "create_andertech:block/crimschist_infusion_vat_window_pane_side"
+	},
+	"elements": [
+		{
+			"name": "Frame_window",
+			"from": [0, 0, 1],
+			"to": [16, 16, 2],
+			"rotation": {"angle": 0, "axis": "y", "origin": [2, 3, 1]},
+			"faces": {
+				"north": {"uv": [8, 8, 16, 16], "texture": "#4"},
+				"south": {"uv": [8, 8, 16, 16], "texture": "#4"}
+			}
+		}
+	]
+}

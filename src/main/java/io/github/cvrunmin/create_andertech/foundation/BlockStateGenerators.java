@@ -1,15 +1,18 @@
 package io.github.cvrunmin.create_andertech.foundation;
 
+import com.simibubi.create.content.fluids.tank.FluidTankBlock;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.content.kinetics.belt.BeltPart;
 import com.simibubi.create.content.kinetics.belt.BeltSlope;
 import com.simibubi.create.content.kinetics.saw.SawBlock;
+import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.SpecialBlockStateGen;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import io.github.cvrunmin.create_andertech.CreateAndertech;
 import io.github.cvrunmin.create_andertech.content.decoration.GirderEncasedCrimschistShaftBlock;
+import io.github.cvrunmin.create_andertech.content.fluids.tank.CrimschistFluidTankBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.belt.OCBeltBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.chainDrive.CrimschistChainDriveBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.motor.CreativeOCMotorBlock;
@@ -339,6 +342,64 @@ public class BlockStateGenerators {
                     .texture("6", prov.modLoc("block/chronendite_block"))
                     .texture("7", prov.modLoc("block/chronendite_funnel_neutral"))
                     .texture("particle", prov.modLoc("block/chronendite_block"));
+        }
+    }
+
+    public static class FluidTank extends SpecialBlockStateGen{
+
+        @Override
+        protected int getXRotation(BlockState state) {
+            return 0;
+        }
+
+        @Override
+        protected int getYRotation(BlockState state) {
+            Boolean top = state.getValue(CrimschistFluidTankBlock.TOP);
+            Boolean bottom = state.getValue(CrimschistFluidTankBlock.BOTTOM);
+            if(top || bottom) return 0;
+            FluidTankBlock.Shape shape = state.getValue(CrimschistFluidTankBlock.SHAPE);
+            boolean isLargeWindow = state.getValue(CrimschistFluidTankBlock.LARGE_WINDOW);
+            Direction largeWindowDirection = state.getValue(CrimschistFluidTankBlock.LARGE_WINDOW_DIRECTION);
+            if(shape != FluidTankBlock.Shape.WINDOW || !isLargeWindow) return 0;
+            return (int) largeWindowDirection.toYRot() - 180;
+        }
+
+        @Override
+        public <T extends Block> ModelFile getModel(DataGenContext<Block, T> ctx, RegistrateBlockstateProvider prov, BlockState state) {
+            Boolean top = state.getValue(CrimschistFluidTankBlock.TOP);
+            Boolean bottom = state.getValue(CrimschistFluidTankBlock.BOTTOM);
+            FluidTankBlock.Shape shape = state.getValue(CrimschistFluidTankBlock.SHAPE);
+            boolean isLargeWindow = state.getValue(CrimschistFluidTankBlock.LARGE_WINDOW);
+            Direction largeWindowDirection = state.getValue(CrimschistFluidTankBlock.LARGE_WINDOW_DIRECTION);
+
+            String shapeName = "middle";
+            if (top && bottom)
+                shapeName = "single";
+            else if (top)
+                shapeName = "top";
+            else if (bottom)
+                shapeName = "bottom";
+
+            String modelName = shapeName + (shape == FluidTankBlock.Shape.PLAIN ? "" : "_" + shape.getSerializedName());
+
+            if(shape == FluidTankBlock.Shape.WINDOW && isLargeWindow){
+                String s;
+                if(!top && !bottom){
+                    s = "n";
+                }else {
+                    s = largeWindowDirection.getSerializedName().substring(0, 1);
+                }
+                return AssetLookup.partialBaseModel(ctx, prov, modelName, s);
+            }
+
+            return prov.models().getBuilder("block/crimschist_fluid_tank/block_" + modelName)
+                    .parent(AssetLookupWithParent.anyParent(ResourceLocation.fromNamespaceAndPath("create", "block/fluid_tank/block_" + modelName)))
+                    .texture("0", prov.modLoc("block/crimschist_fluid_tank_top"))
+                    .texture("1", prov.modLoc("block/crimschist_fluid_tank"))
+                    .texture("3", prov.modLoc("block/crimschist_fluid_tank_window"))
+                    .texture("4", prov.modLoc("block/crimschist_fluid_tank_inner"))
+                    .texture("5", prov.modLoc("block/crimschist_fluid_tank_window_single"))
+                    .texture("particle", prov.modLoc("block/crimschist_fluid_tank"));
         }
     }
 }

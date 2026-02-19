@@ -1,0 +1,35 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"textures": {
+		"1": "create_andertech:block/crimschist_fluid_tank",
+		"2": "create_andertech:block/crimschist_fluid_tank_inner",
+		"3": "create_andertech:block/crimschist_fluid_tank_top",
+		"4": "create_andertech:block/crimschist_infusion_vat_window_pane_side",
+		"particle": "create_andertech:block/crimschist_infusion_vat_window_pane_side"
+	},
+	"elements": [
+		{
+			"name": "Top_frame",
+			"from": [0, 13, 0],
+			"to": [2, 16, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 13, 8]},
+			"faces": {
+				"east": {"uv": [0, 0, 16, 3], "texture": "#1"},
+				"west": {"uv": [0, 0, 16, 3], "texture": "#1"},
+				"up": {"uv": [0, 0, 2, 16], "texture": "#3"},
+				"down": {"uv": [0, 0, 2, 16], "texture": "#2"}
+			}
+		},
+		{
+			"name": "Frame_window",
+			"from": [1, 0, 0],
+			"to": [2, 13, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"east": {"uv": [0, 0, 8, 6.5], "texture": "#4"},
+				"west": {"uv": [0, 0, 8, 6.5], "texture": "#4"}
+			}
+		}
+	]
+}

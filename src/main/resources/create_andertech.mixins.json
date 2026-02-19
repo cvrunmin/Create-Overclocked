@@ -14,6 +14,8 @@
     "ChuteBlockEntityMixin",
     "DeployerBlockEntityAccessor",
     "DeployerBlockEntityMixin",
+    "FluidTankBlockEntityAccessor",
+    "FluidTankBlockEntityMixin",
     "GroupedItemsAccessor",
     "RotationPropagatorMixin",
     "ServerGamePacketListenerAccessor",

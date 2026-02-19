@@ -1,0 +1,583 @@
+{
+  "variants": {
+    "bottom=false,large_window=false,large_window_direction=east,shape=plain,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle"
+    },
+    "bottom=false,large_window=false,large_window_direction=east,shape=plain,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top"
+    },
+    "bottom=false,large_window=false,large_window_direction=east,shape=window,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window"
+    },
+    "bottom=false,large_window=false,large_window_direction=east,shape=window,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window"
+    },
+    "bottom=false,large_window=false,large_window_direction=east,shape=window_ne,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_ne"
+    },
+    "bottom=false,large_window=false,large_window_direction=east,shape=window_ne,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_ne"
+    },
+    "bottom=false,large_window=false,large_window_direction=east,shape=window_nw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_nw"
+    },
+    "bottom=false,large_window=false,large_window_direction=east,shape=window_nw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_nw"
+    },
+    "bottom=false,large_window=false,large_window_direction=east,shape=window_se,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_se"
+    },
+    "bottom=false,large_window=false,large_window_direction=east,shape=window_se,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_se"
+    },
+    "bottom=false,large_window=false,large_window_direction=east,shape=window_sw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_sw"
+    },
+    "bottom=false,large_window=false,large_window_direction=east,shape=window_sw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_sw"
+    },
+    "bottom=false,large_window=false,large_window_direction=north,shape=plain,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle"
+    },
+    "bottom=false,large_window=false,large_window_direction=north,shape=plain,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top"
+    },
+    "bottom=false,large_window=false,large_window_direction=north,shape=window,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window"
+    },
+    "bottom=false,large_window=false,large_window_direction=north,shape=window,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window"
+    },
+    "bottom=false,large_window=false,large_window_direction=north,shape=window_ne,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_ne"
+    },
+    "bottom=false,large_window=false,large_window_direction=north,shape=window_ne,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_ne"
+    },
+    "bottom=false,large_window=false,large_window_direction=north,shape=window_nw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_nw"
+    },
+    "bottom=false,large_window=false,large_window_direction=north,shape=window_nw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_nw"
+    },
+    "bottom=false,large_window=false,large_window_direction=north,shape=window_se,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_se"
+    },
+    "bottom=false,large_window=false,large_window_direction=north,shape=window_se,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_se"
+    },
+    "bottom=false,large_window=false,large_window_direction=north,shape=window_sw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_sw"
+    },
+    "bottom=false,large_window=false,large_window_direction=north,shape=window_sw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_sw"
+    },
+    "bottom=false,large_window=false,large_window_direction=south,shape=plain,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle"
+    },
+    "bottom=false,large_window=false,large_window_direction=south,shape=plain,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top"
+    },
+    "bottom=false,large_window=false,large_window_direction=south,shape=window,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window"
+    },
+    "bottom=false,large_window=false,large_window_direction=south,shape=window,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window"
+    },
+    "bottom=false,large_window=false,large_window_direction=south,shape=window_ne,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_ne"
+    },
+    "bottom=false,large_window=false,large_window_direction=south,shape=window_ne,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_ne"
+    },
+    "bottom=false,large_window=false,large_window_direction=south,shape=window_nw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_nw"
+    },
+    "bottom=false,large_window=false,large_window_direction=south,shape=window_nw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_nw"
+    },
+    "bottom=false,large_window=false,large_window_direction=south,shape=window_se,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_se"
+    },
+    "bottom=false,large_window=false,large_window_direction=south,shape=window_se,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_se"
+    },
+    "bottom=false,large_window=false,large_window_direction=south,shape=window_sw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_sw"
+    },
+    "bottom=false,large_window=false,large_window_direction=south,shape=window_sw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_sw"
+    },
+    "bottom=false,large_window=false,large_window_direction=west,shape=plain,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle"
+    },
+    "bottom=false,large_window=false,large_window_direction=west,shape=plain,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top"
+    },
+    "bottom=false,large_window=false,large_window_direction=west,shape=window,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window"
+    },
+    "bottom=false,large_window=false,large_window_direction=west,shape=window,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window"
+    },
+    "bottom=false,large_window=false,large_window_direction=west,shape=window_ne,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_ne"
+    },
+    "bottom=false,large_window=false,large_window_direction=west,shape=window_ne,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_ne"
+    },
+    "bottom=false,large_window=false,large_window_direction=west,shape=window_nw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_nw"
+    },
+    "bottom=false,large_window=false,large_window_direction=west,shape=window_nw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_nw"
+    },
+    "bottom=false,large_window=false,large_window_direction=west,shape=window_se,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_se"
+    },
+    "bottom=false,large_window=false,large_window_direction=west,shape=window_se,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_se"
+    },
+    "bottom=false,large_window=false,large_window_direction=west,shape=window_sw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_sw"
+    },
+    "bottom=false,large_window=false,large_window_direction=west,shape=window_sw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_sw"
+    },
+    "bottom=false,large_window=true,large_window_direction=east,shape=plain,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle"
+    },
+    "bottom=false,large_window=true,large_window_direction=east,shape=plain,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top"
+    },
+    "bottom=false,large_window=true,large_window_direction=east,shape=window,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_n",
+      "y": 90
+    },
+    "bottom=false,large_window=true,large_window_direction=east,shape=window,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_e"
+    },
+    "bottom=false,large_window=true,large_window_direction=east,shape=window_ne,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_ne"
+    },
+    "bottom=false,large_window=true,large_window_direction=east,shape=window_ne,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_ne"
+    },
+    "bottom=false,large_window=true,large_window_direction=east,shape=window_nw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_nw"
+    },
+    "bottom=false,large_window=true,large_window_direction=east,shape=window_nw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_nw"
+    },
+    "bottom=false,large_window=true,large_window_direction=east,shape=window_se,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_se"
+    },
+    "bottom=false,large_window=true,large_window_direction=east,shape=window_se,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_se"
+    },
+    "bottom=false,large_window=true,large_window_direction=east,shape=window_sw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_sw"
+    },
+    "bottom=false,large_window=true,large_window_direction=east,shape=window_sw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_sw"
+    },
+    "bottom=false,large_window=true,large_window_direction=north,shape=plain,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle"
+    },
+    "bottom=false,large_window=true,large_window_direction=north,shape=plain,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top"
+    },
+    "bottom=false,large_window=true,large_window_direction=north,shape=window,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_n"
+    },
+    "bottom=false,large_window=true,large_window_direction=north,shape=window,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_n"
+    },
+    "bottom=false,large_window=true,large_window_direction=north,shape=window_ne,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_ne"
+    },
+    "bottom=false,large_window=true,large_window_direction=north,shape=window_ne,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_ne"
+    },
+    "bottom=false,large_window=true,large_window_direction=north,shape=window_nw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_nw"
+    },
+    "bottom=false,large_window=true,large_window_direction=north,shape=window_nw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_nw"
+    },
+    "bottom=false,large_window=true,large_window_direction=north,shape=window_se,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_se"
+    },
+    "bottom=false,large_window=true,large_window_direction=north,shape=window_se,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_se"
+    },
+    "bottom=false,large_window=true,large_window_direction=north,shape=window_sw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_sw"
+    },
+    "bottom=false,large_window=true,large_window_direction=north,shape=window_sw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_sw"
+    },
+    "bottom=false,large_window=true,large_window_direction=south,shape=plain,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle"
+    },
+    "bottom=false,large_window=true,large_window_direction=south,shape=plain,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top"
+    },
+    "bottom=false,large_window=true,large_window_direction=south,shape=window,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_n",
+      "y": 180
+    },
+    "bottom=false,large_window=true,large_window_direction=south,shape=window,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_s"
+    },
+    "bottom=false,large_window=true,large_window_direction=south,shape=window_ne,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_ne"
+    },
+    "bottom=false,large_window=true,large_window_direction=south,shape=window_ne,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_ne"
+    },
+    "bottom=false,large_window=true,large_window_direction=south,shape=window_nw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_nw"
+    },
+    "bottom=false,large_window=true,large_window_direction=south,shape=window_nw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_nw"
+    },
+    "bottom=false,large_window=true,large_window_direction=south,shape=window_se,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_se"
+    },
+    "bottom=false,large_window=true,large_window_direction=south,shape=window_se,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_se"
+    },
+    "bottom=false,large_window=true,large_window_direction=south,shape=window_sw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_sw"
+    },
+    "bottom=false,large_window=true,large_window_direction=south,shape=window_sw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_sw"
+    },
+    "bottom=false,large_window=true,large_window_direction=west,shape=plain,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle"
+    },
+    "bottom=false,large_window=true,large_window_direction=west,shape=plain,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top"
+    },
+    "bottom=false,large_window=true,large_window_direction=west,shape=window,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_n",
+      "y": 270
+    },
+    "bottom=false,large_window=true,large_window_direction=west,shape=window,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_w"
+    },
+    "bottom=false,large_window=true,large_window_direction=west,shape=window_ne,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_ne"
+    },
+    "bottom=false,large_window=true,large_window_direction=west,shape=window_ne,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_ne"
+    },
+    "bottom=false,large_window=true,large_window_direction=west,shape=window_nw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_nw"
+    },
+    "bottom=false,large_window=true,large_window_direction=west,shape=window_nw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_nw"
+    },
+    "bottom=false,large_window=true,large_window_direction=west,shape=window_se,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_se"
+    },
+    "bottom=false,large_window=true,large_window_direction=west,shape=window_se,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_se"
+    },
+    "bottom=false,large_window=true,large_window_direction=west,shape=window_sw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_middle_window_sw"
+    },
+    "bottom=false,large_window=true,large_window_direction=west,shape=window_sw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_top_window_sw"
+    },
+    "bottom=true,large_window=false,large_window_direction=east,shape=plain,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom"
+    },
+    "bottom=true,large_window=false,large_window_direction=east,shape=plain,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single"
+    },
+    "bottom=true,large_window=false,large_window_direction=east,shape=window,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window"
+    },
+    "bottom=true,large_window=false,large_window_direction=east,shape=window,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window"
+    },
+    "bottom=true,large_window=false,large_window_direction=east,shape=window_ne,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_ne"
+    },
+    "bottom=true,large_window=false,large_window_direction=east,shape=window_ne,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_ne"
+    },
+    "bottom=true,large_window=false,large_window_direction=east,shape=window_nw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_nw"
+    },
+    "bottom=true,large_window=false,large_window_direction=east,shape=window_nw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_nw"
+    },
+    "bottom=true,large_window=false,large_window_direction=east,shape=window_se,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_se"
+    },
+    "bottom=true,large_window=false,large_window_direction=east,shape=window_se,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_se"
+    },
+    "bottom=true,large_window=false,large_window_direction=east,shape=window_sw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_sw"
+    },
+    "bottom=true,large_window=false,large_window_direction=east,shape=window_sw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_sw"
+    },
+    "bottom=true,large_window=false,large_window_direction=north,shape=plain,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom"
+    },
+    "bottom=true,large_window=false,large_window_direction=north,shape=plain,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single"
+    },
+    "bottom=true,large_window=false,large_window_direction=north,shape=window,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window"
+    },
+    "bottom=true,large_window=false,large_window_direction=north,shape=window,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window"
+    },
+    "bottom=true,large_window=false,large_window_direction=north,shape=window_ne,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_ne"
+    },
+    "bottom=true,large_window=false,large_window_direction=north,shape=window_ne,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_ne"
+    },
+    "bottom=true,large_window=false,large_window_direction=north,shape=window_nw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_nw"
+    },
+    "bottom=true,large_window=false,large_window_direction=north,shape=window_nw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_nw"
+    },
+    "bottom=true,large_window=false,large_window_direction=north,shape=window_se,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_se"
+    },
+    "bottom=true,large_window=false,large_window_direction=north,shape=window_se,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_se"
+    },
+    "bottom=true,large_window=false,large_window_direction=north,shape=window_sw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_sw"
+    },
+    "bottom=true,large_window=false,large_window_direction=north,shape=window_sw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_sw"
+    },
+    "bottom=true,large_window=false,large_window_direction=south,shape=plain,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom"
+    },
+    "bottom=true,large_window=false,large_window_direction=south,shape=plain,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single"
+    },
+    "bottom=true,large_window=false,large_window_direction=south,shape=window,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window"
+    },
+    "bottom=true,large_window=false,large_window_direction=south,shape=window,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window"
+    },
+    "bottom=true,large_window=false,large_window_direction=south,shape=window_ne,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_ne"
+    },
+    "bottom=true,large_window=false,large_window_direction=south,shape=window_ne,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_ne"
+    },
+    "bottom=true,large_window=false,large_window_direction=south,shape=window_nw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_nw"
+    },
+    "bottom=true,large_window=false,large_window_direction=south,shape=window_nw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_nw"
+    },
+    "bottom=true,large_window=false,large_window_direction=south,shape=window_se,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_se"
+    },
+    "bottom=true,large_window=false,large_window_direction=south,shape=window_se,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_se"
+    },
+    "bottom=true,large_window=false,large_window_direction=south,shape=window_sw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_sw"
+    },
+    "bottom=true,large_window=false,large_window_direction=south,shape=window_sw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_sw"
+    },
+    "bottom=true,large_window=false,large_window_direction=west,shape=plain,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom"
+    },
+    "bottom=true,large_window=false,large_window_direction=west,shape=plain,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single"
+    },
+    "bottom=true,large_window=false,large_window_direction=west,shape=window,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window"
+    },
+    "bottom=true,large_window=false,large_window_direction=west,shape=window,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window"
+    },
+    "bottom=true,large_window=false,large_window_direction=west,shape=window_ne,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_ne"
+    },
+    "bottom=true,large_window=false,large_window_direction=west,shape=window_ne,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_ne"
+    },
+    "bottom=true,large_window=false,large_window_direction=west,shape=window_nw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_nw"
+    },
+    "bottom=true,large_window=false,large_window_direction=west,shape=window_nw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_nw"
+    },
+    "bottom=true,large_window=false,large_window_direction=west,shape=window_se,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_se"
+    },
+    "bottom=true,large_window=false,large_window_direction=west,shape=window_se,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_se"
+    },
+    "bottom=true,large_window=false,large_window_direction=west,shape=window_sw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_sw"
+    },
+    "bottom=true,large_window=false,large_window_direction=west,shape=window_sw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_sw"
+    },
+    "bottom=true,large_window=true,large_window_direction=east,shape=plain,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom"
+    },
+    "bottom=true,large_window=true,large_window_direction=east,shape=plain,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single"
+    },
+    "bottom=true,large_window=true,large_window_direction=east,shape=window,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_e"
+    },
+    "bottom=true,large_window=true,large_window_direction=east,shape=window,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_e"
+    },
+    "bottom=true,large_window=true,large_window_direction=east,shape=window_ne,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_ne"
+    },
+    "bottom=true,large_window=true,large_window_direction=east,shape=window_ne,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_ne"
+    },
+    "bottom=true,large_window=true,large_window_direction=east,shape=window_nw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_nw"
+    },
+    "bottom=true,large_window=true,large_window_direction=east,shape=window_nw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_nw"
+    },
+    "bottom=true,large_window=true,large_window_direction=east,shape=window_se,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_se"
+    },
+    "bottom=true,large_window=true,large_window_direction=east,shape=window_se,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_se"
+    },
+    "bottom=true,large_window=true,large_window_direction=east,shape=window_sw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_sw"
+    },
+    "bottom=true,large_window=true,large_window_direction=east,shape=window_sw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_sw"
+    },
+    "bottom=true,large_window=true,large_window_direction=north,shape=plain,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom"
+    },
+    "bottom=true,large_window=true,large_window_direction=north,shape=plain,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single"
+    },
+    "bottom=true,large_window=true,large_window_direction=north,shape=window,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_n"
+    },
+    "bottom=true,large_window=true,large_window_direction=north,shape=window,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_n"
+    },
+    "bottom=true,large_window=true,large_window_direction=north,shape=window_ne,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_ne"
+    },
+    "bottom=true,large_window=true,large_window_direction=north,shape=window_ne,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_ne"
+    },
+    "bottom=true,large_window=true,large_window_direction=north,shape=window_nw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_nw"
+    },
+    "bottom=true,large_window=true,large_window_direction=north,shape=window_nw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_nw"
+    },
+    "bottom=true,large_window=true,large_window_direction=north,shape=window_se,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_se"
+    },
+    "bottom=true,large_window=true,large_window_direction=north,shape=window_se,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_se"
+    },
+    "bottom=true,large_window=true,large_window_direction=north,shape=window_sw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_sw"
+    },
+    "bottom=true,large_window=true,large_window_direction=north,shape=window_sw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_sw"
+    },
+    "bottom=true,large_window=true,large_window_direction=south,shape=plain,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom"
+    },
+    "bottom=true,large_window=true,large_window_direction=south,shape=plain,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single"
+    },
+    "bottom=true,large_window=true,large_window_direction=south,shape=window,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_s"
+    },
+    "bottom=true,large_window=true,large_window_direction=south,shape=window,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_s"
+    },
+    "bottom=true,large_window=true,large_window_direction=south,shape=window_ne,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_ne"
+    },
+    "bottom=true,large_window=true,large_window_direction=south,shape=window_ne,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_ne"
+    },
+    "bottom=true,large_window=true,large_window_direction=south,shape=window_nw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_nw"
+    },
+    "bottom=true,large_window=true,large_window_direction=south,shape=window_nw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_nw"
+    },
+    "bottom=true,large_window=true,large_window_direction=south,shape=window_se,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_se"
+    },
+    "bottom=true,large_window=true,large_window_direction=south,shape=window_se,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_se"
+    },
+    "bottom=true,large_window=true,large_window_direction=south,shape=window_sw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_sw"
+    },
+    "bottom=true,large_window=true,large_window_direction=south,shape=window_sw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_sw"
+    },
+    "bottom=true,large_window=true,large_window_direction=west,shape=plain,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom"
+    },
+    "bottom=true,large_window=true,large_window_direction=west,shape=plain,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single"
+    },
+    "bottom=true,large_window=true,large_window_direction=west,shape=window,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_w"
+    },
+    "bottom=true,large_window=true,large_window_direction=west,shape=window,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_w"
+    },
+    "bottom=true,large_window=true,large_window_direction=west,shape=window_ne,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_ne"
+    },
+    "bottom=true,large_window=true,large_window_direction=west,shape=window_ne,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_ne"
+    },
+    "bottom=true,large_window=true,large_window_direction=west,shape=window_nw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_nw"
+    },
+    "bottom=true,large_window=true,large_window_direction=west,shape=window_nw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_nw"
+    },
+    "bottom=true,large_window=true,large_window_direction=west,shape=window_se,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_se"
+    },
+    "bottom=true,large_window=true,large_window_direction=west,shape=window_se,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_se"
+    },
+    "bottom=true,large_window=true,large_window_direction=west,shape=window_sw,top=false": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_bottom_window_sw"
+    },
+    "bottom=true,large_window=true,large_window_direction=west,shape=window_sw,top=true": {
+      "model": "create_andertech:block/crimschist_fluid_tank/block_single_window_sw"
+    }
+  }
+}

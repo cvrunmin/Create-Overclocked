@@ -1,21 +1,15 @@
 package io.github.cvrunmin.create_andertech.index;
 
-import com.simibubi.create.AllPartialModels;
-import com.simibubi.create.content.contraptions.bearing.BearingRenderer;
 import com.simibubi.create.content.contraptions.bearing.BearingVisual;
 import com.simibubi.create.content.kinetics.base.*;
-import com.simibubi.create.content.kinetics.belt.BeltRenderer;
-import com.simibubi.create.content.kinetics.belt.BeltVisual;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmRenderer;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmVisual;
-import com.simibubi.create.content.kinetics.simpleRelays.encased.EncasedCogRenderer;
-import com.simibubi.create.content.kinetics.simpleRelays.encased.EncasedCogVisual;
-import com.simibubi.create.content.kinetics.transmission.SplitShaftRenderer;
-import com.simibubi.create.content.kinetics.transmission.SplitShaftVisual;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import dev.engine_room.flywheel.lib.model.Models;
 import io.github.cvrunmin.create_andertech.content.contraptions.bearing.ChronenditeMechanicalBearingBlockEntity;
 import io.github.cvrunmin.create_andertech.content.contraptions.bearing.OCBearingRenderer;
+import io.github.cvrunmin.create_andertech.content.fluids.tank.CrimschistFluidTankBlockEntity;
+import io.github.cvrunmin.create_andertech.content.fluids.tank.CrimschistFluidTankRenderer;
 import io.github.cvrunmin.create_andertech.content.kinetics.belt.OCBeltBlockEntity;
 import io.github.cvrunmin.create_andertech.content.kinetics.belt.OCBeltRenderer;
 import io.github.cvrunmin.create_andertech.content.kinetics.belt.OCBeltVisual;
@@ -212,6 +206,12 @@ public class AllBlockEntityTypes {
             .visual(() -> ((ctx, blockEntity, partialTick) -> new SingleAxisRotatingVisual<>(ctx, blockEntity, partialTick, Models.partial(CAAllPartialModels.CRIMSCHIST_SHAFT))))
             .validBlocks(AllBlocks.CHRONENDITE_ROTATION_SPEED_CONTROLLER)
             .renderer(() -> ChronenditeSpeedControllerRenderer::new)
+            .register();
+
+    public static final BlockEntityEntry<CrimschistFluidTankBlockEntity> CRIMSCHIST_FLUID_TANK = REGISTRATE
+            .blockEntity("crimschist_fluid_tank", CrimschistFluidTankBlockEntity::new)
+            .validBlocks(AllBlocks.CRIMSCHIST_FLUID_TANK)
+            .renderer(() -> CrimschistFluidTankRenderer::new)
             .register();
 
     public static void register(){}
