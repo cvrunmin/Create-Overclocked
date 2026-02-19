@@ -1,4 +1,4 @@
-// 1.21.1	2026-02-18T18:28:02.2833583	Registrate Provider for create_andertech [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
+// 1.21.1	2026-02-19T14:17:59.8927639	Registrate Provider for create_andertech [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
 98d26546200e4b2c0a00643fc9f027b49ef4594b assets/create_andertech/blockstates/andesite_encased_crimschist_cogwheel.json
 4dc0142d21221d69b52fb1acf47b46dc184a78a0 assets/create_andertech/blockstates/andesite_encased_crimschist_large_cogwheel.json
 4946d26000065d09b51752b6ad34d0050f829a0d assets/create_andertech/blockstates/andesite_encased_crimschist_shaft.json
@@ -27,13 +27,14 @@ c0d4a77d594569587d6399288a31630ff8c0e6e4 assets/create_andertech/blockstates/cri
 a0a776bf02e5f5b84ceda1dca66ee5e821f826c1 assets/create_andertech/blockstates/crimschist_fluid_tank.json
 5d10469b8afbb06760e54671e44b73e9e8af55ba assets/create_andertech/blockstates/crimschist_gearbox.json
 909f45332d6688ba3f7c6ea147c8a926937f3a6f assets/create_andertech/blockstates/crimschist_gearshift.json
+8f9595862f1d72a51bd9fb379aadcde894575f20 assets/create_andertech/blockstates/crimschist_infusion_vat.json
 a736e133ef198e680128c4980e908a1b7842271c assets/create_andertech/blockstates/crimschist_large_cogwheel.json
 c4ec6bd94d2a2a9df47e7c822f82f5a1b2105780 assets/create_andertech/blockstates/crimschist_shaft.json
 93af5f7fc6b6c063bcbfbf7eb375320b351df13d assets/create_andertech/blockstates/encased_crimschist_chain_drive.json
 2c1c3bb461ffb640fa241c69dc12d9cbdd266ffd assets/create_andertech/blockstates/metal_girder_encased_crimschist_shaft.json
 d0af03aeed1de0fcd54098868465452cc97a7513 assets/create_andertech/blockstates/speeding_belt.json
-6c7b23ceeaf57560732db9ace03fc2898278c946 assets/create_andertech/lang/en_ud.json
-a32949f254fb82b9c38d893190892d713bd9e83f assets/create_andertech/lang/en_us.json
+05b57b3761b50b2dd05e2a0bf3a3de91d7648aa1 assets/create_andertech/lang/en_ud.json
+5ab57e431e2557900f913865500fe922ac51199a assets/create_andertech/lang/en_us.json
 7f3e4636d521a67eb621d5d27d6b175d455179f8 assets/create_andertech/models/block/andesite_encased_crimschist_cogwheel.json
 5a5a3aac31c44030880774b96cfecc40568abe75 assets/create_andertech/models/block/andesite_encased_crimschist_cogwheel_bottom.json
 82ce3bec0d6b5332b4f5007245ca2cdd8e28b9c9 assets/create_andertech/models/block/andesite_encased_crimschist_cogwheel_top.json
@@ -155,6 +156,7 @@ f4df7d8487e2a6f2b4ff4d9307576151a604fe4c assets/create_andertech/models/item/cri
 24d8c662597ef209ac7c6f83b5d9ef08cefa2252 assets/create_andertech/models/item/crimschist_fluid_tank.json
 8650cdc9704fb7495344c95c55ab54652c04af56 assets/create_andertech/models/item/crimschist_gearbox.json
 12fc0373fb29f20421f00e0e9bd693585a2843e6 assets/create_andertech/models/item/crimschist_gearshift.json
+3bd7522bc9a4c03d718a326e0d044f9dcf0540de assets/create_andertech/models/item/crimschist_infusion_vat.json
 a3f3160652ea26ab0468ed53b1f10cd85b7ee11a assets/create_andertech/models/item/crimschist_large_cogwheel.json
 10816c251b6f561bc90fb58ae044b8c99d7c130f assets/create_andertech/models/item/crimschist_nugget.json
 62a788fe01aac872ce537b4d5a049f0c6783b8d8 assets/create_andertech/models/item/crimschist_shaft.json
@@ -191,6 +193,7 @@ f5d654a0dbd91084f1039320fbff0f11627772d1 data/create_andertech/loot_table/blocks
 a2fc219774d56f0c037fcc8d5486d0ee4bc24387 data/create_andertech/loot_table/blocks/crimschist_fluid_tank.json
 6d2c4515bf4556497a4ab7d019e8b4685629f714 data/create_andertech/loot_table/blocks/crimschist_gearbox.json
 db36c446ecf38b0f2b31fd72d55308341aca9a7b data/create_andertech/loot_table/blocks/crimschist_gearshift.json
+b04a03ee74e5a986678649d956bd83248ba791d9 data/create_andertech/loot_table/blocks/crimschist_infusion_vat.json
 99d9539d063863852836fbf897ccaebc0d592624 data/create_andertech/loot_table/blocks/crimschist_large_cogwheel.json
 bf58bf938887da9a94872b9f4ba115a6ea2d80fd data/create_andertech/loot_table/blocks/crimschist_shaft.json
 0ba8bbbcf322168b4633abf3be40752ff4b22a67 data/create_andertech/loot_table/blocks/encased_crimschist_chain_drive.json
@@ -200,4 +203,4 @@ bf58bf938887da9a94872b9f4ba115a6ea2d80fd data/create_andertech/loot_table/blocks
 1c8b965c65033a59e8ac35bc88740a29f9ddc2e7 data/c/tags/item/crimschist.json
 8cc56a53f1cae03993069205a682702947c66043 data/c/tags/item/nuggets.json
 b6fff0f132a86e81bcb05782202fb1ef3451dbef data/minecraft/tags/block/mineable/axe.json
-5ad613bb7ba0bcc1ee0d49b8decf20bf735c9b27 data/minecraft/tags/block/mineable/pickaxe.json
+858fbb5b88643ddc52340e6669294945915616e3 data/minecraft/tags/block/mineable/pickaxe.json

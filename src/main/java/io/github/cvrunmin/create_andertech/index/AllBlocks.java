@@ -28,6 +28,9 @@ import io.github.cvrunmin.create_andertech.Constants;
 import io.github.cvrunmin.create_andertech.CreateAndertech;
 import io.github.cvrunmin.create_andertech.content.contraptions.bearing.ChronenditeMechanicalBearingBlock;
 import io.github.cvrunmin.create_andertech.content.decoration.GirderEncasedCrimschistShaftBlock;
+import io.github.cvrunmin.create_andertech.content.fluids.infusion_vat.InfusionVatBlock;
+import io.github.cvrunmin.create_andertech.content.fluids.infusion_vat.InfusionVatCTBehaviour;
+import io.github.cvrunmin.create_andertech.content.fluids.infusion_vat.InfusionVatItem;
 import io.github.cvrunmin.create_andertech.content.fluids.tank.CrimschistFluidTankBlock;
 import io.github.cvrunmin.create_andertech.content.fluids.tank.CrimschistFluidTankItem;
 import io.github.cvrunmin.create_andertech.content.kinetics.belt.OCBeltBlock;
@@ -644,6 +647,17 @@ public class AllBlocks {
             .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 2.0))
             .item(ArmItem::new)
             .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/mechanical_arm/item")))
+            .register();
+
+    public static final BlockEntry<InfusionVatBlock> INFUSION_VAT = REGISTRATE.block("crimschist_infusion_vat", InfusionVatBlock::new)
+            .properties(p -> p.mapColor(MapColor.WARPED_NYLIUM).requiresCorrectToolForDrops().noOcclusion().sound(SoundType.METAL).strength(3.f, 6.f))
+            .transform(pickaxeOnly())
+            .blockstate(new BlockStateGenerators.InfusionVat()::generate)
+            .onRegister(CreateRegistrate.blockModel(() -> ((bakedModel) -> new CullableCTModel(bakedModel, new InfusionVatCTBehaviour(CAAllSpriteShifts.CRIMSCHIST_FLUID_TANK, CAAllSpriteShifts.CRIMSCHIST_FLUID_TANK_TOP, CAAllSpriteShifts.CRIMSCHIST_FLUID_TANK_INNER)))))
+            .addLayer(() -> RenderType::cutoutMipped)
+            .item(InfusionVatItem::new)
+            .model(AssetLookup.customBlockItemModel("_", "block_single"))
+            .build()
             .register();
 
     public static final BlockEntry<CasingBlock> CRIMSCHIST_CASING = REGISTRATE.block("crimschist_casing", CasingBlock::new)

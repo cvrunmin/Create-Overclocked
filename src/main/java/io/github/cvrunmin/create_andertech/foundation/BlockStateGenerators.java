@@ -12,6 +12,7 @@ import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import io.github.cvrunmin.create_andertech.CreateAndertech;
 import io.github.cvrunmin.create_andertech.content.decoration.GirderEncasedCrimschistShaftBlock;
+import io.github.cvrunmin.create_andertech.content.fluids.infusion_vat.InfusionVatBlock;
 import io.github.cvrunmin.create_andertech.content.fluids.tank.CrimschistFluidTankBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.belt.OCBeltBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.chainDrive.CrimschistChainDriveBlock;
@@ -400,6 +401,66 @@ public class BlockStateGenerators {
                     .texture("4", prov.modLoc("block/crimschist_fluid_tank_inner"))
                     .texture("5", prov.modLoc("block/crimschist_fluid_tank_window_single"))
                     .texture("particle", prov.modLoc("block/crimschist_fluid_tank"));
+        }
+    }
+
+    public static class InfusionVat extends SpecialBlockStateGen{
+        @Override
+        protected int getXRotation(BlockState state) {
+            return 0;
+        }
+
+        @Override
+        protected int getYRotation(BlockState state) {
+            Boolean top = state.getValue(InfusionVatBlock.TOP);
+            Boolean bottom = state.getValue(InfusionVatBlock.BOTTOM);
+            if(top || bottom) return 0;
+            boolean east = state.getValue(InfusionVatBlock.EAST);
+            boolean west = state.getValue(InfusionVatBlock.WEST);
+            boolean south = state.getValue(InfusionVatBlock.SOUTH);
+            boolean north = state.getValue(InfusionVatBlock.NORTH);
+            if(north) return 0;
+            if(east && !west && !south) return 90;
+            if(south && !east && !west) return 180;
+            if(west && !east && !south) return 270;
+            return 0;
+        }
+
+        @Override
+        public <T extends Block> ModelFile getModel(DataGenContext<Block, T> ctx, RegistrateBlockstateProvider prov, BlockState state) {
+            Boolean top = state.getValue(InfusionVatBlock.TOP);
+            Boolean bottom = state.getValue(InfusionVatBlock.BOTTOM);
+            String shapeName = "middle";
+            if (top && bottom)
+                shapeName = "single";
+            else if (top)
+                shapeName = "top";
+            else if (bottom)
+                shapeName = "bottom";
+            boolean east = state.getValue(InfusionVatBlock.EAST);
+            boolean west = state.getValue(InfusionVatBlock.WEST);
+            boolean south = state.getValue(InfusionVatBlock.SOUTH);
+            boolean north = state.getValue(InfusionVatBlock.NORTH);
+
+            String corner = "";
+            boolean single = north && east && south && west;
+            boolean center = !north && !east && !south && !west;
+            if(center) {
+                corner = "c";
+            }
+            else if (!single) {
+                if (north) corner += "n";
+                else if (south && (!east || !west)) corner += "s";
+                if (east) corner += "e";
+                if (south && (north || east && west)) corner += "s";
+                if (west) corner += "w";
+            }
+            if(!top && !bottom && corner.length() == 1){
+                corner = "n"; // either 'n', 'e', 's', or 'w'. simplify to 'n'
+            }
+            String modelName = shapeName + (corner.isEmpty() ? "" : "_" + corner);
+            if(!bottom && center) return prov.models().getExistingFile(prov.mcLoc("block/air"));
+            return AssetLookup.partialBaseModel(ctx, prov, modelName);
         }
     }
 }

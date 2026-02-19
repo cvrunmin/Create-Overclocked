@@ -8,6 +8,8 @@ import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import dev.engine_room.flywheel.lib.model.Models;
 import io.github.cvrunmin.create_andertech.content.contraptions.bearing.ChronenditeMechanicalBearingBlockEntity;
 import io.github.cvrunmin.create_andertech.content.contraptions.bearing.OCBearingRenderer;
+import io.github.cvrunmin.create_andertech.content.fluids.infusion_vat.InfusionVatBlockEntity;
+import io.github.cvrunmin.create_andertech.content.fluids.infusion_vat.InfusionVatRenderer;
 import io.github.cvrunmin.create_andertech.content.fluids.tank.CrimschistFluidTankBlockEntity;
 import io.github.cvrunmin.create_andertech.content.fluids.tank.CrimschistFluidTankRenderer;
 import io.github.cvrunmin.create_andertech.content.kinetics.belt.OCBeltBlockEntity;
@@ -212,6 +214,12 @@ public class AllBlockEntityTypes {
             .blockEntity("crimschist_fluid_tank", CrimschistFluidTankBlockEntity::new)
             .validBlocks(AllBlocks.CRIMSCHIST_FLUID_TANK)
             .renderer(() -> CrimschistFluidTankRenderer::new)
+            .register();
+
+    public static final BlockEntityEntry<InfusionVatBlockEntity> INFUSION_VAT = REGISTRATE
+            .blockEntity("crimschist_infusion_vat", InfusionVatBlockEntity::new)
+            .validBlocks(AllBlocks.INFUSION_VAT)
+            .renderer(() -> InfusionVatRenderer::new)
             .register();
 
     public static void register(){}

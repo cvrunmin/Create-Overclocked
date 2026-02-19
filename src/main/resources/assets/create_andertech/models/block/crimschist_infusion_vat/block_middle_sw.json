@@ -1,6 +1,7 @@
 {
 	"format_version": "1.9.0",
 	"credit": "Made with Blockbench",
+    "parent": "block/block",
 	"textures": {
 		"1": "create_andertech:block/crimschist_fluid_tank",
 		"4": "create_andertech:block/crimschist_infusion_vat_window_pane_side",
