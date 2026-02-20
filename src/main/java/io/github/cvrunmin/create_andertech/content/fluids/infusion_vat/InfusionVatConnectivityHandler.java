@@ -4,10 +4,14 @@ import com.simibubi.create.foundation.blockEntity.IMultiBlockEntityContainer;
 import net.createmod.catnip.data.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
@@ -15,7 +19,6 @@ import java.util.*;
 import java.util.stream.IntStream;
 
 public class InfusionVatConnectivityHandler {
-    // TODO: custom connecting for infusion vat
     public static void tryFormMultiBlock(InfusionVatBlockEntity be){
         ControllerSearchCache cache = new ControllerSearchCache();
         List<InfusionVatBlockEntity> pending = new ArrayList<>();
@@ -75,11 +78,15 @@ public class InfusionVatConnectivityHandler {
         }
     }
 
-    private static List<AreaInfo> iterFromMaxBaseArea(int maxXLength, int maxZLength){
+    private static List<AreaInfo> iterFromMinBaseArea(int maxXLength, int maxZLength){
         return IntStream.rangeClosed(1, maxXLength)
                 .mapToObj(x -> IntStream.rangeClosed(1, maxZLength).mapToObj(z -> new AreaInfo(x, z)))
-                .flatMap(s -> s).sorted(Comparator.comparingInt(AreaInfo::area).thenComparingInt(AreaInfo::xLen).reversed())
+                .flatMap(s -> s).sorted(Comparator.comparingInt(AreaInfo::area).thenComparingInt(AreaInfo::xLen))
                 .toList();
+    }
+
+    private static List<AreaInfo> iterFromMaxBaseArea(int maxXLength, int maxZLength){
+        return iterFromMinBaseArea(maxXLength, maxZLength).reversed();
     }
 
     private static int tryToFormNewMultiblock(InfusionVatBlockEntity be, ControllerSearchCache cache, boolean simulate){
@@ -90,7 +97,7 @@ public class InfusionVatConnectivityHandler {
 
         int maxXLength = be.getMaxWidth();
         int maxZLength = be.getMaxWidth();
-        for (AreaInfo areaInfo : iterFromMaxBaseArea(maxXLength, maxZLength)) {
+        for (AreaInfo areaInfo : iterFromMinBaseArea(maxXLength, maxZLength)) {
             int amount = tryToFormNewMultiblockBy(be, areaInfo.xLen, areaInfo.zLen, cache, true);
             if(amount < bestAmount) continue;
             bestXLength = areaInfo.xLen;
@@ -104,6 +111,7 @@ public class InfusionVatConnectivityHandler {
             if(beXLen == bestXLength && beZLen == bestZLength && beXLen * beZLen * be.getHeight() == bestAmount)
                 return bestAmount; // already in best config
             splitMultiAndInvalidate(be, cache, false);
+            be.setCapacities(bestAmount);
             tryToFormNewMultiblockBy(be, bestXLength, bestZLength, cache, false);
             // inner function will not update this block entity. do it here
             be.preventConnectivityUpdate();
@@ -123,6 +131,8 @@ public class InfusionVatConnectivityHandler {
         if(level == null) return 0;
 
         BlockPos origin = be.getBlockPos();
+        FluidStack requiredInputFluid = be.inputTank.getFluidInTank(0);
+        FluidStack requiredOutputFluid = be.inputTank.getFluidInTank(0);
 
         SearchLoop:
         for (int yOffset = 0; yOffset < be.getMaxHeight(); yOffset++) {
@@ -145,6 +155,12 @@ public class InfusionVatConnectivityHandler {
                         if(controllerPos.getX() + otherXLength > origin.getX() + xLen) break SearchLoop;
                         if(controllerPos.getZ() + otherZLength > origin.getZ() + zLen) break SearchLoop;
                     }
+                    FluidStack otherInput = responsibleController.inputTank.getFluidInTank(0);
+                    if(!requiredInputFluid.isEmpty() && !otherInput.isEmpty() && !FluidStack.isSameFluidSameComponents(requiredInputFluid, otherInput))
+                        break SearchLoop;
+                    FluidStack otherOutput = responsibleController.outputTank.getFluidInTank(0);
+                    if(!requiredOutputFluid.isEmpty() && !otherOutput.isEmpty() && !FluidStack.isSameFluidSameComponents(requiredOutputFluid, otherOutput))
+                        break SearchLoop;
                 }
             }
             // this plane is good. form this
@@ -162,6 +178,34 @@ public class InfusionVatConnectivityHandler {
                     if(part == null) continue; // this should not be triggered, but play safe
                     if(part == be) continue;
 
+                    var partInput = part.inputInventory.getContents();
+                    if(!partInput.isEmpty()){
+                        for (ItemStack stack : partInput) {
+                            // should be always empty: should have enough space
+                            ItemHandlerHelper.insertItemStacked(be.inputInventory, stack, false);
+                        }
+                        part.inputInventory.clearContent();
+                    }
+                    var partOutput = part.outputInventory.getContents();
+                    if(!partOutput.isEmpty()){
+                        part.outputInventory.allowInsertion();
+                        for (ItemStack stack : partOutput) {
+                            // should be always empty: should have enough space
+                            ItemHandlerHelper.insertItemStacked(be.outputInventory, stack, false);
+                        }
+                        part.outputInventory.clearContent();
+                        part.outputInventory.forbidInsertion();
+                    }
+                    var partInputFluid = part.inputTank.getFluidInTank(0);
+                    if(!partInputFluid.isEmpty()){
+                        be.inputTank.fill(partInputFluid, IFluidHandler.FluidAction.EXECUTE);
+                        part.inputTank.drain(partInputFluid, IFluidHandler.FluidAction.EXECUTE);
+                    }
+                    var partOutputFluid = part.outputTank.getFluidInTank(0);
+                    if(!partOutputFluid.isEmpty()){
+                        be.outputTank.forceFill(partOutputFluid, IFluidHandler.FluidAction.EXECUTE);
+                        part.outputTank.drain(partOutputFluid, IFluidHandler.FluidAction.EXECUTE);
+                    }
                     splitMultiAndInvalidate(part, cache, false);
                     part.setController(origin);
                     part.preventConnectivityUpdate();
@@ -194,6 +238,29 @@ public class InfusionVatConnectivityHandler {
 
         BlockPos origin = be.getBlockPos();
         List<InfusionVatBlockEntity> pending = new ArrayList<>();
+
+        var inputItemsToDistribute = be.inputInventory.getContents();
+        var outputItemsToDistribute = be.outputInventory.getContents();
+        FluidStack inputFluidToDistribute = be.inputTank.getFluidInTank(0);
+        FluidStack outputFluidToDistribute = be.outputTank.getFluidInTank(0);
+        if (!be.isRemoved()) {
+            for (int i = 0; i < be.getExpectedItemSlotCount(1); i++) {
+                if(!inputItemsToDistribute.isEmpty()){
+                    inputItemsToDistribute.removeFirst();
+                }
+                if(!outputItemsToDistribute.isEmpty()){
+                    outputItemsToDistribute.removeFirst();
+                }
+            }
+            if (!inputFluidToDistribute.isEmpty()) {
+                inputFluidToDistribute.shrink(be.getExpectedFluidCapacity(1));
+            }
+            if (!outputFluidToDistribute.isEmpty()) {
+                outputFluidToDistribute.shrink(be.getExpectedFluidCapacity(1));
+            }
+        }
+
+
         for (int yOffset = 0; yOffset < height; yOffset++) {
             for (int xOffset = 0; xOffset < xLength; xOffset++) {
                 for (int zOffset = 0; zOffset < zLength; zOffset++) {
@@ -203,6 +270,36 @@ public class InfusionVatConnectivityHandler {
                     if(!partAt.getController().equals(origin)) continue; // not belong to this block entity
 
                     partAt.removeController(true);
+                    if(partAt != be){
+                        for (int i = 0; i < partAt.getExpectedItemSlotCount(1); i++) {
+                            boolean bothEmpty = true;
+                            if(!inputItemsToDistribute.isEmpty()){
+                                var stack = inputItemsToDistribute.removeFirst();
+                                partAt.inputInventory.setItem(i, stack);
+                                bothEmpty = false;
+                            }
+                            if(!outputItemsToDistribute.isEmpty()){
+                                var stack = inputItemsToDistribute.removeFirst();
+                                partAt.outputInventory.setItem(i, stack);
+                                bothEmpty = false;
+                            }
+                            if(bothEmpty) break;
+                        }
+                        if(!inputFluidToDistribute.isEmpty()){
+                            var copy = inputFluidToDistribute.copy();
+                            int split = Math.min(partAt.getExpectedFluidCapacity(1), inputFluidToDistribute.getAmount());
+                            copy.setAmount(split);
+                            inputFluidToDistribute.shrink(split);
+                            partAt.inputTank.forceFill(copy, IFluidHandler.FluidAction.EXECUTE);
+                        }
+                        if(!outputFluidToDistribute.isEmpty()){
+                            var copy = outputFluidToDistribute.copy();
+                            int split = Math.min(partAt.getExpectedFluidCapacity(1), outputFluidToDistribute.getAmount());
+                            copy.setAmount(split);
+                            outputFluidToDistribute.shrink(split);
+                            partAt.outputTank.forceFill(copy, IFluidHandler.FluidAction.EXECUTE);
+                        }
+                    }
                     if(tryReconnect){
                         pending.add(partAt);
                         partAt.preventConnectivityUpdate();
@@ -213,7 +310,7 @@ public class InfusionVatConnectivityHandler {
                 }
             }
         }
-        // TODO: invalidate capablilities
+        be.getLevel().invalidateCapabilities(be.getBlockPos());
         if(tryReconnect){
             tryFormMultiBlock(be.getType(), level, cache == null ? new ControllerSearchCache() : cache, pending);
         }

@@ -1,5 +1,6 @@
 package io.github.cvrunmin.create_andertech;
 
+import io.github.cvrunmin.create_andertech.content.fluids.infusion_vat.InfusionVatBlockEntity;
 import io.github.cvrunmin.create_andertech.content.fluids.tank.CrimschistFluidTankBlockEntity;
 import io.github.cvrunmin.create_andertech.content.kinetics.belt.OCBeltBlockEntity;
 import io.github.cvrunmin.create_andertech.content.kinetics.crafter.ChronenditeMechanicalCrafterBlockEntity;
@@ -24,5 +25,6 @@ public class CommonEvents {
         ChronenditeSpeedControllerBlockEntity.registerCapabilities(event);
         CreativeOCMotorBlockEntity.registerCapabilities(event);
         CrimschistFluidTankBlockEntity.registerCapabilities(event);
+        InfusionVatBlockEntity.registerCapabilities(event);
     }
 }
