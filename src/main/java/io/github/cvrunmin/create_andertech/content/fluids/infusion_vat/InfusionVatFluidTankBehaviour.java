@@ -157,13 +157,17 @@ public class InfusionVatFluidTankBehaviour extends BlockEntityBehaviour implemen
     }
 
     public void ensureLegalSpace(){
-        if(tank.tank.getSpace() < 0) tank.tank.drain(-tank.tank.getSpace(), FluidAction.EXECUTE);
+        var overflow = tank.tank.getFluidAmount() - tank.tank.getCapacity();
+        if(overflow > 0){
+            tank.tank.drain(overflow, IFluidHandler.FluidAction.EXECUTE);
+        }
     }
 
     public void setCapacity(int capacity){
         tank.tank.setCapacity(capacity);
-        if(tank.tank.getSpace() < 0){
-            tank.tank.drain(-tank.tank.getSpace(), IFluidHandler.FluidAction.EXECUTE);
+        var overflow = tank.tank.getFluidAmount() - tank.tank.getCapacity();
+        if(overflow > 0){
+            tank.tank.drain(overflow, IFluidHandler.FluidAction.EXECUTE);
         }
     }
 
@@ -229,6 +233,15 @@ public class InfusionVatFluidTankBehaviour extends BlockEntityBehaviour implemen
             if (blockEntity.isVirtual() && !tank.getFluid()
                     .isEmpty())
                 renderedFluid = tank.getFluid();
+        }
+
+        public void forceFluidLevel(){
+            fluidLevel = LerpedFloat.linear().startWithValue(tank.getFluidAmount() / (float) tank.getCapacity());
+            fluidLevel.chase(tank.getFluidAmount() / (float) tank.getCapacity(), .5, LerpedFloat.Chaser.EXP);
+        }
+
+        public void lazySync(){
+            fluidLevel.chase(fluidLevel.getChaseTarget(), 0.125f, LerpedFloat.Chaser.EXP);
         }
 
         public FluidStack getRenderedFluid() {

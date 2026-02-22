@@ -1,9 +1,12 @@
 package io.github.cvrunmin.create_andertech.content.fluids.infusion_vat;
 
 import com.simibubi.create.foundation.blockEntity.IMultiBlockEntityContainer;
+import com.simibubi.create.foundation.item.ItemHelper;
 import net.createmod.catnip.data.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -178,6 +181,7 @@ public class InfusionVatConnectivityHandler {
                     if(part == null) continue; // this should not be triggered, but play safe
                     if(part == be) continue;
 
+                    splitMultiAndInvalidate(part, cache, false);
                     var partInput = part.inputInventory.getContents();
                     if(!partInput.isEmpty()){
                         for (ItemStack stack : partInput) {
@@ -196,17 +200,16 @@ public class InfusionVatConnectivityHandler {
                         part.outputInventory.clearContent();
                         part.outputInventory.forbidInsertion();
                     }
-                    var partInputFluid = part.inputTank.getFluidInTank(0);
+                    var partInputFluid = part.inputTank.getFluidInTank(0).copy();
                     if(!partInputFluid.isEmpty()){
                         be.inputTank.fill(partInputFluid, IFluidHandler.FluidAction.EXECUTE);
                         part.inputTank.drain(partInputFluid, IFluidHandler.FluidAction.EXECUTE);
                     }
-                    var partOutputFluid = part.outputTank.getFluidInTank(0);
+                    var partOutputFluid = part.outputTank.getFluidInTank(0).copy();
                     if(!partOutputFluid.isEmpty()){
                         be.outputTank.forceFill(partOutputFluid, IFluidHandler.FluidAction.EXECUTE);
                         part.outputTank.drain(partOutputFluid, IFluidHandler.FluidAction.EXECUTE);
                     }
-                    splitMultiAndInvalidate(part, cache, false);
                     part.setController(origin);
                     part.preventConnectivityUpdate();
                     cache.put(currentPos, be);
@@ -234,15 +237,21 @@ public class InfusionVatConnectivityHandler {
         int height = be.getHeight();
         int xLength = be.getXLength();
         int zLength = be.getZLength();
-        if(xLength == 1 && zLength == 1 && height == 1) return;
+        if(xLength == 1 && zLength == 1 && height == 1) {
+            if(be.isRemoved()){
+                ItemHelper.dropContents(level, be.getBlockPos(), be.inputInventory);
+                ItemHelper.dropContents(level, be.getBlockPos(), be.outputInventory);
+            }
+            return;
+        }
 
         BlockPos origin = be.getBlockPos();
         List<InfusionVatBlockEntity> pending = new ArrayList<>();
 
         var inputItemsToDistribute = be.inputInventory.getContents();
         var outputItemsToDistribute = be.outputInventory.getContents();
-        FluidStack inputFluidToDistribute = be.inputTank.getFluidInTank(0);
-        FluidStack outputFluidToDistribute = be.outputTank.getFluidInTank(0);
+        FluidStack inputFluidToDistribute = be.inputTank.getFluidInTank(0).copy();
+        FluidStack outputFluidToDistribute = be.outputTank.getFluidInTank(0).copy();
         if (!be.isRemoved()) {
             for (int i = 0; i < be.getExpectedItemSlotCount(1); i++) {
                 if(!inputItemsToDistribute.isEmpty()){
@@ -258,6 +267,7 @@ public class InfusionVatConnectivityHandler {
             if (!outputFluidToDistribute.isEmpty()) {
                 outputFluidToDistribute.shrink(be.getExpectedFluidCapacity(1));
             }
+            be.setCapacities(1);
         }
 
 
@@ -309,6 +319,12 @@ public class InfusionVatConnectivityHandler {
                     }
                 }
             }
+        }
+        if(!inputItemsToDistribute.isEmpty()){
+            Containers.dropContents(level, origin, NonNullList.copyOf(inputItemsToDistribute));
+        }
+        if(!outputItemsToDistribute.isEmpty()){
+            Containers.dropContents(level, origin, NonNullList.copyOf(outputItemsToDistribute));
         }
         be.getLevel().invalidateCapabilities(be.getBlockPos());
         if(tryReconnect){

@@ -1,6 +1,7 @@
 package io.github.cvrunmin.create_andertech.content.fluids.infusion_vat;
 
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.foundation.ICapabilityProvider;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.fluid.CombinedTankWrapper;
@@ -9,6 +10,8 @@ import com.simibubi.create.foundation.utility.CreateLang;
 import io.github.cvrunmin.create_andertech.foundation.MyLang;
 import io.github.cvrunmin.create_andertech.index.AllBlockEntityTypes;
 import io.github.cvrunmin.create_andertech.index.AllBlocks;
+import io.github.cvrunmin.create_andertech.index.CAAllRecipeTypes;
+import io.github.cvrunmin.create_andertech.infrastructure.SingleRecipeInputWithFluid;
 import net.createmod.catnip.data.Couple;
 import net.createmod.catnip.lang.LangBuilder;
 import net.createmod.catnip.lang.LangNumberFormat;
@@ -19,6 +22,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Clearable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -28,13 +33,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
 
-import java.util.List;
-import java.util.Objects;
+import javax.annotation.Nullable;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class InfusionVatBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation, Clearable {
@@ -45,8 +53,6 @@ public class InfusionVatBlockEntity extends SmartBlockEntity implements IHaveGog
     protected int zLen;
     protected int height;
     protected BlockPos lastKnownPos;
-    protected int syncCooldown;
-    protected boolean queuedSync;
     protected boolean shouldUpdateCapability;
 
     public InfusionVatInventory inputInventory;
@@ -54,9 +60,12 @@ public class InfusionVatBlockEntity extends SmartBlockEntity implements IHaveGog
     public InfusionVatFluidTankBehaviour inputTank;
     protected InfusionVatFluidTankBehaviour outputTank;
 
-    protected IItemHandlerModifiable itemCapability;
-    protected IFluidHandler fluidCapability;
+    @Nullable
+    protected ICapabilityProvider<IItemHandler> itemCapabilityProvider = null;
+    @Nullable
+    protected ICapabilityProvider<IFluidHandler> fluidCapabilityProvider = null;
     protected boolean contentChanged;
+    protected boolean forceFluidLevelUpdate;
 
     private Couple<InfusionVatInventory> invs;
     private final Couple<InfusionVatFluidTankBehaviour> tanks;
@@ -70,8 +79,6 @@ public class InfusionVatBlockEntity extends SmartBlockEntity implements IHaveGog
         inputInventory.whenContentsChanged($ -> contentChanged = true);
         outputInventory = ((InfusionVatInventory) new InfusionVatInventory(getExpectedItemSlotCount(1), this).forbidInsertion().withMaxStackSize(64));
         // initialization of tanks done in addBehaviours, called in super constructor
-        itemCapability = new CombinedInvWrapper(inputInventory, outputInventory);
-        fluidCapability = new CombinedTankWrapper(outputTank, inputTank);
         contentChanged = true;
 
         invs = Couple.create(inputInventory, outputInventory);
@@ -79,27 +86,33 @@ public class InfusionVatBlockEntity extends SmartBlockEntity implements IHaveGog
     }
 
     public IItemHandler getActualItemCapability(){
-        if(isController()) return itemCapability;
-        if(getControllerBE() != null) return getControllerBE().itemCapability;
-        return itemCapability;
+        initCapability();
+        return Optional.ofNullable(itemCapabilityProvider).map(ICapabilityProvider::getCapability).orElse(new ItemStackHandler());
     }
 
     public IFluidHandler getActualFluidCapability(){
-        if(isController()) return fluidCapability;
-        if(getControllerBE() != null) return getControllerBE().fluidCapability;
-        return fluidCapability;
+        initCapability();
+        return Optional.ofNullable(fluidCapabilityProvider).map(ICapabilityProvider::getCapability).orElse(new FluidTank(0));
     }
 
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(
                 Capabilities.ItemHandler.BLOCK,
                 AllBlockEntityTypes.INFUSION_VAT.get(),
-                (be, context) -> be.getActualItemCapability()
+                (be, context) -> {
+                    be.initCapability();
+                    if(be.itemCapabilityProvider == null) return null;
+                    return be.itemCapabilityProvider.getCapability();
+                }
         );
         event.registerBlockEntity(
                 Capabilities.FluidHandler.BLOCK,
                 AllBlockEntityTypes.INFUSION_VAT.get(),
-                (be, context) -> be.getActualFluidCapability()
+                (be, context) -> {
+                    be.initCapability();
+                    if(be.fluidCapabilityProvider == null) return null;
+                    return be.fluidCapabilityProvider.getCapability();
+                }
         );
     }
 
@@ -152,11 +165,6 @@ public class InfusionVatBlockEntity extends SmartBlockEntity implements IHaveGog
     @Override
     public void tick() {
         super.tick();
-        if (syncCooldown > 0) {
-            syncCooldown--;
-            if (syncCooldown == 0 && queuedSync)
-                sendData();
-        }
 
         if (lastKnownPos == null)
             lastKnownPos = getBlockPos();
@@ -165,12 +173,161 @@ public class InfusionVatBlockEntity extends SmartBlockEntity implements IHaveGog
             return;
         }
 
+        boolean doRefreshingThisTick = false;
         if (shouldUpdateCapability) {
             shouldUpdateCapability = false;
             refreshCapability();
+            doRefreshingThisTick = true;
         }
-        if (shouldUpdateConnectivity)
+        if (shouldUpdateConnectivity) {
             updateConnectivity();
+            doRefreshingThisTick = true;
+        }
+        if(doRefreshingThisTick || !isController()) return;
+        if(!level.isClientSide){
+            if(contentChanged){
+                refreshRecipeProcessingList();
+                contentChanged = false;
+            }
+            boolean hasRecipeProcessing = false;
+            boolean hasUpdate = false;
+            for (Iterator<Map.Entry<Integer, InfusingInfo>> iterator = processingRecipes.entrySet().iterator(); iterator.hasNext(); ) {
+                Map.Entry<Integer, InfusingInfo> entry = iterator.next();
+                InfusingInfo info = entry.getValue();
+                info.processedTicks++;
+                if(info.processedTicks >= info.requiredProcessingTicks){
+                    var processedAmount = info.processedAmount;
+                    inputInventory.extractItem(entry.getKey(), processedAmount, false);
+                    outputInventory.allowInsertion();
+                    outputInventory.insertItem(info.getSlot(), info.reservedOutputItem, false);
+                    outputInventory.forbidInsertion();
+                    inputTank.drain(info.reservedInputFluid, IFluidHandler.FluidAction.EXECUTE);
+                    outputTank.allowInsertion();
+                    outputTank.fill(info.reservedOutputFluid, IFluidHandler.FluidAction.EXECUTE);
+                    outputTank.forbidInsertion();
+                    iterator.remove();
+                    hasUpdate = true;
+                }else{
+                    hasRecipeProcessing = true;
+                }
+            }
+            if(hasRecipeProcessing){
+                level.playSound(null, worldPosition.offset(xLen / 2, height / 2, zLen / 2), SoundEvents.BUBBLE_COLUMN_WHIRLPOOL_AMBIENT,
+                        SoundSource.BLOCKS, .75f, .5f);
+            }
+            if(hasUpdate) sendData();
+        }
+    }
+    
+    private HashMap<Integer, InfusingInfo> processingRecipes = new HashMap<>();
+
+    private void refreshRecipeProcessingList(){
+        var inputFluid = inputTank.getFluidInTank(0);
+        var availableFluid = inputFluid.getAmount();
+        var reservedOutputSlots = new HashSet<Integer>();
+        var reservedOutputFluid = outputTank.getFluidInTank(0).copy();
+        for (int slot = 0; slot < inputInventory.getSlots(); slot++) {
+            ItemStack slotStack = inputInventory.getStackInSlot(slot);
+            if(slotStack.isEmpty()) continue;
+            if(processingRecipes.containsKey(slot)){
+                boolean hardRefresh = false;
+                var info = processingRecipes.get(slot);
+                if(!ItemStack.isSameItemSameComponents(info.lastSeenStack, slotStack)){
+                    hardRefresh = true;
+                } else if (slotStack.isStackable()) {
+                    var currentStackRelativeSizeBar = (int)(slotStack.getCount() / ((float)slotStack.getMaxStackSize()) * 4);
+                    var lastSeenStackRelativeSizeBar = (int)(info.lastSeenStack.getCount() / ((float)info.lastSeenStack.getMaxStackSize()) * 4);
+                    if(currentStackRelativeSizeBar != lastSeenStackRelativeSizeBar) hardRefresh = true;
+                }
+                if(!hardRefresh){
+                    int requiredFluids = 0;
+                    int processedAmount = slotStack.getCount();
+                    var outputItems = info.getRecipe().getRollableResultsAsItemStacks().stream().filter(stack -> !stack.isEmpty()).findFirst().orElse(ItemStack.EMPTY);
+                    var outputFluids = info.getRecipe().getFluidResults().stream().filter(stack -> !stack.isEmpty()).findFirst().orElse(FluidStack.EMPTY);
+                    if(outputItems.isEmpty() && outputFluids.isEmpty()) hardRefresh = true;
+                    else{
+                        if(!outputItems.isEmpty()){
+                            processedAmount = Math.min(outputItems.getMaxStackSize() / outputItems.getCount(), processedAmount);
+                        }
+                        if(!info.getRecipe().getFluidIngredients().isEmpty()){
+                            var ingre = info.getRecipe().getFluidIngredients().getFirst();
+                            if(!ingre.ingredient().test(inputFluid)) hardRefresh = true;
+                            var fluidPerRecipe = ingre.amount();
+                            requiredFluids = processedAmount * fluidPerRecipe;
+                            if(availableFluid - requiredFluids < 0) hardRefresh = true;
+                        }
+                    }
+                    var reservedOutSlot = -1;
+                    if(!hardRefresh){
+                        outputItems = outputItems.copyWithCount(outputItems.getCount() * processedAmount);
+                        outputFluids = outputFluids.copyWithAmount(outputFluids.getAmount() * processedAmount);
+                        if(info.reservedOutputSlot < outputInventory.getSlots() && outputInventory.testCanFullyInsert(info.reservedOutputSlot, outputItems)){
+                            reservedOutSlot = info.reservedOutputSlot;
+                        }else{
+                            for (int outSlot = 0; outSlot < outputInventory.getSlots(); outSlot++) {
+                                if(reservedOutputSlots.contains(outSlot)) continue;
+                                if(outputInventory.testCanFullyInsert(outSlot, outputItems)){
+                                    reservedOutSlot = outSlot;
+                                    break;
+                                }
+                            }
+                        }
+                        if(reservedOutSlot == -1) hardRefresh = true;
+                        if(!reservedOutputFluid.isEmpty() && !FluidStack.isSameFluidSameComponents(reservedOutputFluid, outputFluids)) hardRefresh = true;
+                        if(reservedOutputFluid.getAmount() + outputFluids.getAmount() > outputTank.tank.tank.getCapacity()) hardRefresh = true;
+                    }
+                    if(!hardRefresh){
+                        availableFluid -= requiredFluids;
+                        reservedOutputSlots.add(reservedOutSlot);
+                        if(reservedOutputFluid.isEmpty()) reservedOutputFluid = outputFluids.copy();
+                        else reservedOutputFluid.setAmount(reservedOutputFluid.getAmount() + outputFluids.getAmount());
+                        info.refresh(slotStack, inputFluid.copyWithAmount(requiredFluids), processedAmount, reservedOutSlot, outputItems, outputFluids);
+                        continue;
+                    }
+                }
+                processingRecipes.remove(slot);
+            }
+            var matchedRecipeOptional = CAAllRecipeTypes.INFUSING.<SingleRecipeInputWithFluid,InfusionVatRecipe>find(new SingleRecipeInputWithFluid(slotStack, inputFluid.copyWithAmount(availableFluid)), level);
+            if(matchedRecipeOptional.isPresent()){
+                var matchedRecipe = matchedRecipeOptional.get().value();
+                int requiredFluids = 0;
+                int processedAmount = slotStack.getCount();
+                var outputItems = matchedRecipe.getRollableResultsAsItemStacks().stream().filter(stack -> !stack.isEmpty()).findFirst().orElse(ItemStack.EMPTY);
+                var outputFluids = matchedRecipe.getFluidResults().stream().filter(stack -> !stack.isEmpty()).findFirst().orElse(FluidStack.EMPTY);
+                if(outputItems.isEmpty() && outputFluids.isEmpty()) continue;
+                if(!outputItems.isEmpty()){
+                    processedAmount = Math.min(outputItems.getMaxStackSize() / outputItems.getCount(), processedAmount);
+                    if(processedAmount < 1) continue;
+                }
+                if(!matchedRecipe.getFluidIngredients().isEmpty()){
+                    var ingre = matchedRecipe.getFluidIngredients().getFirst();
+                    var fluidPerRecipe = ingre.amount();
+                    processedAmount = Math.min(availableFluid / fluidPerRecipe, processedAmount);
+                    if(processedAmount < 1) continue;
+                    requiredFluids = processedAmount * fluidPerRecipe;
+                    var reservedOutSlot = -1;
+                    outputItems = outputItems.copyWithCount(outputItems.getCount() * processedAmount);
+                    outputFluids = outputFluids.copyWithAmount(outputFluids.getAmount() * processedAmount);
+                    for (int outSlot = 0; outSlot < outputInventory.getSlots(); outSlot++) {
+                        if(reservedOutputSlots.contains(outSlot)) continue;
+                        if(outputInventory.testCanFullyInsert(outSlot, outputItems)){
+                            reservedOutSlot = outSlot;
+                            break;
+                        }
+                    }
+                    if(reservedOutSlot == -1) continue;
+                    if(!reservedOutputFluid.isEmpty() && !FluidStack.isSameFluidSameComponents(reservedOutputFluid, outputFluids)) continue;
+                    if(reservedOutputFluid.getAmount() + outputFluids.getAmount() > outputTank.tank.tank.getCapacity()) continue;
+                    availableFluid -= requiredFluids;
+                    reservedOutputSlots.add(reservedOutSlot);
+                    if(reservedOutputFluid.isEmpty()) reservedOutputFluid = outputFluids.copy();
+                    else reservedOutputFluid.setAmount(reservedOutputFluid.getAmount() + outputFluids.getAmount());
+                    var info = new InfusingInfo(slot, matchedRecipe);
+                    info.refresh(slotStack, inputFluid.copyWithAmount(requiredFluids), processedAmount, reservedOutSlot, outputItems, outputFluids);
+                    processingRecipes.put(slot, info);
+                }
+            }
+        }
     }
 
     private void onPositionChanged() {
@@ -221,7 +378,32 @@ public class InfusionVatBlockEntity extends SmartBlockEntity implements IHaveGog
         sendData();
     }
 
+    void initCapability(){
+        if(itemCapabilityProvider != null && itemCapabilityProvider.getCapability() != null
+                && fluidCapabilityProvider != null && fluidCapabilityProvider.getCapability() != null) return;
+        if(!isController()){
+            var controllerBE = getControllerBE();
+            if(controllerBE == null) return;
+            controllerBE.initCapability();
+            itemCapabilityProvider = ICapabilityProvider.of(() -> {
+                if(controllerBE.isRemoved()) return null;
+                if(controllerBE.itemCapabilityProvider == null) return null;
+                return controllerBE.itemCapabilityProvider.getCapability();
+            });
+            fluidCapabilityProvider = ICapabilityProvider.of(() -> {
+                if(controllerBE.isRemoved()) return null;
+                if(controllerBE.fluidCapabilityProvider == null) return null;
+                return controllerBE.fluidCapabilityProvider.getCapability();
+            });
+            return;
+        }
+        itemCapabilityProvider = ICapabilityProvider.of(new CombinedInvWrapper(inputInventory, outputInventory));
+        fluidCapabilityProvider = ICapabilityProvider.of(new CombinedTankWrapper(outputTank, inputTank));
+    }
+
     void refreshCapability() {
+        itemCapabilityProvider = null;
+        fluidCapabilityProvider = null;
         invalidateCapabilities();
     }
 
@@ -242,6 +424,8 @@ public class InfusionVatBlockEntity extends SmartBlockEntity implements IHaveGog
     }
 
     public List<ItemStack> setCapacities(int blockAmount){
+        itemCapabilityProvider = null;
+        fluidCapabilityProvider = null;
         var itemStackSize = getExpectedItemSlotCount(blockAmount);
         var fluidStackSize = getExpectedFluidCapacity(blockAmount);
         var droppedInputs = inputInventory.resizeCapacity(itemStackSize);
@@ -300,6 +484,12 @@ public class InfusionVatBlockEntity extends SmartBlockEntity implements IHaveGog
             }
             invalidateRenderBoundingBox();
         }
+        if(isController()){
+            if(tag.contains("ForceFluidLevel")){
+                inputTank.tank.forceFluidLevel();
+                outputTank.tank.forceFluidLevel();
+            }
+        }
     }
 
     @Override
@@ -320,8 +510,9 @@ public class InfusionVatBlockEntity extends SmartBlockEntity implements IHaveGog
         super.write(tag, registries, clientPacket);
         if (!clientPacket)
             return;
-        if (queuedSync)
-            tag.putBoolean("LazySync", true);
+        if (forceFluidLevelUpdate)
+            tag.putBoolean("ForceFluidLevel", true);
+        forceFluidLevelUpdate = false;
     }
 
     @Override
@@ -344,6 +535,8 @@ public class InfusionVatBlockEntity extends SmartBlockEntity implements IHaveGog
             updateShape();
         }
         // TODO: update stacks
+        inputTank.tank.onFluidStackChanged();
+        outputTank.tank.onFluidStackChanged();
         setChanged();
     }
 
@@ -386,6 +579,9 @@ public class InfusionVatBlockEntity extends SmartBlockEntity implements IHaveGog
         xLen = 1;
         zLen = 1;
         height = 1;
+        inputTank.tank.onFluidStackChanged();
+        outputTank.tank.onFluidStackChanged();
+
         BlockState state = getBlockState();
         if(AllBlocks.INFUSION_VAT.has(state)){
             state = state.setValue(InfusionVatBlock.TOP, true);
@@ -456,5 +652,44 @@ public class InfusionVatBlockEntity extends SmartBlockEntity implements IHaveGog
         }
         if(isEmpty) tooltip.removeFirst(); // do not show any tooltips if empty
         return true;
+    }
+
+    public class InfusingInfo{
+        private final int slot;
+        private final InfusionVatRecipe recipe;
+        ItemStack lastSeenStack;
+        ItemStack reservedOutputItem;
+        FluidStack reservedOutputFluid;
+        FluidStack reservedInputFluid;
+        int reservedOutputSlot;
+
+        int processedTicks;
+        int requiredProcessingTicks;
+        int processedAmount;
+
+        InfusingInfo(int slot, InfusionVatRecipe recipe){
+            this.slot = slot;
+            this.recipe = recipe;
+            this.processedTicks = -1;
+        }
+
+        public InfusionVatRecipe getRecipe() {
+            return recipe;
+        }
+
+        public int getSlot() {
+            return slot;
+        }
+
+        public void refresh(ItemStack lastSeenStack, FluidStack reservedInputFluid, int processedAmount, int reservedOutputSlot, ItemStack reservedOutputItem, FluidStack reservedOutputFluid){
+            this.lastSeenStack = lastSeenStack.copy();
+            this.reservedInputFluid = reservedInputFluid;
+            this.processedAmount = processedAmount;
+            this.reservedOutputSlot = reservedOutputSlot;
+            this.reservedOutputItem = reservedOutputItem;
+            this.reservedOutputFluid = reservedOutputFluid;
+
+            this.requiredProcessingTicks = Math.max(20, recipe.getProcessingDuration()) * (processedAmount / (lastSeenStack.getMaxStackSize() / 4) + 1);
+        }
     }
 }

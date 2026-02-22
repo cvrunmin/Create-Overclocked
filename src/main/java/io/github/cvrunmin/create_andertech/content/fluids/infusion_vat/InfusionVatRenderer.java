@@ -17,6 +17,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
@@ -32,17 +33,17 @@ public class InfusionVatRenderer extends SmartBlockEntityRenderer<InfusionVatBlo
             return;
 
         float fluidLevel = renderFluids(blockEntity, partialTicks, ms, buffer, light, overlay);
-        float level = Mth.clamp(fluidLevel - .3f, .125f, .6f);
+        float level = Math.max(fluidLevel - .3f, .125f);
         BlockPos pos = blockEntity.getBlockPos();
         // TODO: utilize the whole vat for item rendering
         ms.pushPose();
         float vatXHalf = blockEntity.getXLength() / 2.f;
-        float vatZHalf = blockEntity.getXLength() / 2.f;
+        float vatZHalf = blockEntity.getZLength() / 2.f;
         ms.translate(vatXHalf, .2f, vatZHalf);
 
         RandomSource r = RandomSource.create(pos.hashCode());
         Vec3 baseVector = new Vec3(.125, level, 0);
-        IItemHandlerModifiable itemCap = blockEntity.itemCapability; // only controller BE will run this code. Direct access is good
+        IItemHandler itemCap = blockEntity.getActualItemCapability();
         if(itemCap == null) itemCap = new ItemStackHandler();
         int itemCount = 0;
         for (int slot = 0; slot < itemCap.getSlots(); slot++)
@@ -93,7 +94,7 @@ public class InfusionVatRenderer extends SmartBlockEntityRenderer<InfusionVatBlo
     protected void renderItem(PoseStack ms, MultiBufferSource buffer, int light, int overlay, ItemStack stack) {
         Minecraft mc = Minecraft.getInstance();
         mc.getItemRenderer()
-                .renderStatic(stack, ItemDisplayContext.GROUND, light, overlay, ms, buffer, mc.level, 0);
+                .renderStatic(stack, ItemDisplayContext.FIXED, light, overlay, ms, buffer, mc.level, 0);
     }
 
     private float renderFluids(InfusionVatBlockEntity blockEntity, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {

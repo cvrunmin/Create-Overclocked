@@ -1,4 +1,4 @@
-// 1.21.1	2026-02-19T19:44:14.7664014	Registrate Provider for create_andertech [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
+// 1.21.1	2026-02-22T12:20:52.4795635	Registrate Provider for create_andertech [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
 98d26546200e4b2c0a00643fc9f027b49ef4594b assets/create_andertech/blockstates/andesite_encased_crimschist_cogwheel.json
 4dc0142d21221d69b52fb1acf47b46dc184a78a0 assets/create_andertech/blockstates/andesite_encased_crimschist_large_cogwheel.json
 4946d26000065d09b51752b6ad34d0050f829a0d assets/create_andertech/blockstates/andesite_encased_crimschist_shaft.json
@@ -33,8 +33,8 @@ c4ec6bd94d2a2a9df47e7c822f82f5a1b2105780 assets/create_andertech/blockstates/cri
 93af5f7fc6b6c063bcbfbf7eb375320b351df13d assets/create_andertech/blockstates/encased_crimschist_chain_drive.json
 2c1c3bb461ffb640fa241c69dc12d9cbdd266ffd assets/create_andertech/blockstates/metal_girder_encased_crimschist_shaft.json
 d0af03aeed1de0fcd54098868465452cc97a7513 assets/create_andertech/blockstates/speeding_belt.json
-05b57b3761b50b2dd05e2a0bf3a3de91d7648aa1 assets/create_andertech/lang/en_ud.json
-5ab57e431e2557900f913865500fe922ac51199a assets/create_andertech/lang/en_us.json
+0b1ff6f1d9e062510a61004c870f25fd23840b4c assets/create_andertech/lang/en_ud.json
+3c957d67c0a67e73f6d232c5d1b51129583d86c5 assets/create_andertech/lang/en_us.json
 7f3e4636d521a67eb621d5d27d6b175d455179f8 assets/create_andertech/models/block/andesite_encased_crimschist_cogwheel.json
 5a5a3aac31c44030880774b96cfecc40568abe75 assets/create_andertech/models/block/andesite_encased_crimschist_cogwheel_bottom.json
 82ce3bec0d6b5332b4f5007245ca2cdd8e28b9c9 assets/create_andertech/models/block/andesite_encased_crimschist_cogwheel_top.json

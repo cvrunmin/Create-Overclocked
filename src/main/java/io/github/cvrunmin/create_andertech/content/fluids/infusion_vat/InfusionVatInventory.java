@@ -3,10 +3,7 @@ package io.github.cvrunmin.create_andertech.content.fluids.infusion_vat;
 import com.simibubi.create.foundation.item.SmartInventory;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class InfusionVatInventory extends SmartInventory {
     private InfusionVatBlockEntity vat;
@@ -25,14 +22,24 @@ public class InfusionVatInventory extends SmartInventory {
             if(stack.isEmpty()) continue;
             oldStacks.add(stack);
         }
-        // assume this to be true as super constructor will try to cast inv into this
-        ((SyncedStackHandler) inv).setSize(newSlots);
+        wrapped.setSize(newSlots);
         for (int i = 0; i < inv.getSlots(); i++) {
             var stack = oldStacks.poll();
             if(stack == null) break;
             inv.setStackInSlot(i, stack);
         }
         return new ArrayList<>(oldStacks);
+    }
+
+    @Override
+    public ItemStack getStackInSlot(int slot) {
+        if(slot >= inv.getSlots()) return ItemStack.EMPTY; // graceful check for out-of-sync index from combinedInvhandler
+        return super.getStackInSlot(slot);
+    }
+
+    public boolean testCanFullyInsert(int slot, ItemStack stack){
+        ItemStack result = inv.insertItem(slot, stack, true);
+        return result.isEmpty();
     }
 
     @Override

@@ -2,6 +2,7 @@ package io.github.cvrunmin.create_andertech.infrastructure.data;
 
 import com.tterrag.registrate.providers.ProviderType;
 import io.github.cvrunmin.create_andertech.CreateAndertech;
+import io.github.cvrunmin.create_andertech.index.AllCreativeTabs;
 import io.github.cvrunmin.create_andertech.index.AllExtraModels;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
@@ -18,7 +19,8 @@ public class CADataGen {
         if (!event.getMods().contains(CreateAndertech.MODID))
             return;
         REGISTRATE.addDataGenerator(ProviderType.LANG, provider -> {
-            provider.add("itemGroup.create_andertech.main", "Create Andertech");
+            provider.add(AllCreativeTabs.MAIN_TAB.get(), "Create Andertech");
+            provider.add(CreateAndertech.MODID + ".gui.goggles.vat_contents", "Vat Contents:");
         });
         REGISTRATE.addDataGenerator(ProviderType.BLOCKSTATE, AllExtraModels::genBlockStates);
     }
@@ -31,5 +33,6 @@ public class CADataGen {
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
         generator.addProvider(event.includeServer(), new StandardRecipeGen(output, lookupProvider));
         generator.addProvider(event.includeServer(), new CAMixingRecipeGen(output, lookupProvider));
+        generator.addProvider(event.includeServer(), new CAInfusingRecipeGen(output, lookupProvider));
     }
 }

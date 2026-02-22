@@ -33,6 +33,7 @@ public class CreateAndertech {
         AllItems.register();
         AllFluids.register();
         AllBlockEntityTypes.register();
+        CAAllRecipeTypes.register(modEventBus);
         AllDataComponents.register(modEventBus);
         AllCreativeTabs.register(modEventBus);
         // Register ourselves for server and other game events we are interested in.
