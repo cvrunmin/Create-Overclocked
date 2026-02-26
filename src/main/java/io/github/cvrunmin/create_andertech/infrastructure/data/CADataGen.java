@@ -21,6 +21,10 @@ public class CADataGen {
         REGISTRATE.addDataGenerator(ProviderType.LANG, provider -> {
             provider.add(AllCreativeTabs.MAIN_TAB.get(), "Create Andertech");
             provider.add(CreateAndertech.MODID + ".gui.goggles.vat_contents", "Vat Contents:");
+            provider.add(CreateAndertech.MODID + ".infusion_vat.content_interaction_state.label", "Content Interaction");
+            provider.add(CreateAndertech.MODID + ".infusion_vat.content_interaction_state.ingredient", "Ingredient Only");
+            provider.add(CreateAndertech.MODID + ".infusion_vat.content_interaction_state.all", "All");
+            provider.add(CreateAndertech.MODID + ".infusion_vat.content_interaction_state.product", "Product Only");
         });
         REGISTRATE.addDataGenerator(ProviderType.BLOCKSTATE, AllExtraModels::genBlockStates);
     }
