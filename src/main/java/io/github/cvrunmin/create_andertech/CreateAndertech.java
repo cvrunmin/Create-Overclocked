@@ -32,6 +32,7 @@ public class CreateAndertech {
         AllBlocks.register();
         AllItems.register();
         AllFluids.register();
+        AllEntityTypes.register();
         AllBlockEntityTypes.register();
         CAAllRecipeTypes.register(modEventBus);
         AllDataComponents.register(modEventBus);

@@ -31,6 +31,12 @@
     "create_andertech:crimschist_infusion_vat",
     "create_andertech:crimschist_casing",
     "create_andertech:chronendite_casing",
-    "create_andertech:metal_girder_encased_crimschist_shaft"
+    "create_andertech:metal_girder_encased_crimschist_shaft",
+    "create_andertech:rich_warped_nylium",
+    "create_andertech:untopped_warped_nylium",
+    "create_andertech:poor_warped_nylium",
+    "create_andertech:rich_crimson_nylium",
+    "create_andertech:untopped_crimson_nylium",
+    "create_andertech:poor_crimson_nylium"
   ]
 }

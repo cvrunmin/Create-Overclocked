@@ -4,9 +4,11 @@ import com.tterrag.registrate.providers.ProviderType;
 import io.github.cvrunmin.create_andertech.CreateAndertech;
 import io.github.cvrunmin.create_andertech.index.AllCreativeTabs;
 import io.github.cvrunmin.create_andertech.index.AllExtraModels;
+import io.github.cvrunmin.create_andertech.index.AllTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import java.util.concurrent.CompletableFuture;
@@ -18,6 +20,9 @@ public class CADataGen {
     public static void gatherDataHighPriority(GatherDataEvent event){
         if (!event.getMods().contains(CreateAndertech.MODID))
             return;
+        REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, provider -> {
+            provider.addTag(AllTags.EXPLOSIVE_TO_TRANSMUTER).add(Blocks.TNT);
+        });
         REGISTRATE.addDataGenerator(ProviderType.LANG, provider -> {
             provider.add(AllCreativeTabs.MAIN_TAB.get(), "Create Andertech");
             provider.add(CreateAndertech.MODID + ".gui.goggles.vat_contents", "Vat Contents:");
@@ -35,6 +40,10 @@ public class CADataGen {
         DataGenerator generator = event.getGenerator();
         PackOutput output = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
+        var entriesProvider = new AdditionalEntriesProvider(output, lookupProvider);
+        lookupProvider = entriesProvider.getRegistryProvider();
+        generator.addProvider(event.includeServer(), entriesProvider);
+
         generator.addProvider(event.includeServer(), new StandardRecipeGen(output, lookupProvider));
         generator.addProvider(event.includeServer(), new CAMixingRecipeGen(output, lookupProvider));
         generator.addProvider(event.includeServer(), new CAInfusingRecipeGen(output, lookupProvider));

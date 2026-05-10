@@ -22,12 +22,15 @@ import com.simibubi.create.content.kinetics.simpleRelays.encased.EncasedCogCTBeh
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.data.*;
 import com.tterrag.registrate.builders.ItemBuilder;
+import com.tterrag.registrate.providers.loot.RegistrateBlockLootTables;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import io.github.cvrunmin.create_andertech.Constants;
 import io.github.cvrunmin.create_andertech.CreateAndertech;
 import io.github.cvrunmin.create_andertech.content.contraptions.bearing.ChronenditeMechanicalBearingBlock;
 import io.github.cvrunmin.create_andertech.content.decoration.GirderEncasedCrimschistShaftBlock;
+import io.github.cvrunmin.create_andertech.content.decoration.PoorNyliumBlock;
+import io.github.cvrunmin.create_andertech.content.decoration.RichNyliumBlock;
 import io.github.cvrunmin.create_andertech.content.fluids.infusion_vat.InfusionVatBlock;
 import io.github.cvrunmin.create_andertech.content.fluids.infusion_vat.InfusionVatCTBehaviour;
 import io.github.cvrunmin.create_andertech.content.fluids.infusion_vat.InfusionVatItem;
@@ -57,6 +60,7 @@ import io.github.cvrunmin.create_andertech.content.kinetics.simpleRelays.encased
 import io.github.cvrunmin.create_andertech.content.kinetics.speedController.ChronenditeSpeedControllerBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.transmission.CrimschistClutchBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.transmission.CrimschistGearshiftBlock;
+import io.github.cvrunmin.create_andertech.content.misc.NyliumTransmuterBlock;
 import io.github.cvrunmin.create_andertech.foundation.AssetLookupWithParent;
 import io.github.cvrunmin.create_andertech.foundation.BlockStateGenerators;
 import io.github.cvrunmin.create_andertech.foundation.CullableCTModel;
@@ -64,8 +68,10 @@ import io.github.cvrunmin.create_andertech.foundation.VariousBuilders;
 import net.createmod.catnip.data.Couple;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
@@ -683,6 +689,120 @@ public class AllBlocks {
                                     .add(LootItem.lootTableItem(CRIMSCHIST_SHAFT.get()))))))
                     .onRegister(CreateRegistrate.blockModel(() -> ConnectedGirderModel::new))
                     .register();
+
+    public static final BlockEntry<NyliumTransmuterBlock> WRAPPED_NYLIUM_TRANSMUTER =
+            REGISTRATE.block("wrapped_nylium_transmuter", NyliumTransmuterBlock::new)
+                    .properties(p -> p.mapColor(MapColor.WARPED_NYLIUM).instabreak().sound(SoundType.GRASS).ignitedByLava().isRedstoneConductor(((state, level, pos) -> false)))
+                    .tag(io.github.cvrunmin.create_andertech.index.AllTags.EXPLOSIVE_TO_TRANSMUTER)
+                    .blockstate((ctx, p) ->
+                            p.simpleBlock(ctx.get(), p.models()
+                                    .withExistingParent(ctx.getName(), p.modLoc("block/nylium_transmuter"))
+                                    .texture("texture", p.modLoc("block/wrapped_transmuter"))
+                            )
+                    )
+                    .simpleItem()
+                    .register();
+
+    public static final BlockEntry<NyliumTransmuterBlock> CRIMSON_NYLIUM_TRANSMUTER =
+            REGISTRATE.block("crimson_nylium_transmuter", NyliumTransmuterBlock::new)
+                    .properties(p -> p.mapColor(MapColor.WARPED_NYLIUM).instabreak().sound(SoundType.GRASS).ignitedByLava().isRedstoneConductor(((state, level, pos) -> false)))
+                    .tag(io.github.cvrunmin.create_andertech.index.AllTags.EXPLOSIVE_TO_TRANSMUTER)
+                    .blockstate((ctx, p) ->
+                            p.simpleBlock(ctx.get(), p.models()
+                                    .withExistingParent(ctx.getName(), p.modLoc("block/nylium_transmuter"))
+                                    .texture("texture", p.modLoc("block/crimson_transmuter"))
+                            )
+                    )
+                    .simpleItem()
+                    .register();
+
+    public static final BlockEntry<RichNyliumBlock> RICH_WARPED_NYLIUM = REGISTRATE.block("rich_warped_nylium", RichNyliumBlock::new)
+            .initialProperties(() -> Blocks.WARPED_NYLIUM)
+            .tag(BlockTags.NYLIUM, BlockTags.MUSHROOM_GROW_BLOCK)
+            .loot((tables, block) -> tables.add(block, tables.createSingleItemTableWithSilkTouch(block, Blocks.NETHERRACK)))
+            .transform(pickaxeOnly())
+            .blockstate((ctx, p) ->
+                    p.simpleBlock(ctx.get(), p.models().cubeBottomTop(ctx.getName(),
+                            p.modLoc("block/rich_warped_nylium_side"),
+                            p.mcLoc("block/netherrack"),
+                            p.modLoc("block/rich_warped_nylium")))
+            )
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<RichNyliumBlock> UNTOPPED_WARPED_NYLIUM = REGISTRATE.block("untopped_warped_nylium", RichNyliumBlock::new)
+            .initialProperties(() -> Blocks.NETHERRACK)
+            .properties(prop -> prop.sound(SoundType.NYLIUM))
+            .tag(BlockTags.NYLIUM, BlockTags.MUSHROOM_GROW_BLOCK, io.github.cvrunmin.create_andertech.index.AllTags.UNTOPPED_NYLIUM)
+            .loot((tables, block) -> tables.add(block, tables.createSingleItemTableWithSilkTouch(block, Blocks.NETHERRACK)))
+            .transform(pickaxeOnly())
+            .blockstate((ctx, p) ->
+                    p.simpleBlock(ctx.get(), p.models().cubeBottomTop(ctx.getName(),
+                            p.modLoc("block/untopped_warped_nylium_side"),
+                            p.mcLoc("block/netherrack"),
+                            p.modLoc("block/untopped_warped_nylium")))
+            )
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<PoorNyliumBlock> POOR_WARPED_NYLIUM = REGISTRATE.block("poor_warped_nylium", PoorNyliumBlock::new)
+            .initialProperties(() -> Blocks.NETHERRACK)
+            .properties(prop -> prop.sound(SoundType.NYLIUM).randomTicks())
+            .tag(BlockTags.NYLIUM, BlockTags.MUSHROOM_GROW_BLOCK)
+            .loot((tables, block) -> tables.add(block, tables.createSingleItemTableWithSilkTouch(block, Blocks.NETHERRACK)))
+            .transform(pickaxeOnly())
+            .blockstate((ctx, p) ->
+                    p.simpleBlock(ctx.get(), p.models().cubeBottomTop(ctx.getName(),
+                            p.modLoc("block/poor_warped_nylium_side"),
+                            p.mcLoc("block/netherrack"),
+                            p.modLoc("block/poor_warped_nylium")))
+            )
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<RichNyliumBlock> RICH_CRIMSON_NYLIUM = REGISTRATE.block("rich_crimson_nylium", RichNyliumBlock::new)
+            .initialProperties(() -> Blocks.CRIMSON_NYLIUM)
+            .tag(BlockTags.NYLIUM, BlockTags.MUSHROOM_GROW_BLOCK)
+            .loot((tables, block) -> tables.add(block, tables.createSingleItemTableWithSilkTouch(block, Blocks.NETHERRACK)))
+            .transform(pickaxeOnly())
+            .blockstate((ctx, p) ->
+                    p.simpleBlock(ctx.get(), p.models().cubeBottomTop(ctx.getName(),
+                            p.modLoc("block/rich_crimson_nylium_side"),
+                            p.mcLoc("block/netherrack"),
+                            p.modLoc("block/rich_crimson_nylium")))
+            )
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<RichNyliumBlock> UNTOPPED_CRIMSON_NYLIUM = REGISTRATE.block("untopped_crimson_nylium", RichNyliumBlock::new)
+            .initialProperties(() -> Blocks.NETHERRACK)
+            .properties(prop -> prop.sound(SoundType.NYLIUM))
+            .tag(BlockTags.NYLIUM, BlockTags.MUSHROOM_GROW_BLOCK, io.github.cvrunmin.create_andertech.index.AllTags.UNTOPPED_NYLIUM)
+            .loot((tables, block) -> tables.add(block, tables.createSingleItemTableWithSilkTouch(block, Blocks.NETHERRACK)))
+            .transform(pickaxeOnly())
+            .blockstate((ctx, p) ->
+                    p.simpleBlock(ctx.get(), p.models().cubeBottomTop(ctx.getName(),
+                            p.modLoc("block/untopped_crimson_nylium_side"),
+                            p.mcLoc("block/netherrack"),
+                            p.modLoc("block/untopped_crimson_nylium")))
+            )
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<PoorNyliumBlock> POOR_CRIMSON_NYLIUM = REGISTRATE.block("poor_crimson_nylium", PoorNyliumBlock::new)
+            .initialProperties(() -> Blocks.NETHERRACK)
+            .properties(prop -> prop.sound(SoundType.NYLIUM).randomTicks())
+            .tag(BlockTags.NYLIUM, BlockTags.MUSHROOM_GROW_BLOCK)
+            .loot((tables, block) -> tables.add(block, tables.createSingleItemTableWithSilkTouch(block, Blocks.NETHERRACK)))
+            .transform(pickaxeOnly())
+            .blockstate((ctx, p) ->
+                    p.simpleBlock(ctx.get(), p.models().cubeBottomTop(ctx.getName(),
+                            p.modLoc("block/poor_crimson_nylium_side"),
+                            p.mcLoc("block/netherrack"),
+                            p.modLoc("block/poor_crimson_nylium")))
+            )
+            .simpleItem()
+            .register();
 
     private static <I extends BlockItem, P>NonNullFunction<ItemBuilder<I, P>, P> tempCustomItemModel(ResourceLocation parent){
         return tempCustomItemModel(parent, Map.of());

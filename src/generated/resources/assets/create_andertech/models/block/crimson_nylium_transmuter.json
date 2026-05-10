@@ -1,0 +1,6 @@
+{
+  "parent": "create_andertech:block/nylium_transmuter",
+  "textures": {
+    "texture": "create_andertech:block/crimson_transmuter"
+  }
+}
