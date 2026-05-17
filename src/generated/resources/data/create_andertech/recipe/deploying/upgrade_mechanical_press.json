@@ -1,0 +1,19 @@
+{
+  "type": "create:deploying",
+  "ingredients": [
+    {
+      "item": "create:mechanical_press"
+    },
+    {
+      "item": "create_andertech:chronendite_casing"
+    }
+  ],
+  "results": [
+    {
+      "id": "create_andertech:chronendite_mechanical_press"
+    },
+    {
+      "id": "create:andesite_casing"
+    }
+  ]
+}

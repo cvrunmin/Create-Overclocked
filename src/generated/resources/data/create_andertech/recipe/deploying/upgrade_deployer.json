@@ -1,0 +1,19 @@
+{
+  "type": "create:deploying",
+  "ingredients": [
+    {
+      "item": "create:deployer"
+    },
+    {
+      "item": "create_andertech:chronendite_casing"
+    }
+  ],
+  "results": [
+    {
+      "id": "create_andertech:chronendite_deployer"
+    },
+    {
+      "id": "create:andesite_casing"
+    }
+  ]
+}

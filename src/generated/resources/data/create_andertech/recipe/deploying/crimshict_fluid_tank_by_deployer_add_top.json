@@ -1,0 +1,16 @@
+{
+  "type": "create:deploying",
+  "ingredients": [
+    {
+      "item": "create_andertech:crimschist_infusion_vat"
+    },
+    {
+      "item": "create_andertech:crimschist_sheet"
+    }
+  ],
+  "results": [
+    {
+      "id": "create_andertech:crimschist_fluid_tank"
+    }
+  ]
+}

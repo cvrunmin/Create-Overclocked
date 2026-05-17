@@ -1,0 +1,19 @@
+{
+  "type": "create:deploying",
+  "ingredients": [
+    {
+      "item": "create:encased_fan"
+    },
+    {
+      "item": "create_andertech:chronendite_casing"
+    }
+  ],
+  "results": [
+    {
+      "id": "create_andertech:chronendite_encased_fan"
+    },
+    {
+      "id": "create:andesite_casing"
+    }
+  ]
+}

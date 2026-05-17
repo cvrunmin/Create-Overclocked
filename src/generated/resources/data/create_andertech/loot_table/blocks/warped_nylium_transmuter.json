@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "create_andertech:wrapped_nylium_transmuter"
+          "name": "create_andertech:warped_nylium_transmuter"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "create_andertech:blocks/wrapped_nylium_transmuter"
+  "random_sequence": "create_andertech:blocks/warped_nylium_transmuter"
 }

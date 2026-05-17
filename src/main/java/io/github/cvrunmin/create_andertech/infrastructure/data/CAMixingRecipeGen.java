@@ -53,6 +53,22 @@ public class CAMixingRecipeGen extends MixingRecipeGen {
                     .output(AllItems.CHRONENDITE_ORB.get())
                     .requiresHeat(HeatCondition.HEATED));
 
+    GeneratedRecipe FORGED_CHRONENDITE_ORB = create("forged_chronendite_orb", b ->
+            b.require(Items.SLIME_BALL)
+                    .require(Items.WARPED_WART_BLOCK)
+                    .require(Items.WARPED_WART_BLOCK)
+                    .require(Items.ENDER_PEARL)
+                    .require(Items.PURPLE_DYE)
+                    .require(Fluids.WATER, 500)
+                    .output(AllItems.FORGED_CHRONENDITE_ORB, 2)
+                    .requiresHeat(HeatCondition.HEATED));
+
+    GeneratedRecipe ENDOPYROTIC_CINDER_PASTE = create("endopyrotic_cinder_paste", b ->
+            b.require(Items.GUNPOWDER)
+                    .require(com.simibubi.create.AllItems.CINDER_FLOUR)
+                    .require(com.simibubi.create.AllItems.CINDER_FLOUR)
+                    .require(AllItems.FORGED_CHRONENDITE_ORB).output(AllItems.ENDOPYROTIC_CINDER_PASTE, 2));
+
     public CAMixingRecipeGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries, CreateAndertech.MODID);
     }

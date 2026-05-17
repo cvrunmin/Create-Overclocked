@@ -9,7 +9,6 @@ import com.simibubi.create.content.decoration.encasing.EncasedCTBehaviour;
 import com.simibubi.create.content.decoration.encasing.EncasingRegistry;
 import com.simibubi.create.content.decoration.girder.ConnectedGirderModel;
 import com.simibubi.create.content.fluids.tank.*;
-import com.simibubi.create.content.kinetics.belt.BeltBlock;
 import com.simibubi.create.content.kinetics.belt.BeltModel;
 import com.simibubi.create.content.kinetics.crusher.CrushingWheelControllerBlock;
 import com.simibubi.create.content.kinetics.deployer.DeployerMovementBehaviour;
@@ -22,7 +21,6 @@ import com.simibubi.create.content.kinetics.simpleRelays.encased.EncasedCogCTBeh
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.data.*;
 import com.tterrag.registrate.builders.ItemBuilder;
-import com.tterrag.registrate.providers.loot.RegistrateBlockLootTables;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import io.github.cvrunmin.create_andertech.Constants;
@@ -690,8 +688,8 @@ public class AllBlocks {
                     .onRegister(CreateRegistrate.blockModel(() -> ConnectedGirderModel::new))
                     .register();
 
-    public static final BlockEntry<NyliumTransmuterBlock> WRAPPED_NYLIUM_TRANSMUTER =
-            REGISTRATE.block("wrapped_nylium_transmuter", NyliumTransmuterBlock::new)
+    public static final BlockEntry<NyliumTransmuterBlock> WARPED_NYLIUM_TRANSMUTER =
+            REGISTRATE.block("warped_nylium_transmuter", NyliumTransmuterBlock::new)
                     .properties(p -> p.mapColor(MapColor.WARPED_NYLIUM).instabreak().sound(SoundType.GRASS).ignitedByLava().isRedstoneConductor(((state, level, pos) -> false)))
                     .tag(io.github.cvrunmin.create_andertech.index.AllTags.EXPLOSIVE_TO_TRANSMUTER)
                     .blockstate((ctx, p) ->

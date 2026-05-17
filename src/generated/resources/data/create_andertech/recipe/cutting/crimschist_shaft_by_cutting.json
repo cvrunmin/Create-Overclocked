@@ -1,0 +1,14 @@
+{
+  "type": "create:cutting",
+  "ingredients": [
+    {
+      "item": "create_andertech:crimschist_alloy"
+    }
+  ],
+  "results": [
+    {
+      "count": 6,
+      "id": "create_andertech:crimschist_shaft"
+    }
+  ]
+}

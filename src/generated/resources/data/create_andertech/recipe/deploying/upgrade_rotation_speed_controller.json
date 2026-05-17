@@ -1,0 +1,19 @@
+{
+  "type": "create:deploying",
+  "ingredients": [
+    {
+      "item": "create:rotation_speed_controller"
+    },
+    {
+      "item": "create_andertech:chronendite_casing"
+    }
+  ],
+  "results": [
+    {
+      "id": "create_andertech:chronendite_rotation_speed_controller"
+    },
+    {
+      "id": "create:brass_casing"
+    }
+  ]
+}

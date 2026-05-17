@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "create_andertech:crimschist_sheet"
+    },
+    "B": {
+      "item": "create_andertech:crimschist_infusion_vat"
+    }
+  },
+  "pattern": [
+    "A",
+    "B"
+  ],
+  "result": {
+    "count": 1,
+    "id": "create_andertech:crimschist_fluid_tank"
+  }
+}

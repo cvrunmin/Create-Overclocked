@@ -45,6 +45,8 @@ public class CADataGen {
         generator.addProvider(event.includeServer(), entriesProvider);
 
         generator.addProvider(event.includeServer(), new StandardRecipeGen(output, lookupProvider));
+        generator.addProvider(event.includeServer(), new CADeployingRecipeGen(output, lookupProvider));
+        generator.addProvider(event.includeServer(), new CACuttingRecipeGen(output, lookupProvider));
         generator.addProvider(event.includeServer(), new CAMixingRecipeGen(output, lookupProvider));
         generator.addProvider(event.includeServer(), new CAInfusingRecipeGen(output, lookupProvider));
     }

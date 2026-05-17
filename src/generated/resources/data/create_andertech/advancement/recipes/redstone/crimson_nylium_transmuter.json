@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_endopyrotic_cinder_paste": {
+      "conditions": {
+        "items": [
+          {
+            "items": "create_andertech:endopyrotic_cinder_paste"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "create_andertech:crimson_nylium_transmuter"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_endopyrotic_cinder_paste"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "create_andertech:crimson_nylium_transmuter"
+    ]
+  }
+}

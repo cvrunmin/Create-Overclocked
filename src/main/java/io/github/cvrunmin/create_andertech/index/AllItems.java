@@ -6,6 +6,7 @@ import io.github.cvrunmin.create_andertech.CreateAndertech;
 import io.github.cvrunmin.create_andertech.content.kinetics.gearbox.VerticalCrimschistGearboxItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SpawnEggItem;
 import net.neoforged.neoforge.common.Tags;
 
 import static io.github.cvrunmin.create_andertech.CreateAndertech.REGISTRATE;
@@ -22,6 +23,10 @@ public class AllItems {
         .tag(AllTags.CRIMSCHIST, com.simibubi.create.AllTags.AllItemTags.CREATE_INGOTS.tag)
         .register();
 
+    public static final ItemEntry<Item> CRIMSCHIST_SHEET = REGISTRATE.item("crimschist_sheet", Item::new)
+        .tag(AllTags.CRIMSCHIST)
+        .register();
+
     public static final ItemEntry<Item> CRIMSCHIST_NUGGET = REGISTRATE.item("crimschist_nugget", Item::new)
             .tag(AllTags.CRIMSCHIST, Tags.Items.NUGGETS)
             .register();
@@ -33,6 +38,12 @@ public class AllItems {
 
     public static final ItemEntry<Item> CHRONENDITE_SHARD = REGISTRATE.item("chronendite_shard", Item::new)
             .tag(AllTags.CHRONENDITE, Tags.Items.NUGGETS)
+            .register();
+
+    public static final ItemEntry<Item> FORGED_CHRONENDITE_ORB = REGISTRATE.item("forged_chronendite_orb", Item::new)
+            .register();
+
+    public static final ItemEntry<Item> ENDOPYROTIC_CINDER_PASTE = REGISTRATE.item("endopyrotic_cinder_paste", Item::new)
             .register();
 
     public static final ItemEntry<VerticalCrimschistGearboxItem> VERTICAL_CRIMSCHIST_GEARBOX =

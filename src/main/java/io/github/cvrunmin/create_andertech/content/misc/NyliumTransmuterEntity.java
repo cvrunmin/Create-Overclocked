@@ -8,7 +8,6 @@ import io.github.cvrunmin.create_andertech.index.AllTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -20,9 +19,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -65,7 +62,7 @@ public class NyliumTransmuterEntity extends Entity implements TraceableEntity {
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         builder.define(DATA_FUSE_ID, 80);
         builder.define(DATA_RADIUS_ID, 2);
-        builder.define(DATA_BLOCK_STATE_ID, AllBlocks.WRAPPED_NYLIUM_TRANSMUTER.getDefaultState());
+        builder.define(DATA_BLOCK_STATE_ID, AllBlocks.WARPED_NYLIUM_TRANSMUTER.getDefaultState());
     }
 
     @Override
@@ -111,7 +108,7 @@ public class NyliumTransmuterEntity extends Entity implements TraceableEntity {
 
     @Nullable
     protected Function<BlockState, BlockState> getTransmuteMapper(){
-        if(this.getBlockState().is(AllBlocks.WRAPPED_NYLIUM_TRANSMUTER)){
+        if(this.getBlockState().is(AllBlocks.WARPED_NYLIUM_TRANSMUTER)){
             return src -> {
                 if(src.is(AllBlocks.RICH_CRIMSON_NYLIUM)) return AllBlocks.POOR_CRIMSON_NYLIUM.getDefaultState();
                 if(src.is(Blocks.CRIMSON_NYLIUM)) return AllBlocks.POOR_CRIMSON_NYLIUM.getDefaultState();

@@ -1,0 +1,23 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "minecraft:gunpowder"
+    },
+    {
+      "item": "create:cinder_flour"
+    },
+    {
+      "item": "create:cinder_flour"
+    },
+    {
+      "item": "create_andertech:forged_chronendite_orb"
+    }
+  ],
+  "results": [
+    {
+      "count": 2,
+      "id": "create_andertech:endopyrotic_cinder_paste"
+    }
+  ]
+}

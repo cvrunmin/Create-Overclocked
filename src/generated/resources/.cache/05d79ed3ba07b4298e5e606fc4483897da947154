@@ -1,6 +1,8 @@
-// 1.21.1	2026-02-14T22:09:55.2741656	create_andertech's processing recipes: mixing
+// 1.21.1	2026-05-17T12:48:33.9954533	create_andertech's processing recipes: mixing
 410c911a161aef4e3f6df25ffc4f1cf4ff9928e5 data/create_andertech/recipe/mixing/chronendite_solution.json
 e29b304c33acc36c8021555f2099160c074e5ca0 data/create_andertech/recipe/mixing/crimschist_alloy.json
 552222c0061c793a80cf830d57f6e9c3ebc2cc9f data/create_andertech/recipe/mixing/crystallize_chronendite_solution_primal.json
 575c104c6485d489bbcb51ec0393b4a95e84a1b1 data/create_andertech/recipe/mixing/crystallize_chronendite_solution_seeding.json
 c2c1a0ad90f73165f96be5f0f780b72e5b9f4663 data/create_andertech/recipe/mixing/dissolve_into_chronendite_solution.json
+3eba4ca377235615f3984a7e391d089648b39694 data/create_andertech/recipe/mixing/endopyrotic_cinder_paste.json
+11e99575f5b6f16ec597d8ce0f72042fc9574929 data/create_andertech/recipe/mixing/forged_chronendite_orb.json
