@@ -68,7 +68,10 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
     protected Mode mode;
     protected ItemStack heldItem = ItemStack.EMPTY;
     protected OCDeployerFakePlayer player;
+    protected int prevTimer;
     protected int timer;
+    protected int cooldownTimer;
+    protected int pendingAction;
     protected float reach;
     protected boolean fistBump = false;
     protected List<ItemStack> overflowItems = new ArrayList<>();
@@ -176,19 +179,19 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
                 player.blockBreakingProgress = null;
             }
         }
-        if (timer > 0) {
-            timer -= getTimerSpeed();
-            return;
+        if(cooldownTimer > 0){
+            cooldownTimer -= getFailureCooldownTimer();
+            if(cooldownTimer > 0) return;
         }
-        if (level.isClientSide)
-            return;
+
         if (player == null)
             return;
 
-        ItemStack stack = player.getMainHandItem();
         if (state == State.WAITING) {
+            if(level.isClientSide) return;
+            ItemStack stack = player.getMainHandItem();
             if (!overflowItems.isEmpty()) {
-                timer = getFailureCooldownTimer();
+                cooldownTimer = getFailureCooldownTimer();
                 return;
             }
 
@@ -209,14 +212,14 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
 
             if (changed) {
                 sendData();
-                timer = getFailureCooldownTimer();
+                cooldownTimer = getFailureCooldownTimer();
                 return;
             }
 
             Direction facing = getBlockState().getValue(FACING);
             if (mode == Mode.USE
                     && !OCDeployerHandler.shouldActivate(stack, level, worldPosition.relative(facing, 2), facing)) {
-                timer = getFailureCooldownTimer();
+                cooldownTimer = getFailureCooldownTimer();
                 return;
             }
 
@@ -227,27 +230,32 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
                 return;
 
             start();
-            if(timer > 0) return;
+            return;
         }
 
-        if (state == State.EXPANDING) {
-            if (fistBump)
-                triggerFistBump();
-            activate();
+        prevTimer = timer;
+        timer += getTimerSpeed();
 
+        if(prevTimer < 1000 && timer >= 1000){
+            pendingAction = 1;
+        }
+
+        if(prevTimer < 1000 && timer >= 1000 && getSpeed() > 0){
+            if(!level.isClientSide){
+                if (fistBump)
+                    triggerFistBump();
+                activate();
+            }
             state = State.RETRACTING;
-            timer = 1000;
-            sendData();
-            return;
+            if(!level.isClientSide)
+                sendData();
         }
 
-        if (state == State.RETRACTING) {
+        if(timer > 2000){
+            timer = 0;
             state = State.WAITING;
-            timer += 500;
-            sendData();
-            return;
+            if(!level.isClientSide) sendData();
         }
-
     }
 
     protected void start() {
@@ -262,7 +270,6 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
         reach = (float) (.5f + Math.min(result.getLocation()
                 .subtract(rayOrigin)
                 .length(), .75f));
-        timer += 1000;
         sendData();
     }
 
@@ -294,7 +301,6 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
         for (ChronenditeDeployerBlockEntity be : Arrays.asList(this, partner)) {
             be.fistBump = true;
             be.reach = ((i - 2)) * .5f;
-            be.timer = 1000;
             be.state = State.EXPANDING;
             be.sendData();
         }
@@ -319,8 +325,10 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
             return;
         if (!deployerBlockEntity.fistBump || deployerBlockEntity.state != State.EXPANDING)
             return;
-        if (deployerBlockEntity.timer > 0)
+        if (deployerBlockEntity.timer < 1000) {
+            timer = prevTimer;
             return;
+        }
 
         fistBump = false;
         deployerBlockEntity.fistBump = false;
@@ -347,6 +355,7 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
                 && BlockEntityBehaviour.get(level, clickedPos, TransportedItemStackHandlerBehaviour.TYPE) != null)
             return; // Belt processing handled in BeltDeployerCallbacks
 
+        pendingAction--;
         OCDeployerHandler.activate(player, center, clickedPos, movementVector, mode);
         award(AllAdvancements.DEPLOYER);
 
@@ -370,6 +379,12 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
         state = NBTHelper.readEnum(compound, "State", State.class);
         mode = NBTHelper.readEnum(compound, "Mode", Mode.class);
         timer = compound.getInt("Timer");
+        if(getTimerSpeed() > 0){
+            prevTimer = timer - getTimerSpeed();
+        }else{
+            prevTimer = timer;
+        }
+        pendingAction = compound.getInt("Actions");
         redstoneLocked = compound.getBoolean("Powered");
         if (compound.contains("Owner"))
             owner = compound.getUUID("Owner");
@@ -382,6 +397,7 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
 
         if (!clientPacket)
             return;
+        cooldownTimer = compound.getInt("Cooldown");
         fistBump = compound.getBoolean("Fistbump");
         reach = compound.getFloat("Reach");
         if (compound.contains("Particle")) {
@@ -396,6 +412,7 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
         NBTHelper.writeEnum(compound, "Mode", mode);
         NBTHelper.writeEnum(compound, "State", state);
         compound.putInt("Timer", timer);
+        compound.putInt("Actions", pendingAction);
         compound.putBoolean("Powered", redstoneLocked);
         if (owner != null)
             compound.putUUID("Owner", owner);
@@ -415,6 +432,7 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
 
         if (!clientPacket)
             return;
+        compound.putInt("Cooldown", cooldownTimer);
         compound.putBoolean("Fistbump", fistBump);
         compound.putFloat("Reach", reach);
         if (player == null)
@@ -525,13 +543,13 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
         int timerSpeed = getTimerSpeed();
         PartialModel handPose = getHandPose();
 
-        if (state == State.EXPANDING) {
-            progress = 1 - (timer - partialTicks * timerSpeed) / 1000f;
+        float lerpedTimer = Mth.abs(Mth.lerp(partialTicks, prevTimer, timer));
+        if (lerpedTimer < 1000) {
+            progress = 1 - lerpedTimer / 1000f;
             if (fistBump)
                 progress *= progress;
         }
-        if (state == State.RETRACTING)
-            progress = (timer - partialTicks * timerSpeed) / 1000f;
+        else progress = lerpedTimer / 1000f;
         float handLength = handPose == AllPartialModels.DEPLOYER_HAND_POINTING ? 0
                 : handPose == AllPartialModels.DEPLOYER_HAND_HOLDING ? 4 / 16f : 3 / 16f;
         float distance = Math.min(Mth.clamp(progress, 0, 1) * (reach + handLength), 21 / 16f);

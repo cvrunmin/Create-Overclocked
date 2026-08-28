@@ -5,10 +5,13 @@ import io.github.cvrunmin.create_andertech.CreateAndertech;
 import io.github.cvrunmin.create_andertech.index.AllCreativeTabs;
 import io.github.cvrunmin.create_andertech.index.AllExtraModels;
 import io.github.cvrunmin.create_andertech.index.AllTags;
+import io.github.cvrunmin.create_andertech.index.CAAllParticleTypes;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.neoforge.common.data.ParticleDescriptionProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import java.util.concurrent.CompletableFuture;
@@ -49,5 +52,21 @@ public class CADataGen {
         generator.addProvider(event.includeServer(), new CACuttingRecipeGen(output, lookupProvider));
         generator.addProvider(event.includeServer(), new CAMixingRecipeGen(output, lookupProvider));
         generator.addProvider(event.includeServer(), new CAInfusingRecipeGen(output, lookupProvider));
+
+        generator.addProvider(event.includeClient(), new ParticleDescriptionProvider(output, event.getExistingFileHelper()) {
+            @Override
+            protected void addDescriptions() {
+                spriteSet(CAAllParticleTypes.ADVANCED_AIR_FLOW.get(),
+                        ResourceLocation.withDefaultNamespace("generic_7"),
+                        ResourceLocation.withDefaultNamespace("generic_6"),
+                        ResourceLocation.withDefaultNamespace("generic_5"),
+                        ResourceLocation.withDefaultNamespace("generic_4"),
+                        ResourceLocation.withDefaultNamespace("generic_3"),
+                        ResourceLocation.withDefaultNamespace("generic_2"),
+                        ResourceLocation.withDefaultNamespace("generic_1"),
+                        ResourceLocation.withDefaultNamespace("generic_0")
+                );
+            }
+        });
     }
 }

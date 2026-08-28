@@ -77,7 +77,8 @@ public class OCDeployerBeltCallbacks {
         if (recipe == null)
             return BeltProcessingBehaviour.ProcessingResult.PASS;
 
-        if (blockEntity.state == ChronenditeDeployerBlockEntity.State.RETRACTING && blockEntity.timer == 1000) {
+        if (blockEntity.pendingAction > 0) {
+            blockEntity.pendingAction--;
             activate(s, i, blockEntity, recipe.value());
             return BeltProcessingBehaviour.ProcessingResult.HOLD;
         }

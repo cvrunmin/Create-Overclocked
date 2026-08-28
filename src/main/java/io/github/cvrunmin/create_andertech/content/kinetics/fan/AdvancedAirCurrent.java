@@ -2,9 +2,11 @@ package io.github.cvrunmin.create_andertech.content.kinetics.fan;
 
 import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour;
 import com.simibubi.create.content.kinetics.fan.AirCurrent;
+import com.simibubi.create.content.kinetics.fan.AirFlowParticleData;
 import com.simibubi.create.content.kinetics.fan.processing.FanProcessing;
 import com.simibubi.create.content.kinetics.fan.processing.FanProcessingType;
 import com.simibubi.create.foundation.advancement.AllAdvancements;
+import com.simibubi.create.infrastructure.config.AllConfigs;
 import io.github.cvrunmin.create_andertech.mixin.AirCurrentInvoker;
 import io.github.cvrunmin.create_andertech.mixin.ServerGamePacketListenerAccessor;
 import net.createmod.catnip.math.VecHelper;
@@ -25,6 +27,24 @@ public class AdvancedAirCurrent extends AirCurrent {
     public AdvancedAirCurrent(ChronenditeEncasedFanBlockEntity source) {
         super(source);
         this.be = source;
+    }
+
+    @Override
+    public void tick() {
+        if (direction == null)
+            rebuild();
+        Level world = source.getAirCurrentWorld();
+        if (world != null && world.isClientSide) {
+            float offset = pushing ? 0.5f : maxDistance + .5f;
+            Vec3 pos = VecHelper.getCenterOf(source.getAirCurrentPos())
+                    .add(Vec3.atLowerCornerOf(direction.getNormal())
+                            .scale(offset));
+            if (world.random.nextFloat() < AllConfigs.client().fanParticleDensity.get())
+                world.addParticle(new AdvancedAirFlowParticleData(source.getAirCurrentPos()), pos.x, pos.y, pos.z, 0, 0, 0);
+        }
+
+        tickAffectedEntities(world);
+        tickAffectedHandlers();
     }
 
     @Override

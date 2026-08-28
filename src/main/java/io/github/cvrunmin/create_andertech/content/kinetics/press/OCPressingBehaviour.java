@@ -55,8 +55,8 @@ public class OCPressingBehaviour extends BeltProcessingBehaviour {
         this.specifics = be;
         mode = PressingBehaviour.Mode.WORLD;
         entityScanCooldown = ENTITY_SCAN;
-        whenItemEnters(this::onItemReceived);
-        whileItemHeld(this::whenItemHeld);
+        whenItemEnters(this::onItemReceivedFromBelt);
+        whileItemHeld(this::whenItemHeldOnBelt);
     }
 
 
@@ -65,7 +65,12 @@ public class OCPressingBehaviour extends BeltProcessingBehaviour {
         running = compound.getBoolean("Running");
         mode = PressingBehaviour.Mode.values()[compound.getInt("Mode")];
         finished = compound.getBoolean("Finished");
-        prevRunningTicks = runningTicks = compound.getInt("Ticks");
+        runningTicks = compound.getInt("Ticks");
+        if(this.getRunningTickSpeed() > 0){
+            prevRunningTicks = runningTicks - this.getRunningTickSpeed();
+        }else{
+            prevRunningTicks = runningTicks;
+        }
         pendingAction = compound.getInt("Actions");
         super.read(compound, registries, clientPacket);
 
@@ -92,8 +97,8 @@ public class OCPressingBehaviour extends BeltProcessingBehaviour {
     }
 
     public float getRenderedHeadOffset(float partialTicks) {
-        if (!running)
-            return 0;
+//        if (!running)
+//            return 0;
         int runningTicks = Math.abs(this.runningTicks);
         float ticks = Mth.lerp(partialTicks, prevRunningTicks, runningTicks);
         if (runningTicks < (CYCLE * 2) / 3)
@@ -166,20 +171,10 @@ public class OCPressingBehaviour extends BeltProcessingBehaviour {
             return;
         }
 
-
-        if (level.isClientSide && runningTicks == -CYCLE / 2) {
-            prevRunningTicks = CYCLE / 2;
-            return;
-        }
-
         prevRunningTicks = runningTicks;
         runningTicks += getRunningTickSpeed();
         if (prevRunningTicks < CYCLE / 2 && runningTicks >= CYCLE / 2) {
-//            runningTicks = CYCLE / 2;
             pendingAction = 1;
-            // Pause the ticks until a packet is received
-//            if (level.isClientSide && !blockEntity.isVirtual())
-//                runningTicks = -(CYCLE / 2);
         }
 
         if (prevRunningTicks < CYCLE / 2 && runningTicks >= CYCLE / 2 && specifics.getKineticSpeed() != 0) {
@@ -303,7 +298,7 @@ public class OCPressingBehaviour extends BeltProcessingBehaviour {
         }
     }
 
-    public ProcessingResult onItemReceived(TransportedItemStack stack, TransportedItemStackHandlerBehaviour handler){
+    public ProcessingResult onItemReceivedFromBelt(TransportedItemStack stack, TransportedItemStackHandlerBehaviour handler){
         if(this.specifics.getKineticSpeed() == 0) return ProcessingResult.PASS;
         if(this.running) return ProcessingResult.HOLD;
         if(!this.specifics.tryProcessOnBelt(stack, null, true)) return ProcessingResult.PASS;
@@ -312,7 +307,7 @@ public class OCPressingBehaviour extends BeltProcessingBehaviour {
     }
 
 
-    public ProcessingResult whenItemHeld(TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
+    public ProcessingResult whenItemHeldOnBelt(TransportedItemStack transported, TransportedItemStackHandlerBehaviour handler) {
 
         if (this.specifics.getKineticSpeed() == 0)
             return PASS;
