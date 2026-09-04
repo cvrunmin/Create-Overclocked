@@ -43,6 +43,10 @@ public class CADeployingRecipeGen extends DeployingRecipeGen {
             b.require(com.simibubi.create.AllBlocks.MECHANICAL_CRAFTER)
                     .require(AllBlocks.CHRONENDITE_CASING)
                     .output(AllBlocks.CHRONENDITE_MECHANICAL_CRAFTER).output(com.simibubi.create.AllBlocks.BRASS_CASING));
+    GeneratedRecipe MECHANICAL_BEARING_UPGRADE = create("upgrade_mechanical_bearing", b ->
+            b.require(com.simibubi.create.AllBlocks.MECHANICAL_BEARING)
+                    .require(AllBlocks.CHRONENDITE_CASING)
+                    .output(AllBlocks.CHRONENDITE_MECHANICAL_BEARING).output(com.simibubi.create.AllBlocks.ANDESITE_CASING));
 
     GeneratedRecipe INFUSING_VAT_BY_DEPLOYER = create("infusing_vat_by_deployer", b ->
             b.require(AllBlocks.CRIMSCHIST_FLUID_TANK)

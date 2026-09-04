@@ -17,6 +17,14 @@ public class CAAllPartialModels {
     public static final PartialModel CHRONENDITE_CRUSHING_WHEEL = block("chronendite_crushing_wheel/block");
     public static final PartialModel CHRONENDITE_SPEED_CONTROLLER_BRACKET = block("chronendite_rotation_speed_controller/bracket");
 
+    public static final PartialModel
+            BLAZE_INERT = block("chronendic_blaze_burner/blaze/inert"), BLAZE_SUPER_ACTIVE = block("chronendic_blaze_burner/blaze/super_active"),
+            BLAZE_IDLE = block("chronendic_blaze_burner/blaze/idle"), BLAZE_ACTIVE = block("chronendic_blaze_burner/blaze/active"),
+            BLAZE_SUPER = block("chronendic_blaze_burner/blaze/super"),
+            BLAZE_BURNER_RODS = block("chronendic_blaze_burner/rods_small"), BLAZE_BURNER_RODS_2 = block("chronendic_blaze_burner/rods_large"),
+            BLAZE_BURNER_SUPER_RODS = block("chronendic_blaze_burner/superheated_rods_small"),
+            BLAZE_BURNER_SUPER_RODS_2 = block("chronendic_blaze_burner/superheated_rods_large");
+
     private static PartialModel block(String path) {
         return PartialModel.of(ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/" + path));
     }

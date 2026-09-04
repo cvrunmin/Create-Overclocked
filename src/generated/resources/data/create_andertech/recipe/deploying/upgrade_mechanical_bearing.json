@@ -1,0 +1,19 @@
+{
+  "type": "create:deploying",
+  "ingredients": [
+    {
+      "item": "create:mechanical_bearing"
+    },
+    {
+      "item": "create_andertech:chronendite_casing"
+    }
+  ],
+  "results": [
+    {
+      "id": "create_andertech:chronendite_mechanical_bearing"
+    },
+    {
+      "id": "create:andesite_casing"
+    }
+  ]
+}

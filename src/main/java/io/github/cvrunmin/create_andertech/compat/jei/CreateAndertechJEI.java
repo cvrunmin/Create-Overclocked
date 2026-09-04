@@ -1,6 +1,8 @@
 package io.github.cvrunmin.create_andertech.compat.jei;
 
+import com.simibubi.create.AllItems;
 import com.simibubi.create.Create;
+import com.simibubi.create.compat.jei.ConversionRecipe;
 import com.simibubi.create.compat.jei.category.BlockCuttingCategory;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.content.kinetics.crusher.CrushingRecipe;
@@ -108,5 +110,10 @@ public class CreateAndertechJEI implements IModPlugin {
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         createCategories.forEach(cat -> cat.registerRecipes(registration));
+        registration.getJeiHelpers().getRecipeType(Create.asResource("mystery_conversion"), ConversionRecipe.class)
+                .ifPresent(rtype -> registration.addRecipes(rtype, List.of(
+                        ConversionRecipe.create(AllItems.EMPTY_BLAZE_BURNER.asStack(), AllBlocks.CHRONENDIC_BLAZE_BURNER.asStack()).value(),
+                        ConversionRecipe.create(com.simibubi.create.AllBlocks.BLAZE_BURNER.asStack(), AllBlocks.CHRONENDIC_BLAZE_BURNER.asStack()).value()
+                )));
     }
 }

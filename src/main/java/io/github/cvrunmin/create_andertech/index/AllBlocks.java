@@ -19,6 +19,7 @@ import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockMo
 import com.simibubi.create.content.kinetics.simpleRelays.CogwheelBlockItem;
 import com.simibubi.create.content.kinetics.simpleRelays.encased.EncasedCogCTBehaviour;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.data.*;
 import com.tterrag.registrate.builders.ItemBuilder;
 import com.tterrag.registrate.util.entry.BlockEntry;
@@ -59,6 +60,8 @@ import io.github.cvrunmin.create_andertech.content.kinetics.speedController.Chro
 import io.github.cvrunmin.create_andertech.content.kinetics.transmission.CrimschistClutchBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.transmission.CrimschistGearshiftBlock;
 import io.github.cvrunmin.create_andertech.content.misc.NyliumTransmuterBlock;
+import io.github.cvrunmin.create_andertech.content.processing.burner.ChronendicBlazeBurnerMovementBehaviour;
+import io.github.cvrunmin.create_andertech.content.processing.burner.ChronendicBlazeBurnerBlock;
 import io.github.cvrunmin.create_andertech.foundation.AssetLookupWithParent;
 import io.github.cvrunmin.create_andertech.foundation.BlockStateGenerators;
 import io.github.cvrunmin.create_andertech.foundation.CullableCTModel;
@@ -663,6 +666,20 @@ public class AllBlocks {
             .model(AssetLookup.customBlockItemModel("_", "block_single"))
             .build()
             .register();
+
+    public static final BlockEntry<ChronendicBlazeBurnerBlock> CHRONENDIC_BLAZE_BURNER = REGISTRATE.block("chronendic_blaze_burner", ChronendicBlazeBurnerBlock::new)
+            .initialProperties(SharedProperties::softMetal)
+            .properties(p -> p.mapColor(MapColor.COLOR_GRAY)
+                    .lightLevel(ChronendicBlazeBurnerBlock::getLight))
+            .transform(pickaxeOnly())
+            .addLayer(() -> RenderType::cutoutMipped)
+            .tag(AllTags.AllBlockTags.FAN_PROCESSING_CATALYSTS_BLASTING.tag,
+                    AllTags.AllBlockTags.FAN_TRANSPARENT.tag, AllTags.AllBlockTags.PASSIVE_BOILER_HEATERS.tag)
+            .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.partialBaseModel(c, p)))
+            .onRegister(movementBehaviour(new ChronendicBlazeBurnerMovementBehaviour()))
+            .item()
+            .model(AssetLookup.customBlockItemModel("chronendic_blaze_burner", "block_with_blaze"))
+            .build().register();
 
     public static final BlockEntry<CasingBlock> CRIMSCHIST_CASING = REGISTRATE.block("crimschist_casing", CasingBlock::new)
             .properties(p -> p.mapColor(MapColor.WARPED_NYLIUM))

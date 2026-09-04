@@ -52,6 +52,9 @@ import io.github.cvrunmin.create_andertech.content.kinetics.transmission.Crimsch
 import io.github.cvrunmin.create_andertech.content.kinetics.transmission.CrimschistGearshiftBlockEntity;
 import io.github.cvrunmin.create_andertech.content.kinetics.transmission.OCSplitShaftRenderer;
 import io.github.cvrunmin.create_andertech.content.kinetics.transmission.OCSplitShaftVisual;
+import io.github.cvrunmin.create_andertech.content.processing.burner.ChronendicBlazeBurnerBlockEntity;
+import io.github.cvrunmin.create_andertech.content.processing.burner.ChronendicBlazeBurnerRenderer;
+import io.github.cvrunmin.create_andertech.content.processing.burner.ChronendicBlazeBurnerVisual;
 
 import static io.github.cvrunmin.create_andertech.CreateAndertech.REGISTRATE;
 
@@ -220,6 +223,13 @@ public class AllBlockEntityTypes {
             .blockEntity("crimschist_infusion_vat", InfusionVatBlockEntity::new)
             .validBlocks(AllBlocks.INFUSION_VAT)
             .renderer(() -> InfusionVatRenderer::new)
+            .register();
+
+    public static final BlockEntityEntry<ChronendicBlazeBurnerBlockEntity> CHRONENDIC_BLAZE_BURNER = REGISTRATE
+            .blockEntity("chronendic_blaze_burner", ChronendicBlazeBurnerBlockEntity::new)
+            .visual(() -> ChronendicBlazeBurnerVisual::new, false)
+            .validBlock(AllBlocks.CHRONENDIC_BLAZE_BURNER)
+            .renderer(() -> ChronendicBlazeBurnerRenderer::new)
             .register();
 
     public static void register(){}

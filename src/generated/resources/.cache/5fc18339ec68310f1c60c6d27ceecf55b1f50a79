@@ -1,8 +1,9 @@
-// 1.21.1	2026-05-17T14:09:35.5952456	create_andertech's processing recipes: deploying
+// 1.21.1	2026-08-30T21:26:05.5830243	create_andertech's processing recipes: deploying
 a048779559e13e0d1ea63e6e6c008e4ca5614f3f data/create_andertech/recipe/deploying/crimshict_fluid_tank_by_deployer_add_top.json
 b86a1901475737c6e8b541dd19e639ba4cbc51ae data/create_andertech/recipe/deploying/infusing_vat_by_deployer.json
 ab976dc3cf85f40079a33691a50026ee68d9999b data/create_andertech/recipe/deploying/upgrade_deployer.json
 59acf87bfe7a6dca758e9162daa9ec6d4706e740 data/create_andertech/recipe/deploying/upgrade_encased_fan.json
+5df887a21c05fa43e7ba8921ff31634ae8867f56 data/create_andertech/recipe/deploying/upgrade_mechanical_bearing.json
 ed1bef3225b3961cbd4f5aa070bc18fa3398bb43 data/create_andertech/recipe/deploying/upgrade_mechanical_crafter.json
 a37295b680c3b28adc0ec0332257bb02855bf5a9 data/create_andertech/recipe/deploying/upgrade_mechanical_drill.json
 658c475b57a9f59c4ab3fbfb4fe125ebf1cf8d6d data/create_andertech/recipe/deploying/upgrade_mechanical_mixer.json

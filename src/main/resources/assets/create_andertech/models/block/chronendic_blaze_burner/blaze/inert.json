@@ -1,0 +1,7 @@
+{
+	"parent": "create:block/blaze_burner/blaze/inert",
+	"textures": {
+		"2": "create_andertech:block/chronendic_blaze_inert",
+		"particle": "create_andertech:block/chronendic_blaze_inert"
+	}
+}

@@ -1,0 +1,7 @@
+{
+	"parent": "create:block/blaze_burner/blaze/idle",
+	"textures": {
+		"2": "create_andertech:block/chronendic_blaze_idle",
+		"particle": "create_andertech:block/chronendic_blaze_idle"
+	}
+}

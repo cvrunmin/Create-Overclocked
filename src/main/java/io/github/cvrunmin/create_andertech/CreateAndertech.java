@@ -1,7 +1,11 @@
 package io.github.cvrunmin.create_andertech;
 
 import com.mojang.logging.LogUtils;
+import com.simibubi.create.api.boiler.BoilerHeater;
+import com.simibubi.create.content.fluids.tank.BoilerHeaters;
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.data.CreateRegistrate;
+import io.github.cvrunmin.create_andertech.content.processing.burner.ChronendicBlazeBurnerBlock;
 import io.github.cvrunmin.create_andertech.index.*;
 import io.github.cvrunmin.create_andertech.infrastructure.data.CADataGen;
 import net.minecraft.resources.ResourceKey;
@@ -14,8 +18,10 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import net.neoforged.neoforge.common.NeoForge;
 import org.slf4j.Logger;
 
 @Mod(CreateAndertech.MODID)
@@ -38,12 +44,27 @@ public class CreateAndertech {
         AllDataComponents.register(modEventBus);
         AllCreativeTabs.register(modEventBus);
         CAAllParticleTypes.register(modEventBus);
+        CAAllArmInteractionPointTypes.register(modEventBus);
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (ExampleMod) to respond directly to events.
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
 //        NeoForge.EVENT_BUS.register(this);
+        modEventBus.addListener(CreateAndertech::commonSetup);
         modEventBus.addListener(EventPriority.HIGHEST, CADataGen::gatherDataHighPriority);
         modEventBus.addListener(CADataGen::gatherData);
+    }
+
+    public static void commonSetup(final FMLCommonSetupEvent event){
+        BoilerHeater.REGISTRY.register(AllBlocks.CHRONENDIC_BLAZE_BURNER.get(), ((level, pos, state) -> {
+            BlazeBurnerBlock.HeatLevel value = state.getValue(ChronendicBlazeBurnerBlock.HEAT_LEVEL);
+            if (value == BlazeBurnerBlock.HeatLevel.SEETHING) {
+                return 2;
+            }
+            if (value.isAtLeast(BlazeBurnerBlock.HeatLevel.FADING)) {
+                return 1;
+            }
+            return BoilerHeater.PASSIVE_HEAT;
+        }));
     }
 
     @Mod(value = CreateAndertech.MODID, dist = Dist.CLIENT)
