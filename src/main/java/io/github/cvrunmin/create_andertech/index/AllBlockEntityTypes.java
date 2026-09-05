@@ -12,6 +12,7 @@ import io.github.cvrunmin.create_andertech.content.fluids.infusion_vat.InfusionV
 import io.github.cvrunmin.create_andertech.content.fluids.infusion_vat.InfusionVatRenderer;
 import io.github.cvrunmin.create_andertech.content.fluids.tank.CrimschistFluidTankBlockEntity;
 import io.github.cvrunmin.create_andertech.content.fluids.tank.CrimschistFluidTankRenderer;
+import io.github.cvrunmin.create_andertech.content.kinetics.CrimschistShaftVisual;
 import io.github.cvrunmin.create_andertech.content.kinetics.belt.OCBeltBlockEntity;
 import io.github.cvrunmin.create_andertech.content.kinetics.belt.OCBeltRenderer;
 import io.github.cvrunmin.create_andertech.content.kinetics.belt.OCBeltVisual;
@@ -48,6 +49,8 @@ import io.github.cvrunmin.create_andertech.content.kinetics.simpleRelays.encased
 import io.github.cvrunmin.create_andertech.content.kinetics.simpleRelays.encased.EncasedCrimschistCogVisual;
 import io.github.cvrunmin.create_andertech.content.kinetics.speedController.ChronenditeSpeedControllerBlockEntity;
 import io.github.cvrunmin.create_andertech.content.kinetics.speedController.ChronenditeSpeedControllerRenderer;
+import io.github.cvrunmin.create_andertech.content.kinetics.spout.ChronenditeMechanicalSpoutBlockEntity;
+import io.github.cvrunmin.create_andertech.content.kinetics.spout.ChronenditeMechanicalSpoutRenderer;
 import io.github.cvrunmin.create_andertech.content.kinetics.transmission.CrimschistClutchBlockEntity;
 import io.github.cvrunmin.create_andertech.content.kinetics.transmission.CrimschistGearshiftBlockEntity;
 import io.github.cvrunmin.create_andertech.content.kinetics.transmission.OCSplitShaftRenderer;
@@ -155,6 +158,13 @@ public class AllBlockEntityTypes {
             .visual(() -> BearingVisual::new)
             .validBlocks(AllBlocks.CHRONENDITE_MECHANICAL_BEARING)
             .renderer(() -> OCBearingRenderer::new)
+            .register();
+
+    public static final BlockEntityEntry<ChronenditeMechanicalSpoutBlockEntity> CHRONENDITE_MECHANICAL_SPOUT = REGISTRATE
+            .blockEntity("mechanical_spout", ChronenditeMechanicalSpoutBlockEntity::new)
+            .visual(() -> CrimschistShaftVisual::new)
+            .validBlocks(AllBlocks.CHRONENDITE_MECHANICAL_SPOUT)
+            .renderer(() -> ChronenditeMechanicalSpoutRenderer::new)
             .register();
 
     public static final BlockEntityEntry<ChronenditeEncasedFanBlockEntity> CHRONENDITE_ENCASED_FAN = REGISTRATE

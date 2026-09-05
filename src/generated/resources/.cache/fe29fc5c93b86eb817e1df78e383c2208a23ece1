@@ -1,4 +1,4 @@
-// 1.21.1	2026-08-30T21:53:16.3002017	Registrate Provider for create_andertech [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
+// 1.21.1	2026-09-05T22:53:30.8484993	Registrate Provider for create_andertech [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
 98d26546200e4b2c0a00643fc9f027b49ef4594b assets/create_andertech/blockstates/andesite_encased_crimschist_cogwheel.json
 4dc0142d21221d69b52fb1acf47b46dc184a78a0 assets/create_andertech/blockstates/andesite_encased_crimschist_large_cogwheel.json
 4946d26000065d09b51752b6ad34d0050f829a0d assets/create_andertech/blockstates/andesite_encased_crimschist_shaft.json
@@ -19,6 +19,7 @@ e1f8e5bd1973989ed05619657d86ed262137c222 assets/create_andertech/blockstates/chr
 9aa163eece13fe6997132c0321afc95db6d11659 assets/create_andertech/blockstates/chronendite_mechanical_mixer.json
 50dea85b42e697365f2e0fc1d53861531d373fb7 assets/create_andertech/blockstates/chronendite_mechanical_press.json
 4b81aa3e171246ef9c20afdf9296f79eb2731f0d assets/create_andertech/blockstates/chronendite_mechanical_saw.json
+34520e1ebb254cb608196e854f621391b8a417ee assets/create_andertech/blockstates/chronendite_mechanical_spout.json
 2ca4517167368858538e80164fca0555533e8f3d assets/create_andertech/blockstates/chronendite_rotation_speed_controller.json
 06e7afd0d63eb6dc2a7b78fdabc1b889f6d4ff69 assets/create_andertech/blockstates/chronendite_solution.json
 c7652688cc9b8e17ec610f9c80c98139766b525b assets/create_andertech/blockstates/creative_oc_motor.json
@@ -42,8 +43,8 @@ d0af03aeed1de0fcd54098868465452cc97a7513 assets/create_andertech/blockstates/spe
 3f828a5bc7b3c130e7db05842a7c326b2ae96064 assets/create_andertech/blockstates/untopped_crimson_nylium.json
 d0f5051f7f532dfec5b116d510af0c134a7dd9ff assets/create_andertech/blockstates/untopped_warped_nylium.json
 8d8a692a5a97c13613585a3fd857c8201ce91c7e assets/create_andertech/blockstates/warped_nylium_transmuter.json
-7be34c200e35c54a9919a682b5d25d33283bb076 assets/create_andertech/lang/en_ud.json
-4d263531956f23dbad59f8e668232fa8f5c6acd9 assets/create_andertech/lang/en_us.json
+24998355ab4605dbbd41026f33e6923844b677ea assets/create_andertech/lang/en_ud.json
+23c8a58859b0177b9ee5eedf1166143046692205 assets/create_andertech/lang/en_us.json
 7f3e4636d521a67eb621d5d27d6b175d455179f8 assets/create_andertech/models/block/andesite_encased_crimschist_cogwheel.json
 5a5a3aac31c44030880774b96cfecc40568abe75 assets/create_andertech/models/block/andesite_encased_crimschist_cogwheel_bottom.json
 82ce3bec0d6b5332b4f5007245ca2cdd8e28b9c9 assets/create_andertech/models/block/andesite_encased_crimschist_cogwheel_top.json
@@ -165,6 +166,7 @@ c9dcb311ca9e324c2511109d8d9fff97f3bc4742 assets/create_andertech/models/item/chr
 89f11f0ffdda47d99747d20a09c385805e969966 assets/create_andertech/models/item/chronendite_mechanical_mixer.json
 9805c72ac20ca0966ac9ebe8b94b18dbaf09328e assets/create_andertech/models/item/chronendite_mechanical_press.json
 688597ae8616bc16f5eac8d18d57d058a0d7d988 assets/create_andertech/models/item/chronendite_mechanical_saw.json
+70d58f027f33bfb677b19129071c0d5220347cb0 assets/create_andertech/models/item/chronendite_mechanical_spout.json
 b23b35d3a7ac033cc184a111c04a1f2a10e5ce96 assets/create_andertech/models/item/chronendite_orb.json
 dd56400f9ce2f9bea202795cc8e54d12eb9028cb assets/create_andertech/models/item/chronendite_rotation_speed_controller.json
 2d5354541e8fecd1ab70344e0a2798cdfb88cff5 assets/create_andertech/models/item/chronendite_shard.json
@@ -221,6 +223,7 @@ a01eca5eabe0ee43d0a208f3e98d57c83d0ce806 data/create_andertech/loot_table/blocks
 8d2d7149cff699a56ac81ccb16c96f1c0ab6c026 data/create_andertech/loot_table/blocks/chronendite_mechanical_mixer.json
 b70f5ea161c4f5eb132bf08d36a12e18222b85e3 data/create_andertech/loot_table/blocks/chronendite_mechanical_press.json
 148e77719e5b1f6e42a8dbd79f8039bcc834437a data/create_andertech/loot_table/blocks/chronendite_mechanical_saw.json
+91c4491c01dbf158e3e7370db0fb6158328e1b8f data/create_andertech/loot_table/blocks/chronendite_mechanical_spout.json
 7b62f475fa9b56f06b8e25177b6579594928c1d6 data/create_andertech/loot_table/blocks/chronendite_rotation_speed_controller.json
 dd85437f10eab218bc79bc07b08c6bd60386b580 data/create_andertech/loot_table/blocks/creative_oc_motor.json
 f5d654a0dbd91084f1039320fbff0f11627772d1 data/create_andertech/loot_table/blocks/crimschist_casing.json
@@ -249,8 +252,8 @@ c241f1442674c72f756ad6f3de77754f4ebb7b90 data/create_andertech/tags/block/explos
 74c64b8156875cf2e15ba43e0541d8b1266be171 data/c/tags/item/chronendite.json
 4274b48147ea3cd3d8749574c59a55cb3fb672bf data/c/tags/item/crimschist.json
 8cc56a53f1cae03993069205a682702947c66043 data/c/tags/item/nuggets.json
-b6fff0f132a86e81bcb05782202fb1ef3451dbef data/minecraft/tags/block/mineable/axe.json
-ae3fa4d94126a2666d8e49c31809fe900c2972f0 data/minecraft/tags/block/mineable/pickaxe.json
+dbb550bf3bec8f320ee2951d9f4471e87febaaf1 data/minecraft/tags/block/mineable/axe.json
+14bf5f2fca9337d87ea26189455d2e02c84e6319 data/minecraft/tags/block/mineable/pickaxe.json
 373094012ce9b792710afd6f1c000b1c4d17a5aa data/minecraft/tags/block/mushroom_grow_block.json
 373094012ce9b792710afd6f1c000b1c4d17a5aa data/minecraft/tags/block/nylium.json
 8bb08d5a9874f522d1abf3a3844d85b4e136deb7 data/minecraft/tags/entity_type/fall_damage_immune.json

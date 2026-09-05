@@ -57,6 +57,7 @@ import io.github.cvrunmin.create_andertech.content.kinetics.simpleRelays.Crimsch
 import io.github.cvrunmin.create_andertech.content.kinetics.simpleRelays.encased.EncasedCrimschistCogwheelBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.simpleRelays.encased.EncasedCrimschistShaftBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.speedController.ChronenditeSpeedControllerBlock;
+import io.github.cvrunmin.create_andertech.content.kinetics.spout.ChronenditeMechanicalSpoutBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.transmission.CrimschistClutchBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.transmission.CrimschistGearshiftBlock;
 import io.github.cvrunmin.create_andertech.content.misc.NyliumTransmuterBlock;
@@ -90,7 +91,7 @@ import static com.simibubi.create.api.behaviour.display.DisplaySource.displaySou
 import static com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour.interactionBehaviour;
 import static com.simibubi.create.api.behaviour.movement.MovementBehaviour.movementBehaviour;
 import static com.simibubi.create.api.contraption.storage.fluid.MountedFluidStorageType.mountedFluidStorage;
-import static com.simibubi.create.foundation.data.BlockStateGen.axisBlock;
+import static com.simibubi.create.foundation.data.BlockStateGen.*;
 import static com.simibubi.create.foundation.data.TagGen.axeOrPickaxe;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 import static io.github.cvrunmin.create_andertech.CreateAndertech.REGISTRATE;
@@ -591,6 +592,17 @@ public class AllBlocks {
                     .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 4))
                     .tag(AllTags.AllBlockTags.SAFE_NBT.tag)
                     .onRegister(movementBehaviour(new StabilizedBearingMovementBehaviour()))
+                    .register();
+
+    public static final BlockEntry<ChronenditeMechanicalSpoutBlock> CHRONENDITE_MECHANICAL_SPOUT =
+            REGISTRATE.block("chronendite_mechanical_spout", ChronenditeMechanicalSpoutBlock::new)
+                    .initialProperties(SharedProperties::stone)
+                    .properties(p -> p.mapColor(MapColor.PODZOL))
+                    .transform(axeOrPickaxe())
+                    .blockstate(horizontalBlockProvider(true))
+                    .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 4))
+                    .item(AssemblyOperatorBlockItem::new)
+                    .transform(ModelGen.customItemModel())
                     .register();
 
     public static final BlockEntry<ChronenditeSpeedControllerBlock> CHRONENDITE_ROTATION_SPEED_CONTROLLER =

@@ -3,6 +3,7 @@ package io.github.cvrunmin.create_andertech.content.kinetics.mechanicalArm;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.kinetics.base.KineticBlock;
+import com.simibubi.create.content.kinetics.mechanicalArm.ArmBlock;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmBlockEntity;
 import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
 import com.simibubi.create.foundation.block.IBE;
@@ -28,7 +29,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 
 public class ChronenditeArmBlock extends KineticBlock implements IBE<ChronenditeArmBlockEntity>, ICogWheel {
-    public static final BooleanProperty CEILING = BooleanProperty.create("ceiling");
+    public static final BooleanProperty CEILING = ArmBlock.CEILING;
+//    public static final BooleanProperty CEILING = BooleanProperty.create("ceiling");
 
     public ChronenditeArmBlock(Properties properties) {
         super(properties);
