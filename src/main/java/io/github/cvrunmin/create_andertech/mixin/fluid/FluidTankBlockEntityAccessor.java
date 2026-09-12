@@ -1,4 +1,4 @@
-package io.github.cvrunmin.create_andertech.mixin;
+package io.github.cvrunmin.create_andertech.mixin.fluid;
 
 import com.simibubi.create.content.fluids.tank.FluidTankBlockEntity;
 import net.createmod.catnip.animation.LerpedFloat;

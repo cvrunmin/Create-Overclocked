@@ -5,7 +5,7 @@ import com.simibubi.create.content.fluids.tank.FluidTankBlockEntity;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
 import io.github.cvrunmin.create_andertech.foundation.interfaces.IGrandSuperSmartBlockEntity;
 import io.github.cvrunmin.create_andertech.index.AllBlockEntityTypes;
-import io.github.cvrunmin.create_andertech.mixin.FluidTankBlockEntityAccessor;
+import io.github.cvrunmin.create_andertech.mixin.fluid.FluidTankBlockEntityAccessor;
 import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.core.BlockPos;

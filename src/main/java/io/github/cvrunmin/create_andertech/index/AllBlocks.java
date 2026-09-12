@@ -8,6 +8,7 @@ import com.simibubi.create.content.decoration.encasing.CasingBlock;
 import com.simibubi.create.content.decoration.encasing.EncasedCTBehaviour;
 import com.simibubi.create.content.decoration.encasing.EncasingRegistry;
 import com.simibubi.create.content.decoration.girder.ConnectedGirderModel;
+import com.simibubi.create.content.fluids.PipeAttachmentModel;
 import com.simibubi.create.content.fluids.tank.*;
 import com.simibubi.create.content.kinetics.belt.BeltModel;
 import com.simibubi.create.content.kinetics.crusher.CrushingWheelControllerBlock;
@@ -33,6 +34,7 @@ import io.github.cvrunmin.create_andertech.content.decoration.RichNyliumBlock;
 import io.github.cvrunmin.create_andertech.content.fluids.infusion_vat.InfusionVatBlock;
 import io.github.cvrunmin.create_andertech.content.fluids.infusion_vat.InfusionVatCTBehaviour;
 import io.github.cvrunmin.create_andertech.content.fluids.infusion_vat.InfusionVatItem;
+import io.github.cvrunmin.create_andertech.content.fluids.pump.CrimschistPumpBlock;
 import io.github.cvrunmin.create_andertech.content.fluids.tank.CrimschistFluidTankBlock;
 import io.github.cvrunmin.create_andertech.content.fluids.tank.CrimschistFluidTankItem;
 import io.github.cvrunmin.create_andertech.content.kinetics.belt.OCBeltBlock;
@@ -666,6 +668,16 @@ public class AllBlocks {
             .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 2.0))
             .item(ArmItem::new)
             .transform(tempCustomItemModel(ResourceLocation.fromNamespaceAndPath("create", "block/mechanical_arm/item")))
+            .register();
+
+    public static final BlockEntry<CrimschistPumpBlock> CRIMSCHIST_MECHANICAL_PUMP = REGISTRATE.block("crimschist_mechanical_pump", CrimschistPumpBlock::new)
+            .properties(p -> p.mapColor(MapColor.WARPED_NYLIUM).requiresCorrectToolForDrops().strength(3.0F, 6.0F).sound(SoundType.METAL))
+            .transform(pickaxeOnly())
+            .blockstate(BlockStateGen.directionalAxisBlockProvider())
+            .onRegister(CreateRegistrate.blockModel(() -> PipeAttachmentModel::withAO))
+            .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 4.0))
+            .item()
+            .transform(ModelGen.customItemModel())
             .register();
 
     public static final BlockEntry<InfusionVatBlock> INFUSION_VAT = REGISTRATE.block("crimschist_infusion_vat", InfusionVatBlock::new)

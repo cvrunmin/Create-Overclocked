@@ -10,6 +10,8 @@ import io.github.cvrunmin.create_andertech.content.contraptions.bearing.Chronend
 import io.github.cvrunmin.create_andertech.content.contraptions.bearing.OCBearingRenderer;
 import io.github.cvrunmin.create_andertech.content.fluids.infusion_vat.InfusionVatBlockEntity;
 import io.github.cvrunmin.create_andertech.content.fluids.infusion_vat.InfusionVatRenderer;
+import io.github.cvrunmin.create_andertech.content.fluids.pump.CrimschistPumpBlockEntity;
+import io.github.cvrunmin.create_andertech.content.fluids.pump.CrimschistPumpRenderer;
 import io.github.cvrunmin.create_andertech.content.fluids.tank.CrimschistFluidTankBlockEntity;
 import io.github.cvrunmin.create_andertech.content.fluids.tank.CrimschistFluidTankRenderer;
 import io.github.cvrunmin.create_andertech.content.kinetics.CrimschistShaftVisual;
@@ -179,6 +181,13 @@ public class AllBlockEntityTypes {
             .visual(() -> OCFanVisual::new, false)
             .validBlocks(AllBlocks.CHRONENDITE_HV_ENCASED_FAN)
             .renderer(() -> ChronenditeEncasedFanRenderer::new)
+            .register();
+
+    public static final BlockEntityEntry<CrimschistPumpBlockEntity>  CRIMSCHIST_MECHANICAL_PUMP = REGISTRATE
+            .blockEntity("mechanical_pump", CrimschistPumpBlockEntity::new)
+            .visual(() -> CrimschistShaftVisual::new)
+            .validBlocks(AllBlocks.CRIMSCHIST_MECHANICAL_PUMP)
+            .renderer(() -> CrimschistPumpRenderer::new)
             .register();
 
     public static final BlockEntityEntry<CrimschistClutchBlockEntity> CRIMSCHIST_CLUTCH = REGISTRATE

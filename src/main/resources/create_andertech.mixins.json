@@ -16,8 +16,6 @@
     "ChuteBlockEntityMixin",
     "DeployerBlockEntityAccessor",
     "DeployerBlockEntityMixin",
-    "FluidTankBlockEntityAccessor",
-    "FluidTankBlockEntityMixin",
     "FungusBlockMixin",
     "GroupedItemsAccessor",
     "HugeFungusFeatureMixin",
@@ -27,7 +25,13 @@
     "belt.BeltBlockEntityMixin",
     "belt.BeltCrusherInteractionHandlerMixin",
     "belt.BeltMovementHandlerMixin",
-    "belt.BeltVisualMixin"
+    "belt.BeltVisualMixin",
+    "fluid.FluidPropagatorMixin",
+    "fluid.FluidTankBlockEntityAccessor",
+    "fluid.FluidTankBlockEntityMixin",
+    "fluid.FluidTransportBehaviourMixin",
+    "fluid.PumpBlockEntityAccessor",
+    "fluid.PumpBlockEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,0 +1,52 @@
+{
+  "variants": {
+    "axis_along_first=false,facing=down": {
+      "model": "create_andertech:block/crimschist_mechanical_pump/horizontal",
+      "x": 270,
+      "y": 90
+    },
+    "axis_along_first=false,facing=east": {
+      "model": "create_andertech:block/crimschist_mechanical_pump/horizontal",
+      "y": 270
+    },
+    "axis_along_first=false,facing=north": {
+      "model": "create_andertech:block/crimschist_mechanical_pump/vertical",
+      "y": 180
+    },
+    "axis_along_first=false,facing=south": {
+      "model": "create_andertech:block/crimschist_mechanical_pump/vertical"
+    },
+    "axis_along_first=false,facing=up": {
+      "model": "create_andertech:block/crimschist_mechanical_pump/horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis_along_first=false,facing=west": {
+      "model": "create_andertech:block/crimschist_mechanical_pump/horizontal",
+      "y": 90
+    },
+    "axis_along_first=true,facing=down": {
+      "model": "create_andertech:block/crimschist_mechanical_pump/horizontal",
+      "x": 270
+    },
+    "axis_along_first=true,facing=east": {
+      "model": "create_andertech:block/crimschist_mechanical_pump/vertical",
+      "y": 270
+    },
+    "axis_along_first=true,facing=north": {
+      "model": "create_andertech:block/crimschist_mechanical_pump/horizontal",
+      "y": 180
+    },
+    "axis_along_first=true,facing=south": {
+      "model": "create_andertech:block/crimschist_mechanical_pump/horizontal"
+    },
+    "axis_along_first=true,facing=up": {
+      "model": "create_andertech:block/crimschist_mechanical_pump/horizontal",
+      "x": 90
+    },
+    "axis_along_first=true,facing=west": {
+      "model": "create_andertech:block/crimschist_mechanical_pump/vertical",
+      "y": 90
+    }
+  }
+}
