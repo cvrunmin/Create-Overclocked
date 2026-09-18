@@ -53,6 +53,9 @@ import io.github.cvrunmin.create_andertech.content.kinetics.speedController.Chro
 import io.github.cvrunmin.create_andertech.content.kinetics.speedController.ChronenditeSpeedControllerRenderer;
 import io.github.cvrunmin.create_andertech.content.kinetics.spout.ChronenditeMechanicalSpoutBlockEntity;
 import io.github.cvrunmin.create_andertech.content.kinetics.spout.ChronenditeMechanicalSpoutRenderer;
+import io.github.cvrunmin.create_andertech.content.kinetics.transmission.CrimschistBlackboxDifferentialBlockEntity;
+import io.github.cvrunmin.create_andertech.content.kinetics.transmission.CrimschistBlackboxDifferentialRenderer;
+import io.github.cvrunmin.create_andertech.content.kinetics.transmission.CrimschistBlackboxDifferentialVisual;
 import io.github.cvrunmin.create_andertech.content.kinetics.transmission.CrimschistClutchBlockEntity;
 import io.github.cvrunmin.create_andertech.content.kinetics.transmission.CrimschistGearshiftBlockEntity;
 import io.github.cvrunmin.create_andertech.content.kinetics.transmission.OCSplitShaftRenderer;
@@ -202,6 +205,13 @@ public class AllBlockEntityTypes {
             .visual(() -> OCSplitShaftVisual::new, false)
             .validBlocks(AllBlocks.CRIMSCHIST_GEARSHIFT)
             .renderer(() -> OCSplitShaftRenderer::new)
+            .register();
+
+    public static final BlockEntityEntry<CrimschistBlackboxDifferentialBlockEntity> CRIMSCHIST_BLACKBOX_DIFFERENTIAL = REGISTRATE
+            .blockEntity("blackbox_differential", CrimschistBlackboxDifferentialBlockEntity::new)
+            .visual(() -> CrimschistBlackboxDifferentialVisual::new)
+            .validBlocks(AllBlocks.CRIMSCHIST_BLACKBOX_DIFFERENTIAL)
+            .renderer(() -> CrimschistBlackboxDifferentialRenderer::new)
             .register();
 
     public static final BlockEntityEntry<OCBeltBlockEntity> OC_BELT = REGISTRATE

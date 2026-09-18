@@ -1,0 +1,7 @@
+{
+  "parent": "create_andertech:block/crimschist_blackbox_differential/block_bottom",
+  "textures": {
+    "gear_bottom": "create_andertech:block/crimschist_gearbox_in",
+    "side": "create_andertech:block/crimschist_differential_side_out"
+  }
+}

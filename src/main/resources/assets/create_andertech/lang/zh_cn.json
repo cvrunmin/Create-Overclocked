@@ -23,6 +23,7 @@
   "block.create_andertech.chronendite_rotation_speed_controller": "时末转速控制器",
   "block.create_andertech.chronendite_solution": "时末溶液",
   "block.create_andertech.creative_oc_motor": "创造超频马达",
+  "block.create_andertech.crimschist_blackbox_differential": "绯绿黑盒差速器",
   "block.create_andertech.crimschist_casing": "绯绿机壳",
   "block.create_andertech.crimschist_clutch": "绯绿离合箱",
   "block.create_andertech.crimschist_cogwheel": "绯绿齿轮",
@@ -43,6 +44,13 @@
   "block.create_andertech.untopped_crimson_nylium": "除顶的绯红菌岩",
   "block.create_andertech.untopped_warped_nylium": "除顶的诡异菌岩",
   "block.create_andertech.warped_nylium_transmuter": "诡异菌岩嬗变药",
+  "create_andertech.differential.header": "黑盒差速器",
+  "create_andertech.differential.mode.in": "输入",
+  "create_andertech.differential.mode.none": "无",
+  "create_andertech.differential.mode.out": "输出",
+  "create_andertech.differential.port.cog": "大齿轮",
+  "create_andertech.differential.port.neg": "负向轴端",
+  "create_andertech.differential.port.pos": "正向轴端",
   "create_andertech.gui.goggles.vat_contents": "浸染缸内容:",
   "create_andertech.infusion_vat.content_interaction_state.all": "全部",
   "create_andertech.infusion_vat.content_interaction_state.ingredient": "仅限材料",
@@ -63,5 +71,8 @@
   "item.create_andertech.endopyrotic_cinder_paste": "末热余烬面粉糊",
   "item.create_andertech.forged_chronendite_orb": "拟作时末球",
   "item.create_andertech.vertical_crimschist_gearbox": "竖直绯绿十字齿轮箱",
-  "itemGroup.create_andertech.main": "机械动力：安德科技"
+  "itemGroup.create_andertech.main": "机械动力：安德科技",
+  "block.create_andertech.crimschist_mechanical_pump": "绯绿机械泵",
+  "create_andertech.tooltip.differential.misconfigured": "配置错误的差速器",
+  "create_andertech.tooltip.differential.misconfigured.hint": "看来这个%1$s有_过多的_输出口或_没有_输入口"
 }

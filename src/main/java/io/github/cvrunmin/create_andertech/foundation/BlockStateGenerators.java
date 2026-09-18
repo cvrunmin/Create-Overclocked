@@ -19,6 +19,7 @@ import io.github.cvrunmin.create_andertech.content.kinetics.chainDrive.Crimschis
 import io.github.cvrunmin.create_andertech.content.kinetics.motor.CreativeOCMotorBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.saw.ChronenditeSawBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.speedController.ChronenditeSpeedControllerBlock;
+import io.github.cvrunmin.create_andertech.content.kinetics.transmission.CrimschistBlackboxDifferentialBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -63,6 +64,55 @@ public class BlockStateGenerators {
     private static <T extends Block> Function<BlockState, ModelFile> getBlockModel(boolean customItem, String modid, String parentName, Map<String, ResourceLocation> overriddenTextures,
                                                                                    DataGenContext<Block, T> c, RegistrateBlockstateProvider p) {
         return $ -> customItem ? AssetLookupWithParent.partialModel(c, p, modid, parentName, overriddenTextures) : AssetLookupWithParent.standardModel(c, p, modid, parentName, overriddenTextures);
+    }
+
+    /**
+     * Encased large cogwheel shell in crimschist, with the shaft stubs of Create's "top"/"bottom" model variants
+     * following the block's own end modes: a capped end is a closed casing, a shaft end shows the stub.
+     */
+    public static <T extends CrimschistBlackboxDifferentialBlock> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> blackboxDifferential() {
+        return (c, p) -> axisBlock(c, p, state -> {
+            CrimschistBlackboxDifferentialBlock.Mode positiveMode = CrimschistBlackboxDifferentialBlock.positiveMode(state);
+            CrimschistBlackboxDifferentialBlock.Mode negativeMode = CrimschistBlackboxDifferentialBlock.negativeMode(state);
+            CrimschistBlackboxDifferentialBlock.Mode cogMode = CrimschistBlackboxDifferentialBlock.cogMode(state);
+            String suffix = (positiveMode == CrimschistBlackboxDifferentialBlock.Mode.NONE ? "" : "_top")
+                    + (negativeMode == CrimschistBlackboxDifferentialBlock.Mode.NONE ? "" : "_bottom");
+
+            String combination = "";
+            switch (negativeMode) {
+                case NONE -> combination += "n";
+                case IN -> combination += "i";
+                case OUT -> combination += "o";
+            }
+            switch (cogMode) {
+                case NONE -> combination += "n";
+                case IN -> combination += "i";
+                case OUT -> combination += "o";
+            }
+            switch (positiveMode) {
+                case NONE -> combination += "n";
+                case IN -> combination += "i";
+                case OUT -> combination += "o";
+            }
+
+            var sideIn = p.modLoc("block/crimschist_differential_side_in");
+            var sideOut = p.modLoc("block/crimschist_differential_side_out");
+            var gearIn = p.modLoc("block/crimschist_gearbox_in");
+            var gearOut = p.modLoc("block/crimschist_gearbox_out");
+
+            BlockModelBuilder builder = p.models()
+                    .withExistingParent(c.getName() + "/" + combination, p.modLoc("block/" + c.getName() + "/block" + suffix));
+            if(suffix.contains("top")){
+                builder = builder.texture("gear_top", positiveMode == CrimschistBlackboxDifferentialBlock.Mode.IN ? gearIn : gearOut);
+            }
+            if(suffix.contains("bottom")){
+                builder = builder.texture("gear_bottom", negativeMode == CrimschistBlackboxDifferentialBlock.Mode.IN ? gearIn : gearOut);
+            }
+            if(cogMode != CrimschistBlackboxDifferentialBlock.Mode.NONE){
+                builder = builder.texture("side", cogMode == CrimschistBlackboxDifferentialBlock.Mode.IN ? sideIn : sideOut);
+            }
+            return builder;
+        }, false);
     }
 
     public static void griderBlockStateWithShaft(DataGenContext<Block, GirderEncasedCrimschistShaftBlock> c,

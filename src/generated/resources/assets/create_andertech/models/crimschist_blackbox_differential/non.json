@@ -1,0 +1,6 @@
+{
+  "parent": "create_andertech:block/crimschist_blackbox_differential/block",
+  "textures": {
+    "side": "create_andertech:block/crimschist_differential_side_out"
+  }
+}

@@ -35,6 +35,16 @@ public class CADataGen {
             provider.add(CreateAndertech.MODID + ".infusion_vat.content_interaction_state.product", "Product Only");
             provider.add(CreateAndertech.MODID + ".tooltip.noTank", "No Fluid Container");
             provider.add(CreateAndertech.MODID + ".tooltip.noTank.hint", "It appears that there is _no_ fluid container _above_ this %1$s.");
+
+            provider.add(CreateAndertech.MODID + ".differential.header", "Blackbox Differential");
+            provider.add(CreateAndertech.MODID + ".differential.port.neg", "Negative Side");
+            provider.add(CreateAndertech.MODID + ".differential.port.pos", "Positive Side");
+            provider.add(CreateAndertech.MODID + ".differential.port.cog", "Large Cog");
+            provider.add(CreateAndertech.MODID + ".differential.mode.none", "Covered");
+            provider.add(CreateAndertech.MODID + ".differential.mode.in", "Input");
+            provider.add(CreateAndertech.MODID + ".differential.mode.out", "Output");
+            provider.add(CreateAndertech.MODID + ".tooltip.differential.misconfigured", "Misconfigured Differential");
+            provider.add(CreateAndertech.MODID + ".tooltip.differential.misconfigured.hint", "It appears that this %1$s has _too many_ outputs, or _no_ inputs.");
         });
         REGISTRATE.addDataGenerator(ProviderType.BLOCKSTATE, AllExtraModels::genBlockStates);
     }

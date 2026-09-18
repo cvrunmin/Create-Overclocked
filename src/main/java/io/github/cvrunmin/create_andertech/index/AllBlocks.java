@@ -60,6 +60,7 @@ import io.github.cvrunmin.create_andertech.content.kinetics.simpleRelays.encased
 import io.github.cvrunmin.create_andertech.content.kinetics.simpleRelays.encased.EncasedCrimschistShaftBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.speedController.ChronenditeSpeedControllerBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.spout.ChronenditeMechanicalSpoutBlock;
+import io.github.cvrunmin.create_andertech.content.kinetics.transmission.CrimschistBlackboxDifferentialBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.transmission.CrimschistClutchBlock;
 import io.github.cvrunmin.create_andertech.content.kinetics.transmission.CrimschistGearshiftBlock;
 import io.github.cvrunmin.create_andertech.content.misc.NyliumTransmuterBlock;
@@ -293,6 +294,24 @@ public class AllBlocks {
                     Map.entry("1_1", ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "block/crimschist_axis_top"))
             )))
             .register();
+
+    public static final BlockEntry<CrimschistBlackboxDifferentialBlock> CRIMSCHIST_BLACKBOX_DIFFERENTIAL =
+            REGISTRATE.block("crimschist_blackbox_differential", CrimschistBlackboxDifferentialBlock::new)
+                    .initialProperties(SharedProperties::stone)
+                    .properties(p -> p.noOcclusion()
+                            .mapColor(MapColor.PODZOL))
+                    .addLayer(() -> RenderType::cutoutMipped)
+                    .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 0))
+                    .transform(axeOrPickaxe())
+                    .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(CAAllSpriteShifts.CRIMSCHIST_CASING)))
+                    .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, CAAllSpriteShifts.CRIMSCHIST_CASING,
+                            (s, f) -> f.getAxis() == s.getValue(CrimschistBlackboxDifferentialBlock.AXIS)
+                                    && !CrimschistBlackboxDifferentialBlock.hasShaftOn(s, f))))
+                    .blockstate(BlockStateGenerators.blackboxDifferential())
+                    .item()
+                    .model(AssetLookup::customItemModel)
+                    .build()
+                    .register();
 
     public static final BlockEntry<CrimschistChainDriveBlock> ENCASED_CRIMSCHIST_CHAIN_DRIVE =
             REGISTRATE.block("encased_crimschist_chain_drive", CrimschistChainDriveBlock::new)
