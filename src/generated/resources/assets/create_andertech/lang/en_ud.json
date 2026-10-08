@@ -25,6 +25,7 @@
   "block.create_andertech.creative_oc_motor": "ɹoʇoW buıʞɔoןɔɹǝʌO ǝʌıʇɐǝɹƆ",
   "block.create_andertech.crimschist_blackbox_differential": "ןɐıʇuǝɹǝɟɟıᗡ xoqʞɔɐןᗺ ʇsıɥɔsɯıɹƆ",
   "block.create_andertech.crimschist_casing": "buısɐƆ ʇsıɥɔsɯıɹƆ",
+  "block.create_andertech.crimschist_casing_slab": "qɐןS buısɐƆ ʇsıɥɔsɯıɹƆ",
   "block.create_andertech.crimschist_clutch": "ɥɔʇnןƆ ʇsıɥɔsɯıɹƆ",
   "block.create_andertech.crimschist_cogwheel": "ןǝǝɥʍboƆ ʇsıɥɔsɯıɹƆ",
   "block.create_andertech.crimschist_fluid_tank": "ʞuɐ⟘ pınןℲ ʇsıɥɔsɯıɹƆ",
@@ -57,6 +58,7 @@
   "create_andertech.infusion_vat.content_interaction_state.ingredient": "ʎןuO ʇuǝıpǝɹbuI",
   "create_andertech.infusion_vat.content_interaction_state.label": "uoıʇɔɐɹǝʇuI ʇuǝʇuoƆ",
   "create_andertech.infusion_vat.content_interaction_state.product": "ʎןuO ʇɔnpoɹԀ",
+  "create_andertech.recipe.assembly.stirring": "ɹıʇS",
   "create_andertech.tooltip.differential.misconfigured": "ןɐıʇuǝɹǝɟɟıᗡ pǝɹnbıɟuoɔsıW",
   "create_andertech.tooltip.differential.misconfigured.hint": "˙sʇnduı ‾ou‾ ɹo 'sʇndʇno ‾ʎuɐɯ ooʇ‾ sɐɥ %1$s sıɥʇ ʇɐɥʇ sɹɐǝddɐ ʇI",
   "create_andertech.tooltip.noTank": "ɹǝuıɐʇuoƆ pınןℲ oN",
@@ -73,6 +75,8 @@
   "item.create_andertech.crimschist_sheet": "ʇǝǝɥS ʇsıɥɔsɯıɹƆ",
   "item.create_andertech.endopyrotic_cinder_paste": "ǝʇsɐԀ ɹǝpuıƆ ɔıʇoɹʎdopuƎ",
   "item.create_andertech.forged_chronendite_orb": "qɹO ǝʇıpuǝuoɹɥƆ pǝbɹoℲ",
+  "item.create_andertech.incomplete_crimschist_blackbox_differential": "ןɐıʇuǝɹǝɟɟıᗡ xoqʞɔɐןᗺ ʇsıɥɔsɯıɹƆ ǝʇǝןdɯoɔuI",
+  "item.create_andertech.misconfigured_crimschist_blackbox_differential": "ןɐıʇuǝɹǝɟɟıᗡ xoqʞɔɐןᗺ ʇsıɥɔsɯıɹƆ pǝɹnbıɟuoɔsıW",
   "item.create_andertech.vertical_crimschist_gearbox": "xoqɹɐǝ⅁ ʇsıɥɔsɯıɹƆ ןɐɔıʇɹǝΛ",
   "itemGroup.create_andertech.main": "ɥɔǝʇɹǝpuⱯ ǝʇɐǝɹƆ"
 }

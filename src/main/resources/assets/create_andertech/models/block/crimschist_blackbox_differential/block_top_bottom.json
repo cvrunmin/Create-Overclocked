@@ -2,7 +2,7 @@
 	"format_version": "1.21.11",
 	"credit": "Made with Blockbench",
 	"textures": {
-		"1": "block/stripped_warpped_stem_top",
+		"1": "block/stripped_warped_stem_top",
 		"gear_bottom": "create_andertech:block/crimschist_gearbox",
 		"gear_top": "create_andertech:block/crimschist_gearbox",
 		"particle": "create_andertech:block/crimschist_casing",

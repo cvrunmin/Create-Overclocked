@@ -1,5 +1,6 @@
 package io.github.cvrunmin.create_andertech.index;
 
+import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import io.github.cvrunmin.create_andertech.CreateAndertech;
@@ -50,6 +51,14 @@ public class AllItems {
             REGISTRATE.item("vertical_crimschist_gearbox", VerticalCrimschistGearboxItem::new)
                     .model(AssetLookup.customBlockItemModel("crimschist_gearbox", "item_vertical"))
                     .register();
+
+    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_BLACKBOX_DIFFERENTIAL = REGISTRATE.item("incomplete_crimschist_blackbox_differential", SequencedAssemblyItem::new)
+            .model((c, p) -> p.withExistingParent(c.getName(), p.modLoc("block/crimschist_blackbox_differential/item")))
+            .register();
+
+    public static final ItemEntry<Item> MISCONFIGURED_BLACKBOX_DIFFERENTIAL = REGISTRATE.item("misconfigured_crimschist_blackbox_differential", Item::new)
+            .model((c, p) -> p.withExistingParent(c.getName(), p.modLoc("block/crimschist_blackbox_differential/item")))
+            .register();
 
     public static void register() {
 

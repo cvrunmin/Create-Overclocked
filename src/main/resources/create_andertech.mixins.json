@@ -20,6 +20,7 @@
     "GroupedItemsAccessor",
     "HugeFungusFeatureMixin",
     "KineticBlockEntityMixin",
+    "MechanicalMixerBlockEntityMixin",
     "NetherrackBlockMixin",
     "RotationPropagatorInvoker",
     "RotationPropagatorMixin",

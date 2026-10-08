@@ -74,5 +74,9 @@
   "itemGroup.create_andertech.main": "机械动力：安德科技",
   "block.create_andertech.crimschist_mechanical_pump": "绯绿机械泵",
   "create_andertech.tooltip.differential.misconfigured": "配置错误的差速器",
-  "create_andertech.tooltip.differential.misconfigured.hint": "看来这个%1$s有_过多的_输出口或_没有_输入口"
+  "create_andertech.tooltip.differential.misconfigured.hint": "看来这个%1$s有_过多的_输出口或_没有_输入口",
+  "block.create_andertech.crimschist_casing_slab": "绯绿机壳台阶",
+  "create_andertech.recipe.assembly.stirring": "搅拌",
+  "item.create_andertech.incomplete_crimschist_blackbox_differential": "绯绿黑盒差速器半成品",
+  "item.create_andertech.misconfigured_crimschist_blackbox_differential": "配置错误的绯绿黑盒差速器"
 }

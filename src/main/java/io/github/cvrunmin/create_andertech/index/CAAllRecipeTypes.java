@@ -4,6 +4,7 @@ import com.simibubi.create.content.processing.recipe.StandardProcessingRecipe;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import io.github.cvrunmin.create_andertech.CreateAndertech;
 import io.github.cvrunmin.create_andertech.content.fluids.infusion_vat.InfusionVatRecipe;
+import io.github.cvrunmin.create_andertech.content.kinetics.mixer.StirringRecipe;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -23,6 +24,7 @@ public class CAAllRecipeTypes {
 
 
     public static final CARecipeTypeInfo INFUSING = new CARecipeTypeInfo("infusing", InfusionVatRecipe::new);
+    public static final CARecipeTypeInfo STIRRING = new CARecipeTypeInfo("stirring", StirringRecipe::new);
 
     public static void register(IEventBus bus){
         SERIALIZER_REGISTER.register(bus);

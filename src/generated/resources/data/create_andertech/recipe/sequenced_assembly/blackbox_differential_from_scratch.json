@@ -1,0 +1,129 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "create_andertech:crimschist_casing_slab"
+  },
+  "results": [
+    {
+      "id": "create_andertech:crimschist_blackbox_differential"
+    },
+    {
+      "chance": 9.0,
+      "id": "create_andertech:misconfigured_crimschist_blackbox_differential"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_andertech:incomplete_crimschist_blackbox_differential"
+        },
+        {
+          "item": "create_andertech:crimschist_large_cogwheel"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_andertech:incomplete_crimschist_blackbox_differential"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_andertech:incomplete_crimschist_blackbox_differential"
+        },
+        {
+          "item": "create_andertech:crimschist_cogwheel"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_andertech:incomplete_crimschist_blackbox_differential"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_andertech:incomplete_crimschist_blackbox_differential"
+        },
+        {
+          "item": "create_andertech:crimschist_cogwheel"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_andertech:incomplete_crimschist_blackbox_differential"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_andertech:incomplete_crimschist_blackbox_differential"
+        },
+        {
+          "item": "create_andertech:crimschist_cogwheel"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_andertech:incomplete_crimschist_blackbox_differential"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_andertech:incomplete_crimschist_blackbox_differential"
+        },
+        {
+          "item": "create_andertech:crimschist_cogwheel"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_andertech:incomplete_crimschist_blackbox_differential"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_andertech:incomplete_crimschist_blackbox_differential"
+        },
+        {
+          "item": "create_andertech:crimschist_casing_slab"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_andertech:incomplete_crimschist_blackbox_differential"
+        }
+      ]
+    },
+    {
+      "type": "create_andertech:stirring",
+      "ingredients": [
+        {
+          "item": "create_andertech:incomplete_crimschist_blackbox_differential"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_andertech:incomplete_crimschist_blackbox_differential"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "create_andertech:incomplete_crimschist_blackbox_differential"
+  }
+}

@@ -23,11 +23,13 @@ import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.data.*;
 import com.tterrag.registrate.builders.ItemBuilder;
+import com.tterrag.registrate.providers.loot.RegistrateBlockLootTables;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import io.github.cvrunmin.create_andertech.Constants;
 import io.github.cvrunmin.create_andertech.CreateAndertech;
 import io.github.cvrunmin.create_andertech.content.contraptions.bearing.ChronenditeMechanicalBearingBlock;
+import io.github.cvrunmin.create_andertech.content.decoration.CasingSlabBlock;
 import io.github.cvrunmin.create_andertech.content.decoration.GirderEncasedCrimschistShaftBlock;
 import io.github.cvrunmin.create_andertech.content.decoration.PoorNyliumBlock;
 import io.github.cvrunmin.create_andertech.content.decoration.RichNyliumBlock;
@@ -74,9 +76,11 @@ import net.createmod.catnip.data.Couple;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
@@ -95,6 +99,8 @@ import static com.simibubi.create.api.behaviour.interaction.MovingInteractionBeh
 import static com.simibubi.create.api.behaviour.movement.MovementBehaviour.movementBehaviour;
 import static com.simibubi.create.api.contraption.storage.fluid.MountedFluidStorageType.mountedFluidStorage;
 import static com.simibubi.create.foundation.data.BlockStateGen.*;
+import static com.simibubi.create.foundation.data.CreateRegistrate.casingConnectivity;
+import static com.simibubi.create.foundation.data.CreateRegistrate.connectedTextures;
 import static com.simibubi.create.foundation.data.TagGen.axeOrPickaxe;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 import static io.github.cvrunmin.create_andertech.CreateAndertech.REGISTRATE;
@@ -725,13 +731,44 @@ public class AllBlocks {
             .build().register();
 
     public static final BlockEntry<CasingBlock> CRIMSCHIST_CASING = REGISTRATE.block("crimschist_casing", CasingBlock::new)
-            .properties(p -> p.mapColor(MapColor.WARPED_NYLIUM))
-            .transform(BuilderTransformers.casing(() -> CAAllSpriteShifts.CRIMSCHIST_CASING))
+            .initialProperties(SharedProperties::stone)
+            .properties(p -> p.mapColor(MapColor.WARPED_NYLIUM).sound(SoundType.WOOD))
+            .transform(axeOrPickaxe())
+            .blockstate((c, p) -> p.simpleBlock(c.get()))
+            .onRegister(connectedTextures(() -> new EncasedCTBehaviour(CAAllSpriteShifts.CRIMSCHIST_CASING)))
+            .onRegister(casingConnectivity((block, cc) -> cc.makeCasing(block, CAAllSpriteShifts.CRIMSCHIST_CASING)))
+            .tag(AllTags.AllBlockTags.CASING.tag)
+            .item()
+            .tag(AllTags.AllItemTags.CASING.tag)
+            .build()
             .register();
 
+
     public static final BlockEntry<CasingBlock> CHRONENDITE_CASING = REGISTRATE.block("chronendite_casing", CasingBlock::new)
-            .properties(p -> p.mapColor(MapColor.SAND))
-            .transform(BuilderTransformers.casing(() -> CAAllSpriteShifts.CHRONENDITE_CASING))
+            .initialProperties(SharedProperties::stone)
+            .properties(p -> p.mapColor(MapColor.SAND).sound(SoundType.WOOD))
+            .transform(axeOrPickaxe())
+            .blockstate((c, p) -> p.simpleBlock(c.get()))
+            .onRegister(connectedTextures(() -> new EncasedCTBehaviour(CAAllSpriteShifts.CHRONENDITE_CASING)))
+            .onRegister(casingConnectivity((block, cc) -> cc.makeCasing(block, CAAllSpriteShifts.CHRONENDITE_CASING)))
+            .tag(AllTags.AllBlockTags.CASING.tag)
+            .item()
+            .tag(AllTags.AllItemTags.CASING.tag)
+            .build()
+            .register();
+
+    public static final BlockEntry<CasingSlabBlock> CRIMSCHIST_CASING_SLAB = REGISTRATE.block("crimschist_casing_slab", CasingSlabBlock::new)
+            .initialProperties(SharedProperties::stone)
+            .properties(p -> p.mapColor(MapColor.WARPED_NYLIUM).sound(SoundType.WOOD))
+            .transform(axeOrPickaxe())
+            .loot(((lootTables, b) -> lootTables.add(b, lootTables.createSlabItemTable(b))))
+            .blockstate((c, p) -> p.slabBlock(c.get(), p.modLoc("block/crimschist_casing"), p.modLoc("block/crimschist_casing")))
+            .onRegister(connectedTextures(() -> new EncasedCTBehaviour(CAAllSpriteShifts.CRIMSCHIST_CASING)))
+            .onRegister(casingConnectivity((block, cc) -> cc.makeCasing(block, CAAllSpriteShifts.CRIMSCHIST_CASING)))
+            .tag(BlockTags.SLABS)
+            .item()
+            .tag(ItemTags.SLABS)
+            .build()
             .register();
 
     public static final BlockEntry<GirderEncasedCrimschistShaftBlock> METAL_GIRDER_ENCASED_CRIMSCHIST_SHAFT =

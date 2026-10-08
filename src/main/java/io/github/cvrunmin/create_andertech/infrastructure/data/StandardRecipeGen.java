@@ -53,5 +53,6 @@ public class StandardRecipeGen extends RecipeProvider {
                 .pattern("B")
                 .unlockedBy(getHasName(AllBlocks.INFUSION_VAT), has(AllBlocks.INFUSION_VAT))
                 .save(recipeOutput, ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "crimschist_fluid_tank_by_add_top"));
+        stonecutterResultFromBase(recipeOutput, RecipeCategory.BUILDING_BLOCKS, AllBlocks.CRIMSCHIST_CASING_SLAB, AllBlocks.CRIMSCHIST_CASING, 2);
     }
 }

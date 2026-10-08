@@ -1,5 +1,6 @@
 package io.github.cvrunmin.create_andertech.index;
 
+import com.simibubi.create.AllCreativeModeTabs;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
@@ -24,7 +25,7 @@ public class AllCreativeTabs {
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MAIN_TAB = REGISTER.register("main", () ->
         CreativeModeTab.builder()
                 .title(Component.translatable("itemGroup.create_andertech.main"))
-                .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
+                .withTabsBefore(CreativeModeTabs.SPAWN_EGGS, AllCreativeModeTabs.PALETTES_CREATIVE_TAB.getKey())
                 .icon(AllBlocks.CREATIVE_OC_MOTOR::asStack)
                 .displayItems(new MyDisplayitemGen(AllCreativeTabs.MAIN_TAB))
                 .build()
@@ -51,7 +52,8 @@ public class AllCreativeTabs {
                     AllBlocks.BRASS_ENCASED_CRIMSCHIST_COGWHEEL,
                     AllBlocks.ANDESITE_ENCASED_CRIMSCHIST_LARGE_COGWHEEL,
                     AllBlocks.BRASS_ENCASED_CRIMSCHIST_LARGE_COGWHEEL,
-                    AllBlocks.METAL_GIRDER_ENCASED_CRIMSCHIST_SHAFT
+                    AllBlocks.METAL_GIRDER_ENCASED_CRIMSCHIST_SHAFT,
+                    AllItems.INCOMPLETE_BLACKBOX_DIFFERENTIAL
             );
             for (ItemProviderEntry<? extends FeatureElement, ?> itemProviderEntry : simpleBlacklist) {
                 exclusions.add(itemProviderEntry.asItem());

@@ -25,6 +25,7 @@
   "block.create_andertech.creative_oc_motor": "Creative Overclocking Motor",
   "block.create_andertech.crimschist_blackbox_differential": "Crimschist Blackbox Differential",
   "block.create_andertech.crimschist_casing": "Crimschist Casing",
+  "block.create_andertech.crimschist_casing_slab": "Crimschist Casing Slab",
   "block.create_andertech.crimschist_clutch": "Crimschist Clutch",
   "block.create_andertech.crimschist_cogwheel": "Crimschist Cogwheel",
   "block.create_andertech.crimschist_fluid_tank": "Crimschist Fluid Tank",
@@ -57,6 +58,7 @@
   "create_andertech.infusion_vat.content_interaction_state.ingredient": "Ingredient Only",
   "create_andertech.infusion_vat.content_interaction_state.label": "Content Interaction",
   "create_andertech.infusion_vat.content_interaction_state.product": "Product Only",
+  "create_andertech.recipe.assembly.stirring": "Stir",
   "create_andertech.tooltip.differential.misconfigured": "Misconfigured Differential",
   "create_andertech.tooltip.differential.misconfigured.hint": "It appears that this %1$s has _too many_ outputs, or _no_ inputs.",
   "create_andertech.tooltip.noTank": "No Fluid Container",
@@ -73,6 +75,8 @@
   "item.create_andertech.crimschist_sheet": "Crimschist Sheet",
   "item.create_andertech.endopyrotic_cinder_paste": "Endopyrotic Cinder Paste",
   "item.create_andertech.forged_chronendite_orb": "Forged Chronendite Orb",
+  "item.create_andertech.incomplete_crimschist_blackbox_differential": "Incomplete Crimschist Blackbox Differential",
+  "item.create_andertech.misconfigured_crimschist_blackbox_differential": "Misconfigured Crimschist Blackbox Differential",
   "item.create_andertech.vertical_crimschist_gearbox": "Vertical Crimschist Gearbox",
   "itemGroup.create_andertech.main": "Create Andertech"
 }

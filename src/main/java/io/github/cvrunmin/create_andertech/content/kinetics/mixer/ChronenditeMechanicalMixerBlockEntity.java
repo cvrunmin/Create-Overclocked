@@ -17,6 +17,7 @@ import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTank
 import com.simibubi.create.foundation.item.SmartInventory;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import io.github.cvrunmin.create_andertech.foundation.IOverspeedKineticBE;
+import io.github.cvrunmin.create_andertech.index.CAAllRecipeTypes;
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.data.Couple;
 import net.createmod.catnip.math.VecHelper;
@@ -269,7 +270,7 @@ public class ChronenditeMechanicalMixerBlockEntity extends BasinOperatingBlockEn
                 && AllConfigs.server().recipes.allowShapelessInMixer.get() && r.getIngredients()
                 .size() > 1
                 && !MechanicalPressBlockEntity.canCompress(r)) && !AllRecipeTypes.shouldIgnoreInAutomation(recipe)
-                || r.getType() == AllRecipeTypes.MIXING.getType());
+                || r.getType() == AllRecipeTypes.MIXING.getType() || r.getType() == CAAllRecipeTypes.STIRRING.getType());
     }
 
     @Override

@@ -45,6 +45,8 @@ public class CADataGen {
             provider.add(CreateAndertech.MODID + ".differential.mode.out", "Output");
             provider.add(CreateAndertech.MODID + ".tooltip.differential.misconfigured", "Misconfigured Differential");
             provider.add(CreateAndertech.MODID + ".tooltip.differential.misconfigured.hint", "It appears that this %1$s has _too many_ outputs, or _no_ inputs.");
+
+            provider.add(CreateAndertech.MODID + ".recipe.assembly.stirring", "Stir");
         });
         REGISTRATE.addDataGenerator(ProviderType.BLOCKSTATE, AllExtraModels::genBlockStates);
     }
@@ -64,6 +66,7 @@ public class CADataGen {
         generator.addProvider(event.includeServer(), new CACuttingRecipeGen(output, lookupProvider));
         generator.addProvider(event.includeServer(), new CAMixingRecipeGen(output, lookupProvider));
         generator.addProvider(event.includeServer(), new CAInfusingRecipeGen(output, lookupProvider));
+        generator.addProvider(event.includeServer(), new CASequencedAssemblyRecipeGen(output, lookupProvider));
 
         generator.addProvider(event.includeClient(), new ParticleDescriptionProvider(output, event.getExistingFileHelper()) {
             @Override

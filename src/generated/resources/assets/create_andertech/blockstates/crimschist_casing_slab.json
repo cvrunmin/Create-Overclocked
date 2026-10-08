@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "create_andertech:block/crimschist_casing_slab"
+    },
+    "type=double": {
+      "model": "create_andertech:block/crimschist_casing"
+    },
+    "type=top": {
+      "model": "create_andertech:block/crimschist_casing_slab_top"
+    }
+  }
+}

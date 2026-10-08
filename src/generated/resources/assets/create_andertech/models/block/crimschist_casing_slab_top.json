@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "create_andertech:block/crimschist_casing",
+    "side": "create_andertech:block/crimschist_casing",
+    "top": "create_andertech:block/crimschist_casing"
+  }
+}

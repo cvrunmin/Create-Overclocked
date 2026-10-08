@@ -3,7 +3,7 @@
 	"credit": "Made with Blockbench",
 	"parent": "create:block/large_wheels",
 	"textures": {
-		"1": "block/stripped_warpped_stem_top",
+		"1": "block/stripped_warped_stem_top",
 		"4": "create_andertech:block/warped_large_cogwheel",
 		"particle": "create_andertech:block/crimschist_casing",
 		"casing": "create_andertech:block/crimschist_casing",
