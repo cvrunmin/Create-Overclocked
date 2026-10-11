@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-08T23:09:42.9271369	Registrate Provider for create_andertech [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
+// 1.21.1	2026-10-11T12:26:55.4297083	Registrate Provider for create_andertech [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
 98d26546200e4b2c0a00643fc9f027b49ef4594b assets/create_andertech/blockstates/andesite_encased_crimschist_cogwheel.json
 4dc0142d21221d69b52fb1acf47b46dc184a78a0 assets/create_andertech/blockstates/andesite_encased_crimschist_large_cogwheel.json
 4946d26000065d09b51752b6ad34d0050f829a0d assets/create_andertech/blockstates/andesite_encased_crimschist_shaft.json
@@ -33,6 +33,7 @@ a0a776bf02e5f5b84ceda1dca66ee5e821f826c1 assets/create_andertech/blockstates/cri
 909f45332d6688ba3f7c6ea147c8a926937f3a6f assets/create_andertech/blockstates/crimschist_gearshift.json
 c808263c80d12b95873c28baf46388f9d0822017 assets/create_andertech/blockstates/crimschist_infusion_vat.json
 a736e133ef198e680128c4980e908a1b7842271c assets/create_andertech/blockstates/crimschist_large_cogwheel.json
+a7262dc60cd58328c5c9f73467b1d30fa28fd754 assets/create_andertech/blockstates/crimschist_mechanical_harvester.json
 0cb45b22c5e561165822489aacddd3596c5366db assets/create_andertech/blockstates/crimschist_mechanical_pump.json
 c4ec6bd94d2a2a9df47e7c822f82f5a1b2105780 assets/create_andertech/blockstates/crimschist_shaft.json
 498ba62878589ca668cd60f91e99717c96f0012e assets/create_andertech/blockstates/crimson_nylium_transmuter.json
@@ -46,8 +47,8 @@ d0af03aeed1de0fcd54098868465452cc97a7513 assets/create_andertech/blockstates/spe
 3f828a5bc7b3c130e7db05842a7c326b2ae96064 assets/create_andertech/blockstates/untopped_crimson_nylium.json
 d0f5051f7f532dfec5b116d510af0c134a7dd9ff assets/create_andertech/blockstates/untopped_warped_nylium.json
 8d8a692a5a97c13613585a3fd857c8201ce91c7e assets/create_andertech/blockstates/warped_nylium_transmuter.json
-c8e55970bc4a6bcf9ac8905a3667cb47a46c2867 assets/create_andertech/lang/en_ud.json
-e8b9a80f8f4a3e1ed6512eb5a0adfdfc8e22a2fc assets/create_andertech/lang/en_us.json
+b4a80765c834d25e68de225c377f9564e85d0149 assets/create_andertech/lang/en_ud.json
+cdf11686f103fb027477e256230b098b5225c28d assets/create_andertech/lang/en_us.json
 7f3e4636d521a67eb621d5d27d6b175d455179f8 assets/create_andertech/models/block/andesite_encased_crimschist_cogwheel.json
 5a5a3aac31c44030880774b96cfecc40568abe75 assets/create_andertech/models/block/andesite_encased_crimschist_cogwheel_bottom.json
 82ce3bec0d6b5332b4f5007245ca2cdd8e28b9c9 assets/create_andertech/models/block/andesite_encased_crimschist_cogwheel_top.json
@@ -197,6 +198,7 @@ f4df7d8487e2a6f2b4ff4d9307576151a604fe4c assets/create_andertech/models/item/cri
 12fc0373fb29f20421f00e0e9bd693585a2843e6 assets/create_andertech/models/item/crimschist_gearshift.json
 3bd7522bc9a4c03d718a326e0d044f9dcf0540de assets/create_andertech/models/item/crimschist_infusion_vat.json
 a3f3160652ea26ab0468ed53b1f10cd85b7ee11a assets/create_andertech/models/item/crimschist_large_cogwheel.json
+9344c22a2a04ad2080036b6274006a4fedcf1595 assets/create_andertech/models/item/crimschist_mechanical_harvester.json
 aeef7f11fb562a35f4532226eb702219104e5900 assets/create_andertech/models/item/crimschist_mechanical_pump.json
 10816c251b6f561bc90fb58ae044b8c99d7c130f assets/create_andertech/models/item/crimschist_nugget.json
 62a788fe01aac872ce537b4d5a049f0c6783b8d8 assets/create_andertech/models/item/crimschist_shaft.json
@@ -221,7 +223,7 @@ b088448fc39abf60bf1fbebc7d1e6eccdab4546f data/create/tags/block/fan_transparent.
 b088448fc39abf60bf1fbebc7d1e6eccdab4546f data/create/tags/block/passive_boiler_heaters.json
 a9e346a21ec957ccc4e816289d8a32cc4942dcf9 data/create/tags/block/safe_nbt.json
 c99aca87cd7178631f00dc0cf5f6e397c5c32ab2 data/create/tags/item/casing.json
-203248959ded0f86836d548ca884b6fd49cb711a data/create/tags/item/contraption_controlled.json
+ad1dd2eb0884c17ca82346bdc62ce84754427959 data/create/tags/item/contraption_controlled.json
 31d699fcd559c01325a01ab0a0e8d3514adf86a3 data/create/tags/item/create_ingots.json
 791ad1c9d6c771b3400a8bc0e1154b2921c8d9ec data/create_andertech/loot_table/blocks/andesite_encased_crimschist_cogwheel.json
 d7ecd3b67971b558b9374ef0e89b826e76a2c2be data/create_andertech/loot_table/blocks/andesite_encased_crimschist_large_cogwheel.json
@@ -255,6 +257,7 @@ a2fc219774d56f0c037fcc8d5486d0ee4bc24387 data/create_andertech/loot_table/blocks
 db36c446ecf38b0f2b31fd72d55308341aca9a7b data/create_andertech/loot_table/blocks/crimschist_gearshift.json
 b04a03ee74e5a986678649d956bd83248ba791d9 data/create_andertech/loot_table/blocks/crimschist_infusion_vat.json
 99d9539d063863852836fbf897ccaebc0d592624 data/create_andertech/loot_table/blocks/crimschist_large_cogwheel.json
+3ff5ad619a51478d32bb83d699faf3c8a6977b59 data/create_andertech/loot_table/blocks/crimschist_mechanical_harvester.json
 f270f7e41d41ad6277666d895bb43e5949ce8c41 data/create_andertech/loot_table/blocks/crimschist_mechanical_pump.json
 bf58bf938887da9a94872b9f4ba115a6ea2d80fd data/create_andertech/loot_table/blocks/crimschist_shaft.json
 df21e61c0650e96181c3fdd5fca34725509dc5e1 data/create_andertech/loot_table/blocks/crimson_nylium_transmuter.json
@@ -274,8 +277,8 @@ c241f1442674c72f756ad6f3de77754f4ebb7b90 data/create_andertech/tags/block/explos
 74c64b8156875cf2e15ba43e0541d8b1266be171 data/c/tags/item/chronendite.json
 4274b48147ea3cd3d8749574c59a55cb3fb672bf data/c/tags/item/crimschist.json
 8cc56a53f1cae03993069205a682702947c66043 data/c/tags/item/nuggets.json
-02eecb41d97795d98fb4c7b65af92f5f36f36e78 data/minecraft/tags/block/mineable/axe.json
-61ac7bd14cef2edfb4f2db31fd3cd99c636dfd07 data/minecraft/tags/block/mineable/pickaxe.json
+5cc8a35dc790e4dbbaf31f85a3a0e61f8d698d9a data/minecraft/tags/block/mineable/axe.json
+39850a0c14c001a7af36a2b2805c7ca8bc2572f8 data/minecraft/tags/block/mineable/pickaxe.json
 373094012ce9b792710afd6f1c000b1c4d17a5aa data/minecraft/tags/block/mushroom_grow_block.json
 373094012ce9b792710afd6f1c000b1c4d17a5aa data/minecraft/tags/block/nylium.json
 fa37438653c59789bd76c0d1e270d6249ad7d5ab data/minecraft/tags/block/slabs.json

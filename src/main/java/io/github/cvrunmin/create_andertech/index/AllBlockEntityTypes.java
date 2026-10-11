@@ -6,6 +6,8 @@ import com.simibubi.create.content.kinetics.mechanicalArm.ArmRenderer;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmVisual;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import dev.engine_room.flywheel.lib.model.Models;
+import io.github.cvrunmin.create_andertech.content.contraptions.actors.harvester.CrimschistHarvesterBlockEntity;
+import io.github.cvrunmin.create_andertech.content.contraptions.actors.harvester.CrimschistHarvesterRenderer;
 import io.github.cvrunmin.create_andertech.content.contraptions.bearing.ChronenditeMechanicalBearingBlockEntity;
 import io.github.cvrunmin.create_andertech.content.contraptions.bearing.OCBearingRenderer;
 import io.github.cvrunmin.create_andertech.content.fluids.infusion_vat.InfusionVatBlockEntity;
@@ -259,6 +261,12 @@ public class AllBlockEntityTypes {
             .visual(() -> ChronendicBlazeBurnerVisual::new, false)
             .validBlock(AllBlocks.CHRONENDIC_BLAZE_BURNER)
             .renderer(() -> ChronendicBlazeBurnerRenderer::new)
+            .register();
+
+    public static final BlockEntityEntry<CrimschistHarvesterBlockEntity> CRIMSCHIST_HARVESTER = REGISTRATE
+            .blockEntity("crimschist_harvester", CrimschistHarvesterBlockEntity::new)
+            .validBlock(AllBlocks.CRIMSCHIST_HARVESTER)
+            .renderer(() -> CrimschistHarvesterRenderer::new)
             .register();
 
     public static void register(){}

@@ -1,0 +1,198 @@
+{
+	"format_version": "1.9.0",
+	"render_type": "minecraft:cutout",
+	"textures": {
+		"harvester": "create:block/harvester",
+		"anvil": "anvil"
+	},
+	"elements": [
+		{
+			"name": "Wheel",
+			"from": [2, 1, 2],
+			"to": [14, 1, 14],
+			"rotation": {"angle": -22.5, "axis": "y", "origin": [8, 6, 8]},
+			"faces": {
+				"up": {"uv": [0, 0, 12, 12], "rotation": 270, "texture": "#harvester"},
+				"down": {"uv": [0, 0, 12, 12], "rotation": 270, "texture": "#harvester"}
+			}
+		},
+		{
+			"name": "Wheel",
+			"from": [2, 11, 2],
+			"to": [14, 11, 14],
+			"rotation": {"angle": -22.5, "axis": "y", "origin": [8, 2, 8]},
+			"faces": {
+				"up": {"uv": [0, 0, 12, 12], "rotation": 270, "texture": "#harvester"},
+				"down": {"uv": [0, 0, 12, 12], "rotation": 270, "texture": "#harvester"}
+			}
+		},
+		{
+			"name": "Trim",
+			"from": [5, 0, 12],
+			"to": [6, 12, 14],
+			"rotation": {"angle": 0, "axis": "z", "origin": [8, 6, 9]},
+			"faces": {
+				"north": {"uv": [0, 9, 12, 10], "rotation": 90, "texture": "#anvil"},
+				"east": {"uv": [0, 0, 12, 2], "rotation": 270, "texture": "#anvil"},
+				"south": {"uv": [0, 0, 12, 1], "rotation": 270, "texture": "#anvil"},
+				"west": {"uv": [0, 0, 12, 2], "rotation": 270, "texture": "#anvil"},
+				"up": {"uv": [0, 0, 2, 1], "rotation": 270, "texture": "#anvil"},
+				"down": {"uv": [0, 0, 2, 1], "rotation": 270, "texture": "#anvil"}
+			}
+		},
+		{
+			"name": "Blade",
+			"from": [6, 0, 14],
+			"to": [8, 6, 14],
+			"rotation": {"angle": 0, "axis": "z", "origin": [8, 6, 9]},
+			"faces": {
+				"north": {"uv": [0, 12, 6, 14], "rotation": 270, "texture": "#harvester"},
+				"south": {"uv": [6, 12, 0, 14], "rotation": 90, "texture": "#harvester"}
+			}
+		},
+		{
+			"name": "Blade",
+			"from": [6, 6, 14],
+			"to": [8, 12, 14],
+			"rotation": {"angle": 0, "axis": "z", "origin": [8, 12, 9]},
+			"faces": {
+				"north": {"uv": [10, 12, 16, 14], "rotation": 270, "texture": "#harvester"},
+				"south": {"uv": [16, 12, 10, 14], "rotation": 90, "texture": "#harvester"}
+			}
+		},
+		{
+			"name": "Blade",
+			"from": [8, 0, 2],
+			"to": [10, 6, 2],
+			"rotation": {"angle": 0, "axis": "z", "origin": [8, 6, 9]},
+			"faces": {
+				"north": {"uv": [10, 12, 16, 14], "rotation": 90, "texture": "#harvester"},
+				"south": {"uv": [16, 12, 10, 14], "rotation": 270, "texture": "#harvester"}
+			}
+		},
+		{
+			"name": "Blade",
+			"from": [8, 6, 2],
+			"to": [10, 12, 2],
+			"rotation": {"angle": 0, "axis": "z", "origin": [8, 6, 9]},
+			"faces": {
+				"north": {"uv": [0, 12, 6, 14], "rotation": 90, "texture": "#harvester"},
+				"south": {"uv": [6, 12, 0, 14], "rotation": 270, "texture": "#harvester"}
+			}
+		},
+		{
+			"name": "Trim",
+			"from": [10, 0, 2],
+			"to": [11, 12, 4],
+			"rotation": {"angle": 0, "axis": "z", "origin": [8, 6, 9]},
+			"faces": {
+				"north": {"uv": [0, 0, 12, 1], "rotation": 90, "texture": "#anvil"},
+				"east": {"uv": [0, 0, 12, 2], "rotation": 270, "texture": "#anvil"},
+				"south": {"uv": [0, 0, 12, 1], "rotation": 270, "texture": "#anvil"},
+				"west": {"uv": [0, 0, 12, 2], "rotation": 270, "texture": "#anvil"},
+				"up": {"uv": [0, 0, 2, 1], "rotation": 270, "texture": "#anvil"},
+				"down": {"uv": [0, 0, 2, 1], "rotation": 270, "texture": "#anvil"}
+			}
+		},
+		{
+			"name": "Trim",
+			"from": [2, 0, 5],
+			"to": [4, 12, 6],
+			"rotation": {"angle": 0, "axis": "z", "origin": [8, 6, 9]},
+			"faces": {
+				"north": {"uv": [0, 0, 12, 2], "rotation": 90, "texture": "#anvil"},
+				"east": {"uv": [0, 0, 12, 1], "rotation": 270, "texture": "#anvil"},
+				"south": {"uv": [0, 0, 12, 2], "rotation": 270, "texture": "#anvil"},
+				"west": {"uv": [0, 0, 12, 1], "rotation": 270, "texture": "#anvil"},
+				"up": {"uv": [0, 0, 1, 2], "rotation": 270, "texture": "#anvil"},
+				"down": {"uv": [0, 0, 1, 2], "rotation": 270, "texture": "#anvil"}
+			}
+		},
+		{
+			"name": "Blade",
+			"from": [2, 0, 6],
+			"to": [2, 6, 8],
+			"rotation": {"angle": 0, "axis": "z", "origin": [8, 6, 9]},
+			"faces": {
+				"east": {"uv": [16, 12, 10, 14], "rotation": 270, "texture": "#harvester"},
+				"west": {"uv": [10, 12, 16, 14], "rotation": 90, "texture": "#harvester"}
+			}
+		},
+		{
+			"name": "Blade",
+			"from": [2, 6, 6],
+			"to": [2, 12, 8],
+			"rotation": {"angle": 0, "axis": "z", "origin": [8, 6, 9]},
+			"faces": {
+				"east": {"uv": [6, 12, 0, 14], "rotation": 270, "texture": "#harvester"},
+				"west": {"uv": [0, 12, 6, 14], "rotation": 90, "texture": "#harvester"}
+			}
+		},
+		{
+			"name": "Trim",
+			"from": [12, 0, 10],
+			"to": [14, 12, 11],
+			"rotation": {"angle": 0, "axis": "z", "origin": [8, 6, 9]},
+			"faces": {
+				"north": {"uv": [0, 0, 12, 2], "rotation": 90, "texture": "#anvil"},
+				"east": {"uv": [0, 0, 12, 1], "rotation": 270, "texture": "#anvil"},
+				"south": {"uv": [0, 0, 12, 2], "rotation": 270, "texture": "#anvil"},
+				"west": {"uv": [0, 0, 12, 1], "rotation": 270, "texture": "#anvil"},
+				"up": {"uv": [0, 0, 1, 2], "rotation": 270, "texture": "#anvil"},
+				"down": {"uv": [0, 0, 1, 2], "rotation": 270, "texture": "#anvil"}
+			}
+		},
+		{
+			"name": "Blade",
+			"from": [14, 0, 8],
+			"to": [14, 6, 10],
+			"rotation": {"angle": 0, "axis": "z", "origin": [8, 6, 9]},
+			"faces": {
+				"east": {"uv": [6, 12, 0, 14], "rotation": 90, "texture": "#harvester"},
+				"west": {"uv": [0, 12, 6, 14], "rotation": 270, "texture": "#harvester"}
+			}
+		},
+		{
+			"name": "Blade",
+			"from": [14, 6, 8],
+			"to": [14, 12, 10],
+			"rotation": {"angle": 0, "axis": "z", "origin": [8, 6, 9]},
+			"faces": {
+				"east": {"uv": [16, 12, 10, 14], "rotation": 90, "texture": "#harvester"},
+				"west": {"uv": [10, 12, 16, 14], "rotation": 270, "texture": "#harvester"}
+			}
+		}
+	],
+	"groups": [
+		0,
+		1,
+		{
+			"name": "Blade",
+			"origin": [8, 6, 9],
+			"scope": 0,
+			"color": 0,
+			"children": [2, 3, 4]
+		},
+		{
+			"name": "Trim",
+			"origin": [8, 6, 9],
+			"scope": 0,
+			"color": 0,
+			"children": [5, 6, 7]
+		},
+		{
+			"name": "Blade",
+			"origin": [8, 6, 9],
+			"scope": 0,
+			"color": 0,
+			"children": [8, 9, 10]
+		},
+		{
+			"name": "Blade",
+			"origin": [8, 6, 9],
+			"scope": 0,
+			"color": 0,
+			"children": [11, 12, 13]
+		}
+	]
+}

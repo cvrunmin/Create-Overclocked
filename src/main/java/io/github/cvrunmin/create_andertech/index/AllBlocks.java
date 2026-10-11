@@ -28,6 +28,8 @@ import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import io.github.cvrunmin.create_andertech.Constants;
 import io.github.cvrunmin.create_andertech.CreateAndertech;
+import io.github.cvrunmin.create_andertech.content.contraptions.actors.harvester.CrimschistHarvesterBlock;
+import io.github.cvrunmin.create_andertech.content.contraptions.actors.harvester.CrimschistHarvesterMovementBehaviour;
 import io.github.cvrunmin.create_andertech.content.contraptions.bearing.ChronenditeMechanicalBearingBlock;
 import io.github.cvrunmin.create_andertech.content.decoration.CasingSlabBlock;
 import io.github.cvrunmin.create_andertech.content.decoration.GirderEncasedCrimschistShaftBlock;
@@ -729,6 +731,19 @@ public class AllBlocks {
             .item()
             .model(AssetLookup.customBlockItemModel("chronendic_blaze_burner", "block_with_blaze"))
             .build().register();
+
+    public static final BlockEntry<CrimschistHarvesterBlock> CRIMSCHIST_HARVESTER = REGISTRATE.block("crimschist_mechanical_harvester", CrimschistHarvesterBlock::new)
+            .initialProperties(SharedProperties::stone)
+            .properties(p -> p.mapColor(MapColor.WARPED_NYLIUM)
+                    .forceSolidOn())
+            .transform(axeOrPickaxe())
+            .onRegister(movementBehaviour(new CrimschistHarvesterMovementBehaviour()))
+            .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.partialBaseModel(c, p)))
+            .addLayer(() -> RenderType::cutoutMipped)
+            .item()
+            .tag(AllTags.AllItemTags.CONTRAPTION_CONTROLLED.tag)
+            .transform(ModelGen.customItemModel())
+            .register();
 
     public static final BlockEntry<CasingBlock> CRIMSCHIST_CASING = REGISTRATE.block("crimschist_casing", CasingBlock::new)
             .initialProperties(SharedProperties::stone)

@@ -2,6 +2,7 @@
   "values": [
     "create_andertech:chronendite_mechanical_drill",
     "create_andertech:chronendite_mechanical_saw",
-    "create_andertech:chronendite_deployer"
+    "create_andertech:chronendite_deployer",
+    "create_andertech:crimschist_mechanical_harvester"
   ]
 }

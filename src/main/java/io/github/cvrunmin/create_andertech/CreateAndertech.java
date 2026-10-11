@@ -2,14 +2,24 @@ package io.github.cvrunmin.create_andertech;
 
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.api.boiler.BoilerHeater;
+import com.simibubi.create.api.connectivity.ConnectivityHandler;
+import com.simibubi.create.api.contraption.BlockMovementChecks;
 import com.simibubi.create.content.fluids.tank.BoilerHeaters;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.data.CreateRegistrate;
+import io.github.cvrunmin.create_andertech.content.contraptions.bearing.ChronenditeMechanicalBearingBlock;
+import io.github.cvrunmin.create_andertech.content.contraptions.bearing.ChronenditeMechanicalBearingBlockEntity;
+import io.github.cvrunmin.create_andertech.content.fluids.infusion_vat.InfusionVatConnectivityHandler;
 import io.github.cvrunmin.create_andertech.content.processing.burner.ChronendicBlazeBurnerBlock;
 import io.github.cvrunmin.create_andertech.index.*;
 import io.github.cvrunmin.create_andertech.infrastructure.data.CADataGen;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
@@ -65,6 +75,41 @@ public class CreateAndertech {
             }
             return BoilerHeater.PASSIVE_HEAT;
         }));
+        BlockMovementChecks.registerMovementAllowedCheck((state, world, pos) -> {
+            if(state.getBlock() instanceof ChronenditeMechanicalBearingBlock){
+                var be = world.getBlockEntity(pos);
+                if(be instanceof ChronenditeMechanicalBearingBlockEntity bearing){
+                    return BlockMovementChecks.CheckResult.of(!bearing.isRunning());
+                }
+            }
+            return BlockMovementChecks.CheckResult.PASS;
+        });
+        BlockMovementChecks.registerAttachedCheck((state, world, pos, direction) -> {
+            if(AllBlocks.CRIMSCHIST_HARVESTER.has(state)){
+                return BlockMovementChecks.CheckResult.of(direction == Direction.UP);
+            }
+            if (AllBlocks.CRIMSCHIST_FLUID_TANK.has(state)) {
+                return BlockMovementChecks.CheckResult.of(ConnectivityHandler.isConnected(world, pos, pos.relative(direction)));
+            } else if (AllBlocks.INFUSION_VAT.has(state)) {
+                return BlockMovementChecks.CheckResult.of(InfusionVatConnectivityHandler.isConnected(world, pos, pos.relative(direction)));
+            }
+            return BlockMovementChecks.CheckResult.PASS;
+        });
+        BlockMovementChecks.registerNotSupportiveCheck((state, direction) -> {
+            if(AllBlocks.CHRONENDITE_MECHANICAL_DRILL.has(state)){
+                return BlockMovementChecks.CheckResult.of(state.getValue(BlockStateProperties.FACING) == direction);
+            }
+            if(AllBlocks.CHRONENDITE_MECHANICAL_BEARING.has(state)){
+                return BlockMovementChecks.CheckResult.of(state.getValue(BlockStateProperties.FACING) == direction);
+            }
+            if(AllBlocks.CHRONENDITE_MECHANICAL_SAW.has(state)){
+                return BlockMovementChecks.CheckResult.of(state.getValue(BlockStateProperties.FACING) == direction);
+            }
+            if(AllBlocks.CRIMSCHIST_HARVESTER.has(state)){
+                return BlockMovementChecks.CheckResult.of(direction == Direction.DOWN);
+            }
+            return BlockMovementChecks.CheckResult.PASS;
+        });
     }
 
     @Mod(value = CreateAndertech.MODID, dist = Dist.CLIENT)

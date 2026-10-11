@@ -16,6 +16,7 @@ public class CAAllPartialModels {
     public static final PartialModel CHRONENDITE_DRILL_HEAD = block("chronendite_mechanical_drill/head");
     public static final PartialModel CHRONENDITE_CRUSHING_WHEEL = block("chronendite_crushing_wheel/block");
     public static final PartialModel CHRONENDITE_SPEED_CONTROLLER_BRACKET = block("chronendite_rotation_speed_controller/bracket");
+    public static final PartialModel CRIMSCHIST_HARVESTER_BLADE = block("crimschist_mechanical_harvester/blade");
 
     public static final PartialModel
             BLAZE_INERT = block("chronendic_blaze_burner/blaze/inert"), BLAZE_SUPER_ACTIVE = block("chronendic_blaze_burner/blaze/super_active"),
