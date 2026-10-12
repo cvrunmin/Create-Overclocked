@@ -5,7 +5,7 @@
 		"0": "create_andertech:block/crimschist_casing_short",
 		"1": "create_andertech:block/crimschist_casing",
 		"2": "create:block/harvester",
-		"3": "anvil",
+		"3": "block/anvil",
 		"particle": "create_andertech:block/crimschist_casing_short"
 	},
 	"elements": [

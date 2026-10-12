@@ -18,10 +18,12 @@ public class CrimschistHarvesterActorVisual extends ActorVisual {
     protected TransformedInstance harvester;
     private double rotation;
     private double previousRotation;
+    private Direction attachedFace;
 
     public CrimschistHarvesterActorVisual(VisualizationContext visualizationContext, BlockAndTintGetter world, MovementContext context) {
         super(visualizationContext, world, context);
         BlockState state = context.state;
+        attachedFace = state.getValue(CrimschistHarvesterBlock.ATTACHED_FACE);
         harvester = instancerProvider.instancer(InstanceTypes.TRANSFORMED, Models.partial(CAAllPartialModels.CRIMSCHIST_HARVESTER_BLADE))
                 .createInstance();
         harvester.light(localBlockLight(), 0);
@@ -34,7 +36,7 @@ public class CrimschistHarvesterActorVisual extends ActorVisual {
         previousRotation = rotation;
 
         if (context.contraption.stalled || context.disabled
-                || VecHelper.isVecPointingTowards(context.relativeMotion, Direction.UP))
+                || VecHelper.isVecPointingTowards(context.relativeMotion, attachedFace))
             return;
 
         double arcLength = context.motion.length();
@@ -53,6 +55,7 @@ public class CrimschistHarvesterActorVisual extends ActorVisual {
     @Override
     public void beginFrame() {
         harvester.setIdentityTransform()
+                .scale(1, attachedFace == Direction.DOWN ? -1 : 1, 1)
                 .translate(context.localPos)
                 .rotateYCenteredDegrees((float) getRotation())
                 .setChanged();

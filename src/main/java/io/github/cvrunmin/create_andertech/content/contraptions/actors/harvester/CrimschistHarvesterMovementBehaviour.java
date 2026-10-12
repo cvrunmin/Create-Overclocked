@@ -14,6 +14,7 @@ import com.simibubi.create.foundation.virtualWorld.VirtualRenderWorld;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.api.visualization.VisualizationManager;
+import io.github.cvrunmin.create_andertech.api.CrimschistHarvesterBehavioursAPI;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
@@ -35,13 +36,15 @@ import org.jetbrains.annotations.Nullable;
 public class CrimschistHarvesterMovementBehaviour implements MovementBehaviour {
     @Override
     public boolean isActive(MovementContext context) {
-        return MovementBehaviour.super.isActive(context) && !VecHelper.isVecPointingTowards(context.relativeMotion, Direction.UP);
+        Direction attachedFace = context.state.getValue(CrimschistHarvesterBlock.ATTACHED_FACE);
+        return MovementBehaviour.super.isActive(context) && !VecHelper.isVecPointingTowards(context.relativeMotion, attachedFace);
     }
 
     @Override
     public Vec3 getActiveAreaOffset(MovementContext context) {
+        Direction attachedFace = context.state.getValue(CrimschistHarvesterBlock.ATTACHED_FACE);
         Direction nearest = Direction.getNearest(context.relativeMotion.normalize());
-        if(nearest == Direction.UP) return Vec3.ZERO;
+        if(nearest == attachedFace) return Vec3.ZERO;
         return Vec3.atLowerCornerOf(nearest.getNormal()).scale(0.45);
     }
 
@@ -54,152 +57,7 @@ public class CrimschistHarvesterMovementBehaviour implements MovementBehaviour {
         BlockState stateVisited = world.getBlockState(pos);
         if (stateVisited.isAir() || AllTags.AllBlockTags.NON_HARVESTABLE.matches(stateVisited))
             return;
-        boolean notCropButCuttable = false;
-
-        if (!isValidCrop(world, pos, stateVisited)) {
-            if (isValidOther(world, pos, stateVisited))
-                notCropButCuttable = true;
-            else
-                return;
-        }
-
-        ItemStack item = ItemStack.EMPTY;
-        float effectChance = 1;
-
-        if (stateVisited.is(BlockTags.LEAVES)) {
-            item = new ItemStack(Items.SHEARS);
-            effectChance = .45f;
-        }
-
-        MutableBoolean seedSubtracted = new MutableBoolean(notCropButCuttable);
-        BlockState state = stateVisited;
-        BlockHelper.destroyBlockAs(world, pos, null, item, effectChance, stack -> {
-            if (AllConfigs.server().kinetics.harvesterReplants.get() && !seedSubtracted.getValue()
-                    && ItemHelper.sameItem(stack, new ItemStack(state.getBlock()))) {
-                stack.shrink(1);
-                seedSubtracted.setTrue();
-            }
-            collectOrDropItem(context, stack);
-        });
-
-        BlockState cutCrop = cutCrop(world, pos, stateVisited);
-        world.setBlockAndUpdate(pos, cutCrop.canSurvive(world, pos) ? cutCrop : Blocks.AIR.defaultBlockState());
-    }
-
-    public boolean isValidCrop(Level world, BlockPos pos, BlockState state) {
-        boolean harvestPartial = AllConfigs.server().kinetics.harvestPartiallyGrown.get();
-        boolean replant = AllConfigs.server().kinetics.harvesterReplants.get();
-
-        if (state.getBlock() instanceof CropBlock crop) {
-            if (harvestPartial)
-                return state != crop.getStateForAge(0) || !replant;
-            return crop.isMaxAge(state);
-        }
-
-        if (state.getCollisionShape(world, pos)
-                .isEmpty() || state.getBlock() instanceof CocoaBlock) {
-            for (Property<?> property : state.getProperties()) {
-                if (!(property instanceof IntegerProperty ageProperty))
-                    continue;
-                if (!property.getName()
-                        .equals(BlockStateProperties.AGE_1.getName()))
-                    continue;
-                int age = state.getValue(ageProperty)
-                        .intValue();
-                if (state.getBlock() instanceof SweetBerryBushBlock && age <= 1 && replant)
-                    continue;
-                if (age == 0 && replant || !harvestPartial && (ageProperty.getPossibleValues()
-                        .size() - 1 != age))
-                    continue;
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public boolean isValidOther(Level world, BlockPos pos, BlockState state) {
-        if (state.getBlock() instanceof CropBlock)
-            return false;
-        if (state.getBlock() instanceof SugarCaneBlock)
-            return true;
-        if (state.is(BlockTags.LEAVES))
-            return true;
-        if (state.getBlock() instanceof CocoaBlock)
-            return state.getValue(CocoaBlock.AGE) == CocoaBlock.MAX_AGE;
-
-        if (state.getCollisionShape(world, pos)
-                .isEmpty()) {
-            if (state.getBlock() instanceof GrowingPlantBlock)
-                return true;
-
-            for (Property<?> property : state.getProperties()) {
-                if (!(property instanceof IntegerProperty))
-                    continue;
-                if (!property.getName()
-                        .equals(BlockStateProperties.AGE_1.getName()))
-                    continue;
-                return false;
-            }
-
-            if (state.getBlock() instanceof MushroomBlock && Mods.FARMERSDELIGHT.isLoaded()) {
-                return FarmersDelightCompat.shouldHarvestMushroom(world, pos, state);
-            }
-
-            // TODO: 1.21.5-rc1+ change to VegetationBlock (https://github.com/neoforged/NeoForge/commit/9f6edae1894ad249a8719c4e1f14beda0fdedc72)
-            if (state.getBlock() instanceof BushBlock)
-                return true;
-            if (state.getBlock() instanceof SpecialPlantable)
-                return true;
-        }
-
-        return false;
-    }
-
-    private BlockState cutCrop(Level world, BlockPos pos, BlockState state) {
-        if (!AllConfigs.server().kinetics.harvesterReplants.get()) {
-            if (state.getFluidState()
-                    .isEmpty())
-                return Blocks.AIR.defaultBlockState();
-            return state.getFluidState()
-                    .createLegacyBlock();
-        }
-
-        Block block = state.getBlock();
-        if (block instanceof CropBlock crop) {
-            BlockState newState = crop.getStateForAge(0);
-            if (!newState.is(block))
-                return newState;
-            IntegerProperty ageProperty = ((CropBlockAccessor) crop).create$callGetAgeProperty();
-            return state.setValue(ageProperty, 0);
-        }
-        if (block == Blocks.SWEET_BERRY_BUSH) {
-            return state.setValue(BlockStateProperties.AGE_3, Integer.valueOf(1));
-        }
-        if (AllTags.AllBlockTags.SUGAR_CANE_VARIANTS.matches(block) || block instanceof GrowingPlantBlock) {
-            if (state.getFluidState()
-                    .isEmpty())
-                return Blocks.AIR.defaultBlockState();
-            return state.getFluidState()
-                    .createLegacyBlock();
-        }
-        if (state.getCollisionShape(world, pos)
-                .isEmpty() || block instanceof CocoaBlock) {
-            for (Property<?> property : state.getProperties()) {
-                if (!(property instanceof IntegerProperty))
-                    continue;
-                if (!property.getName()
-                        .equals(BlockStateProperties.AGE_1.getName()))
-                    continue;
-                return state.setValue((IntegerProperty) property, Integer.valueOf(0));
-            }
-        }
-
-        if (state.getFluidState()
-                .isEmpty())
-            return Blocks.AIR.defaultBlockState();
-        return state.getFluidState()
-                .createLegacyBlock();
+        CrimschistHarvesterBehavioursAPI.tryHarvest(world, pos, stateVisited, CrimschistHarvesterBehavioursAPI.movementBehaviourContext(this, context));
     }
 
     @Override

@@ -1,6 +1,9 @@
 {
   "variants": {
-    "": {
+    "vertical_direction=down": {
+      "model": "create_andertech:block/crimschist_mechanical_harvester/block_up"
+    },
+    "vertical_direction=up": {
       "model": "create_andertech:block/crimschist_mechanical_harvester/block"
     }
   }

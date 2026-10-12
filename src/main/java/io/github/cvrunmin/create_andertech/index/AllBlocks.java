@@ -76,6 +76,7 @@ import io.github.cvrunmin.create_andertech.foundation.CullableCTModel;
 import io.github.cvrunmin.create_andertech.foundation.VariousBuilders;
 import net.createmod.catnip.data.Couple;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -738,7 +739,14 @@ public class AllBlocks {
                     .forceSolidOn())
             .transform(axeOrPickaxe())
             .onRegister(movementBehaviour(new CrimschistHarvesterMovementBehaviour()))
-            .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.partialBaseModel(c, p)))
+            .blockstate((c, p) ->
+                    p.getVariantBuilder(c.getEntry()).partialState()
+                            .with(CrimschistHarvesterBlock.ATTACHED_FACE, Direction.UP)
+                                    .setModels(new ConfiguredModel(AssetLookup.partialBaseModel(c, p)))
+                            .partialState()
+                            .with(CrimschistHarvesterBlock.ATTACHED_FACE, Direction.DOWN)
+                            .setModels(new ConfiguredModel(AssetLookup.partialBaseModel(c, p, "up")))
+            )
             .addLayer(() -> RenderType::cutoutMipped)
             .item()
             .tag(AllTags.AllItemTags.CONTRAPTION_CONTROLLED.tag)

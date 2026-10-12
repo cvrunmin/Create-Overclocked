@@ -31,31 +31,35 @@ public class CrimschistHarvesterRenderer extends SafeBlockEntityRenderer<Crimsch
     protected void renderSafe(CrimschistHarvesterBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource bufferSource, int light, int overlay) {
         BlockState blockState = be.getBlockState();
         SuperByteBuffer superBuffer = CachedBuffers.partial(CAAllPartialModels.CRIMSCHIST_HARVESTER_BLADE, blockState);
-        transform(be.getLevel(), superBuffer, be.getAnimatedSpeed());
+        var attachedFace = blockState.getValue(CrimschistHarvesterBlock.ATTACHED_FACE);
+        transform(be.getLevel(), attachedFace, superBuffer, be.getAnimatedSpeed());
         superBuffer.light(light)
                 .renderInto(ms, bufferSource.getBuffer(RenderType.cutoutMipped()));
     }
 
-    public static void transform(Level world, SuperByteBuffer superBuffer, float speed) {
+    public static void transform(Level world, Direction attachedFace, SuperByteBuffer superBuffer, float speed) {
         float time = AnimationTickHolder.getRenderTime(world) / 20;
         float angle = (time * speed) % 360;
 
+        if(attachedFace == Direction.DOWN){
+            superBuffer = superBuffer.center().scale(1, -1, 1).uncenter();
+        }
         superBuffer.rotate(AngleHelper.rad(angle), Direction.UP);
     }
 
     public static void renderInContraption(MovementContext context, VirtualRenderWorld renderWorld,
                                            ContraptionMatrices matrices, MultiBufferSource buffers) {
         BlockState blockState = context.state;
-        Direction facing = blockState.getValue(HORIZONTAL_FACING);
+        Direction attachedFace = blockState.getValue(CrimschistHarvesterBlock.ATTACHED_FACE);
         SuperByteBuffer superBuffer = CachedBuffers.partial(CAAllPartialModels.CRIMSCHIST_HARVESTER_BLADE, blockState);
-        float speed = !VecHelper.isVecPointingTowards(context.relativeMotion, Direction.UP)
+        float speed = !VecHelper.isVecPointingTowards(context.relativeMotion, attachedFace)
                 ? context.getAnimationSpeed()
                 : 0;
         if (context.contraption.stalled)
             speed = 0;
 
         superBuffer.transform(matrices.getModel());
-        transform(context.world, superBuffer, speed);
+        transform(context.world, attachedFace, superBuffer, speed);
 
         superBuffer.light(LevelRenderer.getLightColor(renderWorld, context.localPos))
                 .useLevelLight(context.world, matrices.getWorld())

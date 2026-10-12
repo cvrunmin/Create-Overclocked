@@ -17,6 +17,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -25,16 +27,19 @@ import org.jetbrains.annotations.Nullable;
 
 public class CrimschistHarvesterBlock extends Block implements IWrenchable, ProperWaterloggedBlock, IBE<CrimschistHarvesterBlockEntity> {
 
-    public static final VoxelShape SHAPE = box(2, 13, 2, 14, 16, 14);
+    public static final DirectionProperty ATTACHED_FACE = BlockStateProperties.VERTICAL_DIRECTION;
+
+    public static final VoxelShape UP_SHAPE = box(2, 13, 2, 14, 16, 14);
+    public static final VoxelShape DOWN_SHAPE = box(2, 0, 2, 14, 3, 14);
 
     public CrimschistHarvesterBlock(Properties properties) {
         super(properties);
-        registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
+        registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false).setValue(ATTACHED_FACE, Direction.UP));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(WATERLOGGED);
+        builder.add(WATERLOGGED, ATTACHED_FACE);
         super.createBlockStateDefinition(builder);
     }
 
@@ -45,18 +50,36 @@ public class CrimschistHarvesterBlock extends Block implements IWrenchable, Prop
 
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return SHAPE;
+        return state.getValue(ATTACHED_FACE) == Direction.UP ? UP_SHAPE : DOWN_SHAPE;
     }
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
-        BlockPos offset = pos.above();
-        return BlockHelper.hasBlockSolidSide(worldIn.getBlockState(offset), worldIn, offset, Direction.DOWN);
+        if(state.getValue(ATTACHED_FACE) == Direction.UP){
+            BlockPos offset = pos.above();
+            return BlockHelper.hasBlockSolidSide(worldIn.getBlockState(offset), worldIn, offset, Direction.DOWN);
+        }
+        BlockPos offset = pos.below();
+        return BlockHelper.hasBlockSolidSide(worldIn.getBlockState(offset), worldIn, offset, Direction.UP);
     }
 
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
-        return withWater(defaultBlockState(), context);
+        var state = defaultBlockState();
+        if(context.getClickedFace() == Direction.UP){
+            state = state.setValue(ATTACHED_FACE, Direction.DOWN);
+        } else if (context.getClickedFace() == Direction.DOWN) {
+            state = state.setValue(ATTACHED_FACE, Direction.UP);
+        } else {
+            var level = context.getLevel();
+            var pos = context.getClickedPos().relative(context.getClickedFace());
+            if(BlockHelper.hasBlockSolidSide(level.getBlockState(pos.above()), level, pos.above(), Direction.DOWN)){
+                state = state.setValue(ATTACHED_FACE, Direction.UP);
+            }else if(BlockHelper.hasBlockSolidSide(level.getBlockState(pos.below()), level, pos.below(), Direction.UP)){
+                state = state.setValue(ATTACHED_FACE, Direction.DOWN);
+            }
+        }
+        return withWater(state, context);
     }
 
     @Override
