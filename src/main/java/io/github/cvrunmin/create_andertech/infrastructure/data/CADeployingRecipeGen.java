@@ -47,6 +47,26 @@ public class CADeployingRecipeGen extends DeployingRecipeGen {
             b.require(com.simibubi.create.AllBlocks.MECHANICAL_BEARING)
                     .require(AllBlocks.CHRONENDITE_CASING)
                     .output(AllBlocks.CHRONENDITE_MECHANICAL_BEARING).output(com.simibubi.create.AllBlocks.ANDESITE_CASING));
+    GeneratedRecipe CHAIN_DRIVE_UPGRADE = create("upgrade_encased_chain_drive", b ->
+            b.require(com.simibubi.create.AllBlocks.ENCASED_CHAIN_DRIVE)
+                    .require(AllBlocks.CRIMSCHIST_CASING)
+                    .output(AllBlocks.ENCASED_CRIMSCHIST_CHAIN_DRIVE).output(com.simibubi.create.AllBlocks.ANDESITE_CASING));
+    GeneratedRecipe GEARBOX_UPGRADE = create("upgrade_gearbox", b ->
+            b.require(com.simibubi.create.AllBlocks.GEARBOX)
+                    .require(AllBlocks.CRIMSCHIST_CASING)
+                    .output(AllBlocks.CRIMSCHIST_GEARBOX).output(com.simibubi.create.AllBlocks.ANDESITE_CASING));
+    GeneratedRecipe GEARSHIFT_UPGRADE = create("upgrade_gearshift", b ->
+            b.require(com.simibubi.create.AllBlocks.GEARSHIFT)
+                    .require(AllBlocks.CRIMSCHIST_CASING)
+                    .output(AllBlocks.CRIMSCHIST_GEARSHIFT).output(com.simibubi.create.AllBlocks.ANDESITE_CASING));
+    GeneratedRecipe CLUTCH_UPGRADE = create("upgrade_clutch", b ->
+            b.require(com.simibubi.create.AllBlocks.CLUTCH)
+                    .require(AllBlocks.CRIMSCHIST_CASING)
+                    .output(AllBlocks.CRIMSCHIST_CLUTCH).output(com.simibubi.create.AllBlocks.ANDESITE_CASING));
+    GeneratedRecipe PUMP_UPGRADE = create("upgrade_pump", b ->
+            b.require(com.simibubi.create.AllBlocks.MECHANICAL_PUMP)
+                    .require(AllBlocks.CRIMSCHIST_CASING)
+                    .output(AllBlocks.CRIMSCHIST_MECHANICAL_PUMP).output(com.simibubi.create.AllBlocks.ANDESITE_CASING));
 
     GeneratedRecipe INFUSING_VAT_BY_DEPLOYER = create("infusing_vat_by_deployer", b ->
             b.require(AllBlocks.CRIMSCHIST_FLUID_TANK)

@@ -2,7 +2,6 @@ package io.github.cvrunmin.create_andertech.infrastructure.data;
 
 import com.simibubi.create.api.data.recipe.SequencedAssemblyRecipeGen;
 import com.simibubi.create.content.kinetics.deployer.DeployerApplicationRecipe;
-import com.simibubi.create.content.kinetics.mixer.MixingRecipe;
 import io.github.cvrunmin.create_andertech.CreateAndertech;
 import io.github.cvrunmin.create_andertech.content.kinetics.mixer.StirringRecipe;
 import io.github.cvrunmin.create_andertech.index.AllBlocks;

@@ -1,0 +1,18 @@
+{
+  "type": "create_andertech:infusing",
+  "ingredients": [
+    {
+      "item": "create:rotation_speed_controller"
+    },
+    {
+      "type": "neoforge:single",
+      "amount": 90,
+      "fluid": "create_andertech:chronendite_solution"
+    }
+  ],
+  "results": [
+    {
+      "id": "create_andertech:chronendite_rotation_speed_controller"
+    }
+  ]
+}

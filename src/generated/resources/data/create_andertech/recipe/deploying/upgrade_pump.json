@@ -1,0 +1,19 @@
+{
+  "type": "create:deploying",
+  "ingredients": [
+    {
+      "item": "create:mechanical_pump"
+    },
+    {
+      "item": "create_andertech:crimschist_casing"
+    }
+  ],
+  "results": [
+    {
+      "id": "create_andertech:crimschist_mechanical_pump"
+    },
+    {
+      "id": "create:andesite_casing"
+    }
+  ]
+}

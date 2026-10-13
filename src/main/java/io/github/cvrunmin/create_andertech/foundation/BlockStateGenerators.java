@@ -101,7 +101,7 @@ public class BlockStateGenerators {
             var gearOut = p.modLoc("block/crimschist_gearbox_out");
 
             BlockModelBuilder builder = p.models()
-                    .withExistingParent(c.getName() + "/" + combination, p.modLoc("block/" + c.getName() + "/block" + suffix));
+                    .withExistingParent("block/" + c.getName() + "/block_" + combination, p.modLoc("block/" + c.getName() + "/block" + suffix));
             if(suffix.contains("top")){
                 builder = builder.texture("gear_top", positiveMode == CrimschistBlackboxDifferentialBlock.Mode.IN ? gearIn : gearOut);
             }

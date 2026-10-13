@@ -1,0 +1,18 @@
+{
+  "type": "create_andertech:infusing",
+  "ingredients": [
+    {
+      "item": "create:crushing_wheel"
+    },
+    {
+      "type": "neoforge:single",
+      "amount": 120,
+      "fluid": "create_andertech:chronendite_solution"
+    }
+  ],
+  "results": [
+    {
+      "id": "create_andertech:chronendite_crushing_wheel"
+    }
+  ]
+}

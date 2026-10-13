@@ -1,2 +1,5 @@
-// 1.21.1	2026-02-22T12:06:38.379795	create_andertech's processing recipes: infusing
+// 1.21.1	2026-10-13T07:28:05.04388554	create_andertech's processing recipes: infusing
 2ba265a67a46849517166a4822c0349d46a5547c data/create_andertech/recipe/infusing/chronendite_casing.json
+0ac04367494b700d68fb28efc6d3475d99432924 data/create_andertech/recipe/infusing/chronendite_crushing_wheel.json
+6df84cd7f2f821867acdb6fff377cf1a7f709c9b data/create_andertech/recipe/infusing/chronendite_mechanical_arm.json
+84fb7066d7597d17242a54adf1997a7e881e992e data/create_andertech/recipe/infusing/chronendite_speed_controller.json

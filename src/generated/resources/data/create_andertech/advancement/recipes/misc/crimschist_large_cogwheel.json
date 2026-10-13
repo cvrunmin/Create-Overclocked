@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_crimschist_nugget": {
+    "has_crimschist_shaft": {
       "conditions": {
         "items": [
           {
-            "items": "create_andertech:crimschist_nugget"
+            "items": "create_andertech:crimschist_shaft"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:crimschist_alloy_from_nuggest"
+        "recipe": "create_andertech:crimschist_large_cogwheel"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_crimschist_nugget"
+      "has_crimschist_shaft"
     ]
   ],
   "rewards": {
     "recipes": [
-      "minecraft:crimschist_alloy_from_nuggest"
+      "create_andertech:crimschist_large_cogwheel"
     ]
   }
 }

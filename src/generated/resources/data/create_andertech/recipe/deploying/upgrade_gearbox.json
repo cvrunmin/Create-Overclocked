@@ -1,0 +1,19 @@
+{
+  "type": "create:deploying",
+  "ingredients": [
+    {
+      "item": "create:gearbox"
+    },
+    {
+      "item": "create_andertech:crimschist_casing"
+    }
+  ],
+  "results": [
+    {
+      "id": "create_andertech:crimschist_gearbox"
+    },
+    {
+      "id": "create:andesite_casing"
+    }
+  ]
+}

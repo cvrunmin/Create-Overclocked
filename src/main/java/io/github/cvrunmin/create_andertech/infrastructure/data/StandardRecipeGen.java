@@ -7,6 +7,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Blocks;
@@ -20,8 +21,8 @@ public class StandardRecipeGen extends RecipeProvider {
 
     @Override
     protected void buildRecipes(RecipeOutput recipeOutput) {
-        nineBlockStorageRecipesWithCustomPacking(recipeOutput, RecipeCategory.MISC, AllItems.CHRONENDITE_SHARD, RecipeCategory.MISC, AllItems.CHRONENDITE_ORB, "chronendite_orb_from_shards", "chronendite_orb");
-        nineBlockStorageRecipesWithCustomPacking(recipeOutput, RecipeCategory.MISC, AllItems.CRIMSCHIST_NUGGET, RecipeCategory.MISC, AllItems.CRIMSCHIST_ALLOY, "crimschist_alloy_from_nuggest", "crimschist_alloy");
+        nineBlockStorageRecipesWithCustomPacking(recipeOutput, RecipeCategory.MISC, AllItems.CHRONENDITE_SHARD, RecipeCategory.MISC, AllItems.CHRONENDITE_ORB, ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "chronendite_orb_from_shards").toString(), "chronendite_orb");
+        nineBlockStorageRecipesWithCustomPacking(recipeOutput, RecipeCategory.MISC, AllItems.CRIMSCHIST_NUGGET, RecipeCategory.MISC, AllItems.CRIMSCHIST_ALLOY, ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "crimschist_alloy_from_nuggest").toString(), "crimschist_alloy");
         ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, AllBlocks.WARPED_NYLIUM_TRANSMUTER, 4)
                 .define('#', Ingredient.of(Blocks.SAND, Blocks.RED_SAND))
                 .define('X', Items.WARPED_ROOTS)
@@ -46,6 +47,22 @@ public class StandardRecipeGen extends RecipeProvider {
                 .pattern("#")
                 .unlockedBy(getHasName(AllItems.CRIMSCHIST_ALLOY), has(AllItems.CRIMSCHIST_ALLOY))
                 .save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AllBlocks.CRIMSCHIST_COGWHEEL)
+                .requires(AllBlocks.CRIMSCHIST_SHAFT)
+                .requires(ItemTags.PLANKS)
+                .unlockedBy(getHasName(AllBlocks.CRIMSCHIST_SHAFT), has(AllBlocks.CRIMSCHIST_SHAFT))
+                .save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AllBlocks.CRIMSCHIST_LARGE_COGWHEEL)
+                .requires(AllBlocks.CRIMSCHIST_SHAFT)
+                .requires(ItemTags.PLANKS)
+                .requires(ItemTags.PLANKS)
+                .unlockedBy(getHasName(AllBlocks.CRIMSCHIST_SHAFT), has(AllBlocks.CRIMSCHIST_SHAFT))
+                .save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AllBlocks.CRIMSCHIST_LARGE_COGWHEEL)
+                .requires(AllBlocks.CRIMSCHIST_COGWHEEL)
+                .requires(ItemTags.PLANKS)
+                .unlockedBy(getHasName(AllBlocks.CRIMSCHIST_SHAFT), has(AllBlocks.CRIMSCHIST_SHAFT))
+                .save(recipeOutput, ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "crimschist_large_cogwheel_from_cogwheel"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AllBlocks.CRIMSCHIST_FLUID_TANK)
                 .define('A', AllItems.CRIMSCHIST_SHEET)
                 .define('B', AllBlocks.INFUSION_VAT)
@@ -53,6 +70,24 @@ public class StandardRecipeGen extends RecipeProvider {
                 .pattern("B")
                 .unlockedBy(getHasName(AllBlocks.INFUSION_VAT), has(AllBlocks.INFUSION_VAT))
                 .save(recipeOutput, ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "crimschist_fluid_tank_by_add_top"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AllBlocks.CHRONENDITE_MECHANICAL_SPOUT)
+                .define('A', AllBlocks.CRIMSCHIST_COGWHEEL)
+                .define('B', AllBlocks.CHRONENDITE_CASING)
+                .define('C', com.simibubi.create.AllBlocks.SPOUT)
+                .pattern("A")
+                .pattern("B")
+                .pattern("C")
+                .unlockedBy(getHasName(AllBlocks.CHRONENDITE_CASING), has(AllBlocks.CHRONENDITE_CASING))
+                .save(recipeOutput, ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "chronendite_mechanical_spout"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AllBlocks.CRIMSCHIST_HARVESTER)
+                .define('A', AllBlocks.CRIMSCHIST_CASING)
+                .define('B', Items.IRON_INGOT)
+                .define('C', com.simibubi.create.AllItems.ANDESITE_ALLOY)
+                .pattern("CBC")
+                .pattern("CBC")
+                .pattern(" A ")
+                .unlockedBy(getHasName(AllBlocks.CRIMSCHIST_CASING), has(AllBlocks.CRIMSCHIST_CASING))
+                .save(recipeOutput, ResourceLocation.fromNamespaceAndPath(CreateAndertech.MODID, "crimschist_mechanical_harvester"));
         stonecutterResultFromBase(recipeOutput, RecipeCategory.BUILDING_BLOCKS, AllBlocks.CRIMSCHIST_CASING_SLAB, AllBlocks.CRIMSCHIST_CASING, 2);
     }
 }

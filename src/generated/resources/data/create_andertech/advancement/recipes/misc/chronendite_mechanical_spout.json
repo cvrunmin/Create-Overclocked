@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_chronendite_shard": {
+    "has_chronendite_casing": {
       "conditions": {
         "items": [
           {
-            "items": "create_andertech:chronendite_shard"
+            "items": "create_andertech:chronendite_casing"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:chronendite_orb_from_shards"
+        "recipe": "create_andertech:chronendite_mechanical_spout"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_chronendite_shard"
+      "has_chronendite_casing"
     ]
   ],
   "rewards": {
     "recipes": [
-      "minecraft:chronendite_orb_from_shards"
+      "create_andertech:chronendite_mechanical_spout"
     ]
   }
 }

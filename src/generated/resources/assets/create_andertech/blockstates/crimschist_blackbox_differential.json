@@ -1,119 +1,119 @@
 {
   "variants": {
     "axis=x,negative_mode=in,positive_mode=in": {
-      "model": "create_andertech:crimschist_blackbox_differential/ioi",
+      "model": "create_andertech:block/crimschist_blackbox_differential/block_ioi",
       "x": 90,
       "y": 90
     },
     "axis=x,negative_mode=in,positive_mode=none": {
-      "model": "create_andertech:crimschist_blackbox_differential/ion",
+      "model": "create_andertech:block/crimschist_blackbox_differential/block_ion",
       "x": 90,
       "y": 90
     },
     "axis=x,negative_mode=in,positive_mode=out": {
-      "model": "create_andertech:crimschist_blackbox_differential/iio",
+      "model": "create_andertech:block/crimschist_blackbox_differential/block_iio",
       "x": 90,
       "y": 90
     },
     "axis=x,negative_mode=none,positive_mode=in": {
-      "model": "create_andertech:crimschist_blackbox_differential/noi",
+      "model": "create_andertech:block/crimschist_blackbox_differential/block_noi",
       "x": 90,
       "y": 90
     },
     "axis=x,negative_mode=none,positive_mode=none": {
-      "model": "create_andertech:crimschist_blackbox_differential/non",
+      "model": "create_andertech:block/crimschist_blackbox_differential/block_non",
       "x": 90,
       "y": 90
     },
     "axis=x,negative_mode=none,positive_mode=out": {
-      "model": "create_andertech:crimschist_blackbox_differential/nio",
+      "model": "create_andertech:block/crimschist_blackbox_differential/block_nio",
       "x": 90,
       "y": 90
     },
     "axis=x,negative_mode=out,positive_mode=in": {
-      "model": "create_andertech:crimschist_blackbox_differential/oii",
+      "model": "create_andertech:block/crimschist_blackbox_differential/block_oii",
       "x": 90,
       "y": 90
     },
     "axis=x,negative_mode=out,positive_mode=none": {
-      "model": "create_andertech:crimschist_blackbox_differential/oin",
+      "model": "create_andertech:block/crimschist_blackbox_differential/block_oin",
       "x": 90,
       "y": 90
     },
     "axis=x,negative_mode=out,positive_mode=out": {
-      "model": "create_andertech:crimschist_blackbox_differential/oio",
+      "model": "create_andertech:block/crimschist_blackbox_differential/block_oio",
       "x": 90,
       "y": 90
     },
     "axis=y,negative_mode=in,positive_mode=in": {
-      "model": "create_andertech:crimschist_blackbox_differential/ioi"
+      "model": "create_andertech:block/crimschist_blackbox_differential/block_ioi"
     },
     "axis=y,negative_mode=in,positive_mode=none": {
-      "model": "create_andertech:crimschist_blackbox_differential/ion"
+      "model": "create_andertech:block/crimschist_blackbox_differential/block_ion"
     },
     "axis=y,negative_mode=in,positive_mode=out": {
-      "model": "create_andertech:crimschist_blackbox_differential/iio"
+      "model": "create_andertech:block/crimschist_blackbox_differential/block_iio"
     },
     "axis=y,negative_mode=none,positive_mode=in": {
-      "model": "create_andertech:crimschist_blackbox_differential/noi"
+      "model": "create_andertech:block/crimschist_blackbox_differential/block_noi"
     },
     "axis=y,negative_mode=none,positive_mode=none": {
-      "model": "create_andertech:crimschist_blackbox_differential/non"
+      "model": "create_andertech:block/crimschist_blackbox_differential/block_non"
     },
     "axis=y,negative_mode=none,positive_mode=out": {
-      "model": "create_andertech:crimschist_blackbox_differential/nio"
+      "model": "create_andertech:block/crimschist_blackbox_differential/block_nio"
     },
     "axis=y,negative_mode=out,positive_mode=in": {
-      "model": "create_andertech:crimschist_blackbox_differential/oii"
+      "model": "create_andertech:block/crimschist_blackbox_differential/block_oii"
     },
     "axis=y,negative_mode=out,positive_mode=none": {
-      "model": "create_andertech:crimschist_blackbox_differential/oin"
+      "model": "create_andertech:block/crimschist_blackbox_differential/block_oin"
     },
     "axis=y,negative_mode=out,positive_mode=out": {
-      "model": "create_andertech:crimschist_blackbox_differential/oio"
+      "model": "create_andertech:block/crimschist_blackbox_differential/block_oio"
     },
     "axis=z,negative_mode=in,positive_mode=in": {
-      "model": "create_andertech:crimschist_blackbox_differential/ioi",
+      "model": "create_andertech:block/crimschist_blackbox_differential/block_ioi",
       "x": 90,
       "y": 180
     },
     "axis=z,negative_mode=in,positive_mode=none": {
-      "model": "create_andertech:crimschist_blackbox_differential/ion",
+      "model": "create_andertech:block/crimschist_blackbox_differential/block_ion",
       "x": 90,
       "y": 180
     },
     "axis=z,negative_mode=in,positive_mode=out": {
-      "model": "create_andertech:crimschist_blackbox_differential/iio",
+      "model": "create_andertech:block/crimschist_blackbox_differential/block_iio",
       "x": 90,
       "y": 180
     },
     "axis=z,negative_mode=none,positive_mode=in": {
-      "model": "create_andertech:crimschist_blackbox_differential/noi",
+      "model": "create_andertech:block/crimschist_blackbox_differential/block_noi",
       "x": 90,
       "y": 180
     },
     "axis=z,negative_mode=none,positive_mode=none": {
-      "model": "create_andertech:crimschist_blackbox_differential/non",
+      "model": "create_andertech:block/crimschist_blackbox_differential/block_non",
       "x": 90,
       "y": 180
     },
     "axis=z,negative_mode=none,positive_mode=out": {
-      "model": "create_andertech:crimschist_blackbox_differential/nio",
+      "model": "create_andertech:block/crimschist_blackbox_differential/block_nio",
       "x": 90,
       "y": 180
     },
     "axis=z,negative_mode=out,positive_mode=in": {
-      "model": "create_andertech:crimschist_blackbox_differential/oii",
+      "model": "create_andertech:block/crimschist_blackbox_differential/block_oii",
       "x": 90,
       "y": 180
     },
     "axis=z,negative_mode=out,positive_mode=none": {
-      "model": "create_andertech:crimschist_blackbox_differential/oin",
+      "model": "create_andertech:block/crimschist_blackbox_differential/block_oin",
       "x": 90,
       "y": 180
     },
     "axis=z,negative_mode=out,positive_mode=out": {
-      "model": "create_andertech:crimschist_blackbox_differential/oio",
+      "model": "create_andertech:block/crimschist_blackbox_differential/block_oio",
       "x": 90,
       "y": 180
     }
