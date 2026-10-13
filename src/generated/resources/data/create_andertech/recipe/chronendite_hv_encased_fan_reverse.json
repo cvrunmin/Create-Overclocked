@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "create_andertech:chronendite_hv_encased_fan"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "create_andertech:chronendite_encased_fan"
+  }
+}

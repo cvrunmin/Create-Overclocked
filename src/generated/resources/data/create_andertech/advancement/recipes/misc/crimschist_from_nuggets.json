@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_crimschist_casing": {
+    "has_crimschist_nugget": {
       "conditions": {
         "items": [
           {
-            "items": "create_andertech:crimschist_casing"
+            "items": "create_andertech:crimschist_nugget"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:crimschist_casing_slab_from_crimschist_casing_stonecutting"
+        "recipe": "create_andertech:crimschist_from_nuggets"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_crimschist_casing"
+      "has_crimschist_nugget"
     ]
   ],
   "rewards": {
     "recipes": [
-      "minecraft:crimschist_casing_slab_from_crimschist_casing_stonecutting"
+      "create_andertech:crimschist_from_nuggets"
     ]
   }
 }

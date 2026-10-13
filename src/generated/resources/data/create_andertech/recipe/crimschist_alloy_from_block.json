@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "crimschist_alloy",
+  "ingredients": [
+    {
+      "item": "create_andertech:crimschist_alloy_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "create_andertech:crimschist_alloy"
+  }
+}

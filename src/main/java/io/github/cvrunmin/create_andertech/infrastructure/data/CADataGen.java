@@ -46,6 +46,7 @@ public class CADataGen {
             provider.add(CreateAndertech.MODID + ".tooltip.differential.misconfigured", "Misconfigured Differential");
             provider.add(CreateAndertech.MODID + ".tooltip.differential.misconfigured.hint", "It appears that this %1$s has _too many_ outputs, or _no_ inputs.");
 
+            provider.add(CreateAndertech.MODID + ".recipe.infusing", "Infusing");
             provider.add(CreateAndertech.MODID + ".recipe.assembly.stirring", "Stir");
         });
         REGISTRATE.addDataGenerator(ProviderType.BLOCKSTATE, AllExtraModels::genBlockStates);

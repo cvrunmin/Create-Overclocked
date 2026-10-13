@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_crimschist_alloy": {
+    "has_chronendite_orb": {
       "conditions": {
         "items": [
           {
-            "items": "create_andertech:crimschist_alloy"
+            "items": "create_andertech:chronendite_orb"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:crimschist_nugget"
+        "recipe": "create_andertech:chronendite_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_crimschist_alloy"
+      "has_chronendite_orb"
     ]
   ],
   "rewards": {
     "recipes": [
-      "minecraft:crimschist_nugget"
+      "create_andertech:chronendite_block"
     ]
   }
 }

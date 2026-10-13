@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_chronendite_encased_fan": {
+      "conditions": {
+        "items": [
+          {
+            "items": "create_andertech:chronendite_encased_fan"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "create_andertech:chronendite_hv_encased_fan"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_chronendite_encased_fan"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "create_andertech:chronendite_hv_encased_fan"
+    ]
+  }
+}

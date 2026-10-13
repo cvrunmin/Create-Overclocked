@@ -38,6 +38,8 @@
     "create_andertech:chronendite_casing",
     "create_andertech:crimschist_casing_slab",
     "create_andertech:metal_girder_encased_crimschist_shaft",
+    "create_andertech:crimschist_alloy_block",
+    "create_andertech:chronendite_block",
     "create_andertech:rich_warped_nylium",
     "create_andertech:untopped_warped_nylium",
     "create_andertech:poor_warped_nylium",

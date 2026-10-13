@@ -20,10 +20,8 @@ import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockMo
 import com.simibubi.create.content.kinetics.simpleRelays.CogwheelBlockItem;
 import com.simibubi.create.content.kinetics.simpleRelays.encased.EncasedCogCTBehaviour;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
-import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.data.*;
 import com.tterrag.registrate.builders.ItemBuilder;
-import com.tterrag.registrate.providers.loot.RegistrateBlockLootTables;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import io.github.cvrunmin.create_andertech.Constants;
@@ -82,8 +80,8 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
@@ -94,6 +92,7 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.common.Tags;
 
 import java.util.Map;
 
@@ -104,8 +103,7 @@ import static com.simibubi.create.api.contraption.storage.fluid.MountedFluidStor
 import static com.simibubi.create.foundation.data.BlockStateGen.*;
 import static com.simibubi.create.foundation.data.CreateRegistrate.casingConnectivity;
 import static com.simibubi.create.foundation.data.CreateRegistrate.connectedTextures;
-import static com.simibubi.create.foundation.data.TagGen.axeOrPickaxe;
-import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
+import static com.simibubi.create.foundation.data.TagGen.*;
 import static io.github.cvrunmin.create_andertech.CreateAndertech.REGISTRATE;
 
 public class AllBlocks {
@@ -833,6 +831,30 @@ public class AllBlocks {
                     )
                     .simpleItem()
                     .register();
+
+    public static final BlockEntry<Block> CRIMSCHIST_ALLOY_BLOCK = REGISTRATE.block("crimschist_alloy_block", Block::new)
+            .initialProperties(SharedProperties::stone)
+            .properties(p -> p.mapColor(MapColor.WARPED_NYLIUM).sound(SoundType.METAL).requiresCorrectToolForDrops())
+            .transform(pickaxeOnly())
+            .blockstate(simpleCubeAll("crimschist_block"))
+            .tag(Tags.Blocks.STORAGE_BLOCKS)
+            .transform(tagBlockAndItem(io.github.cvrunmin.create_andertech.index.AllTags.CRIMSCHIST_ALLOY_STORAGE, io.github.cvrunmin.create_andertech.index.AllTags.CRIMSCHIST_ALLOY_STORAGE_ITEM))
+            .tag(Tags.Items.STORAGE_BLOCKS)
+            .build()
+            .lang("Block of Crimschist Alloy")
+            .register();
+
+    public static final BlockEntry<Block> CHRONENDITE_BLOCK = REGISTRATE.block("chronendite_block", Block::new)
+            .initialProperties(SharedProperties::softMetal)
+            .properties(p -> p.mapColor(MapColor.SAND).sound(SoundType.METAL).requiresCorrectToolForDrops())
+            .transform(pickaxeOnly())
+            .blockstate(simpleCubeAll("chronendite_block"))
+            .tag(Tags.Blocks.STORAGE_BLOCKS)
+            .transform(tagBlockAndItem(io.github.cvrunmin.create_andertech.index.AllTags.CHRONENDITE_STORAGE, io.github.cvrunmin.create_andertech.index.AllTags.CHRONENDITE_STORAGE_ITEM))
+            .tag(Tags.Items.STORAGE_BLOCKS)
+            .build()
+            .lang("Block of Chronendite")
+            .register();
 
     public static final BlockEntry<RichNyliumBlock> RICH_WARPED_NYLIUM = REGISTRATE.block("rich_warped_nylium", RichNyliumBlock::new)
             .initialProperties(() -> Blocks.WARPED_NYLIUM)
