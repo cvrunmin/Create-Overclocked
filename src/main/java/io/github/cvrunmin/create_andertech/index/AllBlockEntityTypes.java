@@ -37,6 +37,8 @@ import io.github.cvrunmin.create_andertech.content.kinetics.gearbox.CrimschistGe
 import io.github.cvrunmin.create_andertech.content.kinetics.gearbox.CrimschistGearboxRenderer;
 import io.github.cvrunmin.create_andertech.content.kinetics.gearbox.CrimschistGearboxVisual;
 import io.github.cvrunmin.create_andertech.content.kinetics.mechanicalArm.ChronenditeArmBlockEntity;
+import io.github.cvrunmin.create_andertech.content.kinetics.mechanicalArm.ChronenditeArmRenderer;
+import io.github.cvrunmin.create_andertech.content.kinetics.mechanicalArm.ChronenditeArmVisual;
 import io.github.cvrunmin.create_andertech.content.kinetics.mixer.ChronenditeMechanicalMixerBlockEntity;
 import io.github.cvrunmin.create_andertech.content.kinetics.mixer.ChronenditeMechanicalMixerRenderer;
 import io.github.cvrunmin.create_andertech.content.kinetics.mixer.ChronenditeMixerVisual;
@@ -225,9 +227,9 @@ public class AllBlockEntityTypes {
 
     public static final BlockEntityEntry<ChronenditeArmBlockEntity> CHRONENDITE_MECHANICAL_ARM = REGISTRATE
             .blockEntity("mechanical_arm", ChronenditeArmBlockEntity::new)
-            .visual(() -> ArmVisual::new)
+            .visual(() -> ChronenditeArmVisual::new)
             .validBlocks(AllBlocks.CHRONENDITE_MECHANICAL_ARM)
-            .renderer(() -> ArmRenderer::new)
+            .renderer(() -> ChronenditeArmRenderer::new)
             .register();
 
     public static final BlockEntityEntry<ChronenditeMechanicalCrafterBlockEntity> CHRONENDITE_MECHANICAL_CRAFTER = REGISTRATE

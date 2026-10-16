@@ -1,3 +1,8 @@
 {
-  "parent": "create:block/mechanical_arm/block"
+  "parent": "create:block/mechanical_arm/block",
+  "textures": {
+    "3": "create_andertech:block/chronendite_mechanical_arm",
+    "7": "create_andertech:block/chronendite_block",
+    "particle": "create_andertech:block/chronendite_casing"
+  }
 }

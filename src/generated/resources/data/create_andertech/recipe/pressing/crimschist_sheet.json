@@ -1,0 +1,14 @@
+{
+  "type": "create:pressing",
+  "ingredients": [
+    {
+      "item": "create_andertech:crimschist_alloy"
+    }
+  ],
+  "results": [
+    {
+      "count": 2,
+      "id": "create_andertech:crimschist_sheet"
+    }
+  ]
+}

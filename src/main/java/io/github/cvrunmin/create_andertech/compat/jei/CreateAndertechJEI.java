@@ -26,6 +26,7 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.SmokingRecipe;
 
 import java.util.ArrayList;
@@ -110,10 +111,10 @@ public class CreateAndertechJEI implements IModPlugin {
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         createCategories.forEach(cat -> cat.registerRecipes(registration));
-        registration.getJeiHelpers().getRecipeType(Create.asResource("mystery_conversion"), ConversionRecipe.class)
+        registration.getJeiHelpers().getRecipeType(Create.asResource("mystery_conversion"), RecipeHolder.class)
                 .ifPresent(rtype -> registration.addRecipes(rtype, List.of(
-                        ConversionRecipe.create(AllItems.EMPTY_BLAZE_BURNER.asStack(), AllBlocks.CHRONENDIC_BLAZE_BURNER.asStack()).value(),
-                        ConversionRecipe.create(com.simibubi.create.AllBlocks.BLAZE_BURNER.asStack(), AllBlocks.CHRONENDIC_BLAZE_BURNER.asStack()).value()
+                        ConversionRecipe.create(AllItems.EMPTY_BLAZE_BURNER.asStack(), AllBlocks.CHRONENDIC_BLAZE_BURNER.asStack()),
+                        ConversionRecipe.create(com.simibubi.create.AllBlocks.BLAZE_BURNER.asStack(), AllBlocks.CHRONENDIC_BLAZE_BURNER.asStack())
                 )));
     }
 }

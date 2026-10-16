@@ -18,6 +18,14 @@ public class CAAllPartialModels {
     public static final PartialModel CHRONENDITE_SPEED_CONTROLLER_BRACKET = block("chronendite_rotation_speed_controller/bracket");
     public static final PartialModel CRIMSCHIST_HARVESTER_BLADE = block("crimschist_mechanical_harvester/blade");
 
+
+    public static final PartialModel ARM_COG = block("chronendite_mechanical_arm/cog"), ARM_BASE = block("chronendite_mechanical_arm/base"),
+    ARM_LOWER_BODY = block("chronendite_mechanical_arm/lower_body"), ARM_UPPER_BODY = block("chronendite_mechanical_arm/upper_body"),
+    ARM_CLAW_BASE = block("chronendite_mechanical_arm/claw_base"),
+    ARM_CLAW_BASE_GOGGLES = block("chronendite_mechanical_arm/claw_base_goggles"),
+    ARM_CLAW_GRIP_UPPER = block("chronendite_mechanical_arm/upper_claw_grip"),
+    ARM_CLAW_GRIP_LOWER = block("chronendite_mechanical_arm/lower_claw_grip");
+
     public static final PartialModel
             BLAZE_INERT = block("chronendic_blaze_burner/blaze/inert"), BLAZE_SUPER_ACTIVE = block("chronendic_blaze_burner/blaze/super_active"),
             BLAZE_IDLE = block("chronendic_blaze_burner/blaze/idle"), BLAZE_ACTIVE = block("chronendic_blaze_burner/blaze/active"),

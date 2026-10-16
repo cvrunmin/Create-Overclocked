@@ -1,5 +1,6 @@
 package io.github.cvrunmin.create_andertech.content.kinetics.mixer;
 
+import com.simibubi.create.AllDataComponents;
 import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.content.fluids.FluidFX;
@@ -10,6 +11,7 @@ import com.simibubi.create.content.processing.basin.BasinBlockEntity;
 import com.simibubi.create.content.processing.basin.BasinOperatingBlockEntity;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.content.processing.recipe.StandardProcessingRecipe;
+import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipe;
 import com.simibubi.create.foundation.advancement.AllAdvancements;
 import com.simibubi.create.foundation.advancement.CreateAdvancement;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
@@ -28,6 +30,7 @@ import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -46,6 +49,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -228,8 +232,32 @@ public class ChronenditeMechanicalMixerBlockEntity extends BasinOperatingBlockEn
         level.addParticle(data, center.x, center.y - 1.75f, center.z, target.x, target.y, target.z);
     }
 
+    protected Optional<? extends Recipe<?>> matchAssemblyRecipe(){
+        var basin = getBasin();
+        if(basin.isEmpty()) return Optional.empty();
+
+        IItemHandler availableItems = level.getCapability(Capabilities.ItemHandler.BLOCK, basin.get().getBlockPos(), null);
+        if(availableItems == null) return Optional.empty();
+
+        for (int slot = 0; slot < availableItems.getSlots(); slot++) {
+            var item = availableItems.getStackInSlot(slot);
+
+            var assemblyRecipe = SequencedAssemblyRecipe.getRecipe(level, item, CAAllRecipeTypes.STIRRING.getType(), StirringRecipe.class);
+            if(assemblyRecipe.isPresent()){
+                return assemblyRecipe.map(RecipeHolder::value);
+            }
+        }
+        return Optional.empty();
+    }
+
     @Override
     protected List<Recipe<?>> getMatchingRecipes() {
+        var assemblyRecipe = matchAssemblyRecipe();
+        if(assemblyRecipe.isPresent()) {
+            ArrayList<Recipe<?>> recipes = new ArrayList<>();
+            recipes.add(assemblyRecipe.get());
+            return recipes;
+        }
         List<Recipe<?>> matchingRecipes = super.getMatchingRecipes();
 
         if (!AllConfigs.server().recipes.allowBrewingInMixer.get())

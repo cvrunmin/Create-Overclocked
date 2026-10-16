@@ -24,6 +24,32 @@ public class AllExtraModels {
                 .texture("5", provider.modLoc("block/chronendite_rotation_speed_controller_bracket"))
                 .texture("7", provider.modLoc("block/chronendite_funnel_neutral"))
                 .texture("particle", provider.modLoc("block/chronendite_block"));
+
+        provider.models().getBuilder("block/chronendite_mechanical_arm/cog")
+                .parent(AssetLookupWithParent.anyParent(ResourceLocation.fromNamespaceAndPath("create", "block/mechanical_arm/cog")))
+                .texture("5", provider.modLoc("block/chronendite_flywheel"));
+        provider.models().getBuilder("block/chronendite_mechanical_arm/base")
+                .parent(AssetLookupWithParent.anyParent(ResourceLocation.fromNamespaceAndPath("create", "block/mechanical_arm/base")))
+                .texture("3", provider.modLoc("block/chronendite_block"))
+                .texture("5", provider.modLoc("block/chronendite_mechanical_arm"));
+        provider.models().getBuilder("block/chronendite_mechanical_arm/claw_base")
+                .parent(AssetLookupWithParent.anyParent(ResourceLocation.fromNamespaceAndPath("create", "block/mechanical_arm/claw_base")))
+                .texture("5", provider.modLoc("block/chronendite_mechanical_arm"));
+        provider.models().getBuilder("block/chronendite_mechanical_arm/claw_base_goggles")
+                .parent(AssetLookupWithParent.anyParent(ResourceLocation.fromNamespaceAndPath("create", "block/mechanical_arm/claw_base_goggles")))
+                .texture("5", provider.modLoc("block/chronendite_mechanical_arm"));
+        provider.models().getBuilder("block/chronendite_mechanical_arm/lower_body")
+                .parent(AssetLookupWithParent.anyParent(ResourceLocation.fromNamespaceAndPath("create", "block/mechanical_arm/lower_body")))
+                .texture("5", provider.modLoc("block/chronendite_mechanical_arm"));
+        provider.models().getBuilder("block/chronendite_mechanical_arm/lower_claw_grip")
+                .parent(AssetLookupWithParent.anyParent(ResourceLocation.fromNamespaceAndPath("create", "block/mechanical_arm/lower_claw_grip")))
+                .texture("5", provider.modLoc("block/chronendite_mechanical_arm"));
+        provider.models().getBuilder("block/chronendite_mechanical_arm/upper_body")
+                .parent(AssetLookupWithParent.anyParent(ResourceLocation.fromNamespaceAndPath("create", "block/mechanical_arm/upper_body")))
+                .texture("5", provider.modLoc("block/chronendite_mechanical_arm"));
+        provider.models().getBuilder("block/chronendite_mechanical_arm/upper_claw_grip")
+                .parent(AssetLookupWithParent.anyParent(ResourceLocation.fromNamespaceAndPath("create", "block/mechanical_arm/upper_claw_grip")))
+                .texture("5", provider.modLoc("block/chronendite_mechanical_arm"));
 //        provider.models().getBuilder("block/crimschist_gantry_shaft/block_end")
 //                .parent(AssetLookupWithParent.anyParent(ResourceLocation.fromNamespaceAndPath("create", "block/gantry_shaft/block_end")))
 //                .texture("0", provider.modLoc("block/crimschist_axis"))
