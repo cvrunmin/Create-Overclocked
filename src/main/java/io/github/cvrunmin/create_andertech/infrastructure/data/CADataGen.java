@@ -36,6 +36,8 @@ public class CADataGen {
             provider.add(CreateAndertech.MODID + ".tooltip.noTank", "No Fluid Container");
             provider.add(CreateAndertech.MODID + ".tooltip.noTank.hint", "It appears that there is _no_ fluid container _above_ this %1$s.");
 
+            provider.add(CreateAndertech.MODID + ".tooltip.burner.instable_magic_number", "Magic Number: %1$d");
+
             provider.add(CreateAndertech.MODID + ".differential.header", "Blackbox Differential");
             provider.add(CreateAndertech.MODID + ".differential.port.neg", "Negative Side");
             provider.add(CreateAndertech.MODID + ".differential.port.pos", "Positive Side");
@@ -48,6 +50,10 @@ public class CADataGen {
 
             provider.add(CreateAndertech.MODID + ".recipe.infusing", "Infusing");
             provider.add(CreateAndertech.MODID + ".recipe.assembly.stirring", "Stir");
+
+            provider.add(CreateAndertech.MODID + ".subtitles.entity.chronendic_blaze.ambient", "Chronendic Blaze breathes");
+            provider.add(CreateAndertech.MODID + ".subtitles.entity.chronendic_blaze.hurt", "Chronendic Blaze hurts");
+            provider.add(CreateAndertech.MODID + ".subtitles.entity.chronendic_blaze.death", "Chronendic Blaze dies");
         });
         REGISTRATE.addDataGenerator(ProviderType.BLOCKSTATE, AllExtraModels::genBlockStates);
     }
@@ -69,6 +75,7 @@ public class CADataGen {
         generator.addProvider(event.includeServer(), new CAMixingRecipeGen(output, lookupProvider));
         generator.addProvider(event.includeServer(), new CAInfusingRecipeGen(output, lookupProvider));
         generator.addProvider(event.includeServer(), new CASequencedAssemblyRecipeGen(output, lookupProvider));
+        generator.addProvider(event.includeServer(), new CAItemApplicationRecipeGen(output, lookupProvider));
 
         generator.addProvider(event.includeClient(), new ParticleDescriptionProvider(output, event.getExistingFileHelper()) {
             @Override
@@ -85,5 +92,6 @@ public class CADataGen {
                 );
             }
         });
+        generator.addProvider(event.includeClient(), new CASoundDefProvider(output, event.getExistingFileHelper()));
     }
 }

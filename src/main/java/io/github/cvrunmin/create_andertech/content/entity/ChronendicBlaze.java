@@ -1,5 +1,7 @@
 package io.github.cvrunmin.create_andertech.content.entity;
 
+import io.github.cvrunmin.create_andertech.index.AllEntityTypes;
+import io.github.cvrunmin.create_andertech.index.CAAllSoundEvents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -25,7 +27,7 @@ public class ChronendicBlaze extends Monster {
     public Vector3f coreRotA = new Vector3f();
     private int remainingCoreRotAUpdateTick = 0;
 
-    public ChronendicBlaze(EntityType<? extends Monster> entityType, Level level) {
+    public ChronendicBlaze(EntityType<ChronendicBlaze> entityType, Level level) {
         super(entityType, level);
         this.setPathfindingMalus(PathType.WATER, -4.0F);
         this.setPathfindingMalus(PathType.LAVA, 0.0F);
@@ -33,6 +35,11 @@ public class ChronendicBlaze extends Monster {
         this.setPathfindingMalus(PathType.DAMAGE_FIRE, 0.0F);
         this.xpReward = 12;
         this.coreRot = new Quaternionf().rotateZYX((float) Math.toRadians(-45), 0, 0);
+    }
+
+    public ChronendicBlaze(Level level, double x, double y, double z){
+        this(AllEntityTypes.CHRONENDIC_BLAZE.get(), level);
+        this.setPos(x, y, z);
     }
 
     @Override
@@ -51,17 +58,17 @@ public class ChronendicBlaze extends Monster {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.BLAZE_AMBIENT;
+        return CAAllSoundEvents.CHRONENDIC_BLAZE_AMBIENT.get();
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return SoundEvents.BLAZE_HURT;
+        return CAAllSoundEvents.CHRONENDIC_BLAZE_HURT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.BLAZE_DEATH;
+        return CAAllSoundEvents.CHRONENDIC_BLAZE_DEATH.get();
     }
 
     @Override

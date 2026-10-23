@@ -1,8 +1,10 @@
 package io.github.cvrunmin.create_andertech.content.processing.burner;
 
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.api.data.datamaps.BlazeBurnerFuel;
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.api.registry.CreateDataMaps;
 import com.simibubi.create.content.fluids.tank.FluidTankBlock;
 import com.simibubi.create.content.processing.basin.BasinBlock;
@@ -11,17 +13,19 @@ import com.simibubi.create.content.processing.burner.BlazeBurnerBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import dev.engine_room.flywheel.api.visualization.VisualizationManager;
+import io.github.cvrunmin.create_andertech.content.entity.ChronendicBlaze;
+import io.github.cvrunmin.create_andertech.foundation.MyLang;
+import io.github.cvrunmin.create_andertech.index.AllEntityTypes;
+import io.github.cvrunmin.create_andertech.index.CAAllSoundEvents;
 import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.catnip.math.AngleHelper;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.core.*;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
@@ -31,16 +35,21 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class ChronendicBlazeBurnerBlockEntity extends SmartBlockEntity {
+public class ChronendicBlazeBurnerBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation {
 
     public static final int MAX_HEAT_CAPACITY = 20000;
     public static final int INSERTION_THRESHOLD = 500;
+
+    private static final List<Vec3i> BLAZE_SPAWN_POINTS;
 
     public LerpedFloat headAnimation;
     public boolean stockKeeper;
@@ -51,6 +60,31 @@ public class ChronendicBlazeBurnerBlockEntity extends SmartBlockEntity {
     protected FuelType activeFuel;
     protected int remainingBurnTime;
     protected LerpedFloat headAngle;
+
+    private int instableMagicNumber = 0;
+    private int instableTickRemaining = 0;
+
+    static {
+        var li = new ArrayList<Vec3i>();
+        li.add(new Vec3i(0, 1, 0));
+        li.add(new Vec3i(0, 0, -1));
+        li.add(new Vec3i(1, 0, 0));
+        li.add(new Vec3i(0, 0, 1));
+        li.add(new Vec3i(-1, 0, 0));
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if(i == 0 || j == 0) continue;
+                li.add(new Vec3i(i, 0, j));
+            }
+        }
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if(i == 0 && j == 0) continue;
+                li.add(new Vec3i(i, 1, j));
+            }
+        }
+        BLAZE_SPAWN_POINTS = Collections.unmodifiableList(li);
+    }
 
     public ChronendicBlazeBurnerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -82,6 +116,40 @@ public class ChronendicBlazeBurnerBlockEntity extends SmartBlockEntity {
                 tickAnimation();
             if (!isVirtual())
                 spawnParticles(getHeatLevelFromBlock(), 1);
+            return;
+        }
+
+        if(getBlockState().getValue(ChronendicBlazeBurnerBlock.INSTABLE)){
+            if(--instableTickRemaining <= 0){
+                instableTickRemaining = 20;
+                if(instableMagicNumber != 0) {
+                    instableMagicNumber = (int)(level.getRandom().nextGaussian() * 10);
+                }
+                boolean escaped = false;
+                if(instableMagicNumber == 0){
+                    for (Vec3i blazeSpawnPoint : BLAZE_SPAWN_POINTS) {
+                        var candidate = getBlockPos().offset(blazeSpawnPoint);
+                        var candidateVec3 = Vec3.atBottomCenterOf(candidate);
+                        if(level.noCollision(AllEntityTypes.CHRONENDIC_BLAZE.get().getSpawnAABB(candidateVec3.x, candidateVec3.y, candidateVec3.z))){
+                            var blaze = new ChronendicBlaze(level, candidateVec3.x, candidateVec3.y, candidateVec3.z);
+                            if (level.addFreshEntity(blaze)) {
+                                level.playSound(null, getBlockPos(), CAAllSoundEvents.CHRONENDIC_BLAZE_AMBIENT.get(), SoundSource.BLOCKS, 1.0f, 2.0f);
+                                level.gameEvent(blaze, GameEvent.ENTITY_PLACE, candidate);
+                                level.setBlockAndUpdate(getBlockPos(), AllBlocks.BLAZE_BURNER.getDefaultState().setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.NONE));
+                                escaped = true;
+                                break;
+                            }
+                        }
+                    }
+                    if(!escaped){
+                        setBlockHeat(BlazeBurnerBlock.HeatLevel.SMOULDERING);
+                    }
+                }
+                if(!escaped){
+                    level.playSound(null, getBlockPos(), CAAllSoundEvents.CHRONENDIC_BLAZE_HURT.get(), SoundSource.BLOCKS, 1.0f, 2.0f);
+                    sendData();
+                }
+            }
             return;
         }
 
@@ -163,6 +231,10 @@ public class ChronendicBlazeBurnerBlockEntity extends SmartBlockEntity {
             compound.putBoolean("Goggles", true);
         if (hat)
             compound.putBoolean("TrainHat", true);
+        if(getBlockState().getValue(ChronendicBlazeBurnerBlock.INSTABLE)){
+            compound.putInt("InstableMagicNumber", instableMagicNumber);
+            compound.putInt("InstableTickRemaining", instableTickRemaining);
+        }
         super.write(compound, registries, clientPacket);
     }
 
@@ -173,6 +245,8 @@ public class ChronendicBlazeBurnerBlockEntity extends SmartBlockEntity {
         isCreative = compound.getBoolean("isCreative");
         goggles = compound.contains("Goggles");
         hat = compound.contains("TrainHat");
+        instableMagicNumber = compound.getInt("InstableMagicNumber");
+        instableTickRemaining = compound.getInt("InstableTickRemaining");
         super.read(compound, registries, clientPacket);
     }
 
@@ -185,6 +259,14 @@ public class ChronendicBlazeBurnerBlockEntity extends SmartBlockEntity {
         if (!heatLevel.isAtLeast(BlazeBurnerBlock.HeatLevel.FADING) && stockKeeper)
             return BlazeBurnerBlock.HeatLevel.FADING;
         return heatLevel;
+    }
+
+    public void startInstableMagic(){
+        var rand = level.getRandom();
+        var magic = rand.nextIntBetweenInclusive(1, 10);
+        var magicSign = rand.nextBoolean() ? 1 : -1;
+        instableMagicNumber = magic * magicSign;
+        instableTickRemaining = 20;
     }
 
     public void updateBlockState() {
@@ -201,6 +283,8 @@ public class ChronendicBlazeBurnerBlockEntity extends SmartBlockEntity {
 
     protected boolean tryUpdateFuel(ItemStack itemStack, boolean forceOverflow, boolean simulate) {
         if (isCreative)
+            return false;
+        if(getBlockState().getValue(ChronendicBlazeBurnerBlock.INSTABLE))
             return false;
 
         FuelType newFuel = FuelType.NONE;
@@ -362,6 +446,15 @@ public class ChronendicBlazeBurnerBlockEntity extends SmartBlockEntity {
         }
     }
 
+    @Override
+    public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+        if(getBlockState().getValue(ChronendicBlazeBurnerBlock.INSTABLE)){
+            MyLang.builder().translate("tooltip.burner.instable_magic_number", instableMagicNumber)
+                    .forGoggles(tooltip);
+            return true;
+        }
+        return false;
+    }
 
     public enum FuelType {
         NONE, SUPPRESS, NORMAL

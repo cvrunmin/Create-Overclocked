@@ -31,6 +31,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
@@ -45,18 +46,20 @@ public class ChronendicBlazeBurnerBlock extends HorizontalDirectionalBlock imple
 
     public static final EnumProperty<BlazeBurnerBlock.HeatLevel> HEAT_LEVEL = EnumProperty.create("blaze", BlazeBurnerBlock.HeatLevel.class, en -> en != BlazeBurnerBlock.HeatLevel.NONE);
 
+    public static final BooleanProperty INSTABLE = BooleanProperty.create("instable");
+
     public static final MapCodec<ChronendicBlazeBurnerBlock> CODEC = simpleCodec(ChronendicBlazeBurnerBlock::new);
 
     public ChronendicBlazeBurnerBlock(Properties properties) {
         super(properties);
-        registerDefaultState(defaultBlockState().setValue(HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.FADING));
+        registerDefaultState(defaultBlockState().setValue(HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.FADING).setValue(INSTABLE, false));
     }
 
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(HEAT_LEVEL, FACING);
+        builder.add(HEAT_LEVEL, INSTABLE, FACING);
     }
 
     @Override
@@ -96,6 +99,18 @@ public class ChronendicBlazeBurnerBlock extends HorizontalDirectionalBlock imple
                 bbte.notifyUpdate();
                 return ItemInteractionResult.SUCCESS;
             });
+
+        if(state.getValue(INSTABLE)){
+            if (stack.isEmpty())
+                return onBlockEntityUseItemOn(level, pos, bbte -> {
+                    if (!bbte.goggles)
+                        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                    bbte.goggles = false;
+                    bbte.notifyUpdate();
+                    return ItemInteractionResult.SUCCESS;
+                });
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
 
         var be = getBlockEntity(level, pos);
         if (be != null && be.stockKeeper) {

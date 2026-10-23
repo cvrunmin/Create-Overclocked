@@ -20,7 +20,7 @@ public class AllEntityTypes {
             .register();
 
     public static EntityEntry<ChronendicBlaze> CHRONENDIC_BLAZE = REGISTRATE
-            .entity("chronendic_blaze", ChronendicBlaze::new, MobCategory.MONSTER)
+            .<ChronendicBlaze>entity("chronendic_blaze", ChronendicBlaze::new, MobCategory.MONSTER)
             .properties(builder -> builder.fireImmune().sized(0.6f, 1.8f).clientTrackingRange(8))
             .attributes(ChronendicBlaze::createAttributes)
             .tag(EntityTypeTags.FALL_DAMAGE_IMMUNE, EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES)

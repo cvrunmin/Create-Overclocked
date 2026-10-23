@@ -1,0 +1,24 @@
+{
+  "entity.chronendic_blaze.ambient": {
+    "sounds": [
+      "create_andertech:mob/chronendic_blaze/breathe1",
+      "create_andertech:mob/chronendic_blaze/breathe2",
+      "create_andertech:mob/chronendic_blaze/breathe3"
+    ],
+    "subtitle": "create_andertech.subtitles.entity.chronendic_blaze.ambient"
+  },
+  "entity.chronendic_blaze.death": {
+    "sounds": [
+      "create_andertech:mob/chronendic_blaze/death"
+    ],
+    "subtitle": "create_andertech.subtitles.entity.chronendic_blaze.death"
+  },
+  "entity.chronendic_blaze.hurt": {
+    "sounds": [
+      "create_andertech:mob/chronendic_blaze/hit1",
+      "create_andertech:mob/chronendic_blaze/hit2",
+      "create_andertech:mob/chronendic_blaze/hit3"
+    ],
+    "subtitle": "create_andertech.subtitles.entity.chronendic_blaze.hurt"
+  }
+}

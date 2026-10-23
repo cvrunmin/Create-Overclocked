@@ -5,6 +5,7 @@ import com.simibubi.create.foundation.data.AssetLookup;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import io.github.cvrunmin.create_andertech.CreateAndertech;
 import io.github.cvrunmin.create_andertech.content.kinetics.gearbox.VerticalCrimschistGearboxItem;
+import io.github.cvrunmin.create_andertech.content.misc.EndopyroticCinderPasteItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
@@ -44,7 +45,7 @@ public class AllItems {
     public static final ItemEntry<Item> FORGED_CHRONENDITE_ORB = REGISTRATE.item("forged_chronendite_orb", Item::new)
             .register();
 
-    public static final ItemEntry<Item> ENDOPYROTIC_CINDER_PASTE = REGISTRATE.item("endopyrotic_cinder_paste", Item::new)
+    public static final ItemEntry<EndopyroticCinderPasteItem> ENDOPYROTIC_CINDER_PASTE = REGISTRATE.item("endopyrotic_cinder_paste", EndopyroticCinderPasteItem::new)
             .register();
 
     public static final ItemEntry<VerticalCrimschistGearboxItem> VERTICAL_CRIMSCHIST_GEARBOX =
