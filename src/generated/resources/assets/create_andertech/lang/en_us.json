@@ -71,6 +71,7 @@
   "create_andertech.tooltip.differential.misconfigured.hint": "It appears that this %1$s has _too many_ outputs, or _no_ inputs.",
   "create_andertech.tooltip.noTank": "No Fluid Container",
   "create_andertech.tooltip.noTank.hint": "It appears that there is _no_ fluid container _above_ this %1$s.",
+  "create_andertech.tooltip.speedRequirement.overspeed": "Overspeed",
   "entity.create_andertech.chronendic_blaze": "Chronendic Blaze",
   "entity.create_andertech.nylium_transmuter": "Nylium Transmuter",
   "fluid.create_andertech.chronendite_solution": "Chronendite Solution",

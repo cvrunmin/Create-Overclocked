@@ -26,6 +26,8 @@
     "RotationPropagatorInvoker",
     "RotationPropagatorMixin",
     "ServerGamePacketListenerAccessor",
+    "SpeedGaugeBlockEntityMixin",
+    "SpeedLevelMixin",
     "belt.BeltBlockEntityMixin",
     "belt.BeltCrusherInteractionHandlerMixin",
     "belt.BeltMovementHandlerMixin",

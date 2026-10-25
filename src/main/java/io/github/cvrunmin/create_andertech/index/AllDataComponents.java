@@ -7,6 +7,7 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.common.crafting.IngredientType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -18,16 +19,20 @@ import java.util.function.UnaryOperator;
 public class AllDataComponents {
     private static final DeferredRegister.DataComponents DATA_COMPONENTS = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, CreateAndertech.MODID);
 
-    public static final DataComponentType<Boolean> BELT_IS_SPEEDING = register(
+    public static final DataComponentType<Boolean> BELT_IS_SPEEDING = registerDataComponentType(
             "speeding",
             builder -> builder.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL)
     );
+
+    private static final DeferredRegister<AttachmentType<?>> ATTACHMENT = DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, CreateAndertech.MODID);
+
+    public static final DeferredHolder<AttachmentType<?>, AttachmentType<Long>> DIFFERENTIAL_NETWORK_ID = ATTACHMENT.register("differential_network_id", () -> AttachmentType.builder(() -> 0L).serialize(Codec.LONG).build());
 
     private static final DeferredRegister<IngredientType<?>> INGREDIENT_TYPES = DeferredRegister.create(NeoForgeRegistries.INGREDIENT_TYPES, CreateAndertech.MODID);
 
     public static final DeferredHolder<IngredientType<?>, IngredientType<ItemTagIngredientWithCount>> ITEM_TAG_WITH_COUNT = INGREDIENT_TYPES.register("item_tag_with_count", () -> new IngredientType<>(ItemTagIngredientWithCount.CODEC));
 
-    private static <T> DataComponentType<T> register(String name, UnaryOperator<DataComponentType.Builder<T>> builder) {
+    private static <T> DataComponentType<T> registerDataComponentType(String name, UnaryOperator<DataComponentType.Builder<T>> builder) {
         DataComponentType<T> type = builder.apply(DataComponentType.builder()).build();
         DATA_COMPONENTS.register(name, () -> type);
         return type;
@@ -36,5 +41,6 @@ public class AllDataComponents {
     @ApiStatus.Internal
     public static void register(IEventBus modEventBus) {
         DATA_COMPONENTS.register(modEventBus);
+        ATTACHMENT.register(modEventBus);
     }
 }

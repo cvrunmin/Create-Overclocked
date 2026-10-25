@@ -33,6 +33,7 @@ public class CADataGen {
             provider.add(CreateAndertech.MODID + ".infusion_vat.content_interaction_state.ingredient", "Ingredient Only");
             provider.add(CreateAndertech.MODID + ".infusion_vat.content_interaction_state.all", "All");
             provider.add(CreateAndertech.MODID + ".infusion_vat.content_interaction_state.product", "Product Only");
+            provider.add(CreateAndertech.MODID + ".tooltip.speedRequirement.overspeed", "Overspeed");
             provider.add(CreateAndertech.MODID + ".tooltip.noTank", "No Fluid Container");
             provider.add(CreateAndertech.MODID + ".tooltip.noTank.hint", "It appears that there is _no_ fluid container _above_ this %1$s.");
 

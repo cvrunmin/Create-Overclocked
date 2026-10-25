@@ -71,60 +71,64 @@ public class CrimschistBlackboxDifferentialBlock extends RotatedPillarKineticBlo
 
     // Ports
 
-    public static Mode positiveMode(BlockState state){
+    public static Mode positiveMode(BlockState state) {
         return state.getValue(POSITIVE_MODE);
     }
 
-    public static Mode negativeMode(BlockState state){
+    public static Mode negativeMode(BlockState state) {
         return state.getValue(NEGATIVE_MODE);
     }
 
-    public static Mode cogMode(BlockState state){
+    public static Mode cogMode(BlockState state) {
         var pos = positiveMode(state);
         var neg = negativeMode(state);
-        if(pos != Mode.OUT && neg != Mode.OUT){
+        if (pos != Mode.OUT && neg != Mode.OUT) {
             return Mode.OUT;
         }
         return Mode.IN;
     }
 
     public static Mode modeOf(BlockState state, Port port) {
-        return switch (port){
+        return switch (port) {
             case NEG -> negativeMode(state);
             case POS -> positiveMode(state);
             case COG -> cogMode(state);
         };
     }
 
+    public static Optional<Mode> modeOf(BlockState state, BlockPos self, BlockPos other) {
+        var optPort = portOf(state, self, other);
+        return optPort.map(port -> switch (port) {
+            case NEG -> negativeMode(state);
+            case POS -> positiveMode(state);
+            case COG -> cogMode(state);
+        });
+    }
+
     public static Direction directionOf(Direction.Axis axis, boolean positive) {
         return Direction.get(positive ? Direction.AxisDirection.POSITIVE : Direction.AxisDirection.NEGATIVE, axis);
     }
 
-    /** The port a given face of this block belongs to; perpendicular faces all address the ring. */
+    /**
+     * The port a given face of this block belongs to; perpendicular faces all address the ring.
+     */
     public static Port portForFace(BlockState state, Direction face) {
         if (face.getAxis() != state.getValue(AXIS))
             return Port.COG;
         return face.getAxisDirection() == Direction.AxisDirection.POSITIVE ? Port.POS : Port.NEG;
     }
 
-    public static Optional<Port> portOf(BlockState state, BlockPos self, BlockPos other){
+    public static Optional<Port> portOf(BlockState state, BlockPos self, BlockPos other) {
         BlockPos diff = other.subtract(self);
-        Direction.Axis axis = state.getValue(AXIS);
-        int alongAxis = axis.choose(diff.getX(), diff.getY(), diff.getZ());
-        if (alongAxis != 0) {
-            for (Direction.Axis perpendicular : Direction.Axis.values())
-                if (perpendicular != axis && perpendicular.choose(diff.getX(), diff.getY(), diff.getZ()) != 0) {
-                    if(diff.distManhattan(BlockPos.ZERO) == 2){
-                        return Optional.of(Port.COG);
-                    }
-                    return Optional.empty();
-                }
-            boolean isPositive = alongAxis > 0;
-            if(isPositive) return Optional.of(Port.POS);
-            else return Optional.of(Port.NEG);
-        }
-        if(diff.distManhattan(BlockPos.ZERO) == 2){
+        int dist = diff.distManhattan(BlockPos.ZERO);
+        if (dist == 2) {
             return Optional.of(Port.COG);
+        } else if (dist == 1) {
+            Direction.Axis axis = state.getValue(AXIS);
+            int alongAxis = axis.choose(diff.getX(), diff.getY(), diff.getZ());
+            if (alongAxis != 0) {
+                return Optional.of(alongAxis > 0 ? Port.POS : Port.NEG);
+            }
         }
         return Optional.empty();
     }
@@ -199,15 +203,15 @@ public class CrimschistBlackboxDifferentialBlock extends RotatedPillarKineticBlo
         var axis = state.getValue(AXIS);
         var negNeighbour = pos.relative(axis, -1);
         var negBlockState = level.getBlockState(negNeighbour);
-        if(negBlockState.getBlock() instanceof IRotate negRotate){
-            if(negRotate.hasShaftTowards(level, negNeighbour, negBlockState, Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE))){
+        if (negBlockState.getBlock() instanceof IRotate negRotate) {
+            if (negRotate.hasShaftTowards(level, negNeighbour, negBlockState, Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE))) {
                 state = state.setValue(NEGATIVE_MODE, Mode.IN);
             }
         }
         var posNeighbour = pos.relative(axis, 1);
-        var posBlockState = level.getBlockState(negNeighbour);
-        if(posBlockState.getBlock() instanceof IRotate posRotate){
-            if(posRotate.hasShaftTowards(level, posNeighbour, posBlockState, Direction.fromAxisAndDirection(axis, Direction.AxisDirection.NEGATIVE))){
+        var posBlockState = level.getBlockState(posNeighbour);
+        if (posBlockState.getBlock() instanceof IRotate posRotate) {
+            if (posRotate.hasShaftTowards(level, posNeighbour, posBlockState, Direction.fromAxisAndDirection(axis, Direction.AxisDirection.NEGATIVE))) {
                 state = state.setValue(POSITIVE_MODE, Mode.IN);
             }
         }
@@ -220,23 +224,22 @@ public class CrimschistBlackboxDifferentialBlock extends RotatedPillarKineticBlo
     public InteractionResult onWrenched(BlockState state, UseOnContext context) {
         if (context.getClickedFace().getAxis() != state.getValue(AXIS))
             return super.onWrenched(state, context);
-        if(context.getClickedFace().getAxisDirection() == Direction.AxisDirection.NEGATIVE)
+        if (context.getClickedFace().getAxisDirection() == Direction.AxisDirection.NEGATIVE)
             return cycleNegativeMode(state, context.getLevel(), context.getClickedPos());
         return cyclePositiveMode(state, context.getLevel(), context.getClickedPos());
     }
 
-    private static InteractionResult cycleNegativeMode(BlockState state, Level level, BlockPos pos){
-        if(!level.isClientSide){
+    private static InteractionResult cycleNegativeMode(BlockState state, Level level, BlockPos pos) {
+        if (!level.isClientSide) {
             var posMode = state.getValue(POSITIVE_MODE);
             BlockState newState;
-            if(posMode == Mode.NONE){
+            if (posMode == Mode.NONE) {
                 var cycledMode = state.getValue(NEGATIVE_MODE) == Mode.IN ? Mode.OUT : Mode.IN;
                 newState = state.setValue(NEGATIVE_MODE, cycledMode);
-            }else if(posMode == Mode.OUT){
+            } else if (posMode == Mode.OUT) {
                 var cycledMode = state.getValue(NEGATIVE_MODE) == Mode.IN ? Mode.NONE : Mode.IN;
                 newState = state.setValue(NEGATIVE_MODE, cycledMode);
-            }
-            else{
+            } else {
                 newState = state.cycle(NEGATIVE_MODE);
             }
             KineticBlockEntity.switchToBlockState(level, pos, newState);
@@ -245,17 +248,17 @@ public class CrimschistBlackboxDifferentialBlock extends RotatedPillarKineticBlo
         return InteractionResult.SUCCESS;
     }
 
-    private static InteractionResult cyclePositiveMode(BlockState state, Level level, BlockPos pos){
-        if(!level.isClientSide){
+    private static InteractionResult cyclePositiveMode(BlockState state, Level level, BlockPos pos) {
+        if (!level.isClientSide) {
             var negMode = state.getValue(NEGATIVE_MODE);
             BlockState newState;
-            if(negMode == Mode.NONE){
+            if (negMode == Mode.NONE) {
                 var cycledMode = state.getValue(POSITIVE_MODE) == Mode.IN ? Mode.OUT : Mode.IN;
                 newState = state.setValue(POSITIVE_MODE, cycledMode);
             } else if (negMode == Mode.OUT) {
                 var cycledMode = state.getValue(POSITIVE_MODE) == Mode.IN ? Mode.NONE : Mode.IN;
                 newState = state.setValue(POSITIVE_MODE, cycledMode);
-            } else{
+            } else {
                 newState = state.cycle(POSITIVE_MODE);
             }
             KineticBlockEntity.switchToBlockState(level, pos, newState);
@@ -269,7 +272,7 @@ public class CrimschistBlackboxDifferentialBlock extends RotatedPillarKineticBlo
     @Override
     protected boolean areStatesKineticallyEquivalent(BlockState oldState, BlockState newState) {
         if (newState.getBlock() instanceof CrimschistBlackboxDifferentialBlock) {
-            if(positiveMode(oldState) != positiveMode(newState) || negativeMode(oldState) != negativeMode(newState))
+            if (positiveMode(oldState) != positiveMode(newState) || negativeMode(oldState) != negativeMode(newState))
                 return false;
         }
         return super.areStatesKineticallyEquivalent(oldState, newState);

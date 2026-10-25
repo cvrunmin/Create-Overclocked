@@ -32,6 +32,7 @@ import java.util.List;
 
 public class CrimschistBlackboxDifferentialBlockEntity extends SplitShaftBlockEntity implements IOverspeedKineticBE {
 
+    public float lastCalculatedSpeed;
 
     public CrimschistBlackboxDifferentialBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -122,9 +123,19 @@ public class CrimschistBlackboxDifferentialBlockEntity extends SplitShaftBlockEn
         return dominant;
     }
 
+    private float dominantSpeed;
+
     @Override
     public void setSpeed(float speed) {
         // no-op
+    }
+
+    public float getDominantSpeed() {
+        return dominantSpeed;
+    }
+
+    public void setDominantSpeed(float dominantSpeed) {
+        this.dominantSpeed = dominantSpeed;
     }
 
     @Override
