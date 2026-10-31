@@ -15,6 +15,7 @@ import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringB
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
+import io.github.cvrunmin.create_andertech.foundation.MyLang;
 import io.github.cvrunmin.create_andertech.index.AllBlockEntityTypes;
 import io.github.cvrunmin.create_andertech.index.AllBlocks;
 import io.github.cvrunmin.create_andertech.content.kinetics.simpleRelays.OCKineticBlockEntity;
@@ -171,6 +172,7 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
     public void tick() {
         super.tick();
 
+        prevTimer = timer;
         if (getSpeed() == 0)
             return;
         if (!level.isClientSide && player != null && player.blockBreakingProgress != null) {
@@ -184,7 +186,7 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
             if(cooldownTimer > 0) return;
         }
 
-        if (player == null)
+        if (!level.isClientSide && player == null)
             return;
 
         if (state == State.WAITING) {
@@ -233,14 +235,13 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
             return;
         }
 
-        prevTimer = timer;
         timer += getTimerSpeed();
 
-        if(prevTimer < 1000 && timer >= 1000){
+        if(prevTimer < 1000 && timer >= 1000 && !level.isClientSide){
             pendingAction = 1;
         }
 
-        if(prevTimer < 1000 && timer >= 1000 && getSpeed() > 0){
+        if(prevTimer < 1000 && timer >= 1000 && Math.abs(getSpeed()) > 0){
             if(!level.isClientSide){
                 if (fistBump)
                     triggerFistBump();
@@ -252,6 +253,7 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
         }
 
         if(timer > 2000){
+            prevTimer = timer;
             timer = 0;
             state = State.WAITING;
             if(!level.isClientSide) sendData();
@@ -376,10 +378,11 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
 
     @Override
     protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
+        var oldState = state;
         state = NBTHelper.readEnum(compound, "State", State.class);
         mode = NBTHelper.readEnum(compound, "Mode", Mode.class);
         timer = compound.getInt("Timer");
-        if(getTimerSpeed() > 0){
+        if(state != State.WAITING && oldState != State.WAITING && getTimerSpeed() > 0){
             prevTimer = timer - getTimerSpeed();
         }else{
             prevTimer = timer;
@@ -543,13 +546,13 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
         int timerSpeed = getTimerSpeed();
         PartialModel handPose = getHandPose();
 
-        float lerpedTimer = Mth.abs(Mth.lerp(partialTicks, prevTimer, timer));
+        float lerpedTimer = Mth.abs(Mth.lerp(partialTicks, prevTimer > timer && timerSpeed > 0 ? prevTimer - 2000 : prevTimer, timer));
         if (lerpedTimer < 1000) {
-            progress = 1 - lerpedTimer / 1000f;
+            progress = lerpedTimer / 1000f;
             if (fistBump)
                 progress *= progress;
         }
-        else progress = lerpedTimer / 1000f;
+        else progress = 1 - (lerpedTimer / 1000f - 1);
         float handLength = handPose == AllPartialModels.DEPLOYER_HAND_POINTING ? 0
                 : handPose == AllPartialModels.DEPLOYER_HAND_HOLDING ? 4 / 16f : 3 / 16f;
         float distance = Math.min(Mth.clamp(progress, 0, 1) * (reach + handLength), 21 / 16f);

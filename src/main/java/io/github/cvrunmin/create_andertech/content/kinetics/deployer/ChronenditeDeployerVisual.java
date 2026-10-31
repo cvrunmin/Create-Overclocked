@@ -100,14 +100,15 @@ public class ChronenditeDeployerVisual extends CrimschistShaftVisual<Chronendite
     }
 
     private float getProgress(float partialTicks) {
-        var lerpedTimer = Math.abs(Mth.lerp(partialTicks, blockEntity.prevTimer, blockEntity.timer));
+        int last = blockEntity.prevTimer > blockEntity.timer && blockEntity.getTimerSpeed() > 0 ? blockEntity.prevTimer - 2000 : blockEntity.prevTimer;
+        var lerpedTimer = Math.abs(Mth.lerp(partialTicks, last, blockEntity.timer));
         if (lerpedTimer < 1000) {
-            float f = 1 - lerpedTimer / 1000f;
+            float f = lerpedTimer / 1000f;
             if (blockEntity.fistBump)
                 f *= f;
             return f;
         }
-        return lerpedTimer / 1000f;
+        return 1 - (lerpedTimer / 1000f - 1);
     }
 
     private void updatePosition() {

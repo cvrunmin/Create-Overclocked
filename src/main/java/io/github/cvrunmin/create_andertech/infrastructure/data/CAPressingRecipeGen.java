@@ -14,7 +14,7 @@ public class CAPressingRecipeGen extends PressingRecipeGen {
 
     GeneratedRecipe CRIMSCHIST_SHEET = create("crimschist_sheet", b ->
             b.require(AllItems.CRIMSCHIST_ALLOY)
-                    .output(AllItems.CRIMSCHIST_SHEET, 2));
+                    .output(AllItems.CRIMSCHIST_SHEET, 1));
 
     public CAPressingRecipeGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries, CreateAndertech.MODID);
