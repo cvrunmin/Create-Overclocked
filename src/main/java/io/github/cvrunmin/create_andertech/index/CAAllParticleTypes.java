@@ -3,6 +3,9 @@ package io.github.cvrunmin.create_andertech.index;
 import com.mojang.serialization.MapCodec;
 import com.simibubi.create.content.kinetics.fan.AirFlowParticleData;
 import io.github.cvrunmin.create_andertech.CreateAndertech;
+import io.github.cvrunmin.create_andertech.content.decoration.particles.CylinderMotionEnchantGlyphEmitterParticle;
+import io.github.cvrunmin.create_andertech.content.decoration.particles.CylinderMotionEnchantGlyphParticle;
+import io.github.cvrunmin.create_andertech.content.decoration.particles.CylinderMotionParticleOptions;
 import io.github.cvrunmin.create_andertech.content.kinetics.fan.AdvancedAirFlowParticle;
 import io.github.cvrunmin.create_andertech.content.kinetics.fan.AdvancedAirFlowParticleData;
 import net.minecraft.core.particles.ParticleType;
@@ -29,6 +32,12 @@ public class CAAllParticleTypes {
         }
     });
 
+    public static final DeferredHolder<ParticleType<?>, ParticleType<CylinderMotionParticleOptions>> CYLINDER_MOTION_ENCHANT_GLYPH = PARTICLE_TYPE
+            .register("cylinder_motion_enchant_glyph", () -> new CylinderMotionParticleOptions.CylinderMotionParticleOptionsParticleType(false));
+
+    public static final DeferredHolder<ParticleType<?>, ParticleType<CylinderMotionParticleOptions>> CYLINDER_MOTION_ENCHANT_GLYPH_EMITTER = PARTICLE_TYPE
+            .register("cylinder_motion_enchant_glyph_emitter", () -> new CylinderMotionParticleOptions.CylinderMotionParticleOptionsParticleType(false));
+
     public static void register(IEventBus modBus){
         PARTICLE_TYPE.register(modBus);
         modBus.addListener(CAAllParticleTypes::registerParticleProviders);
@@ -36,5 +45,7 @@ public class CAAllParticleTypes {
 
     private static void registerParticleProviders(RegisterParticleProvidersEvent event){
         event.registerSpriteSet(ADVANCED_AIR_FLOW.get(), AdvancedAirFlowParticle.Factory::new);
+        event.registerSpriteSet(CYLINDER_MOTION_ENCHANT_GLYPH.get(), CylinderMotionEnchantGlyphParticle.Provider::new);
+        event.registerSpecial(CYLINDER_MOTION_ENCHANT_GLYPH_EMITTER.get(), new CylinderMotionEnchantGlyphEmitterParticle.Provider());
     }
 }

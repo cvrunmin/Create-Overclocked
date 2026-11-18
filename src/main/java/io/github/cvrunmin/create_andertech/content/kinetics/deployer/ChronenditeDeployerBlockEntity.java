@@ -182,7 +182,7 @@ public class ChronenditeDeployerBlockEntity extends OCKineticBlockEntity {
             }
         }
         if(cooldownTimer > 0){
-            cooldownTimer -= getFailureCooldownTimer();
+            cooldownTimer -= getTimerSpeed();
             if(cooldownTimer > 0) return;
         }
 

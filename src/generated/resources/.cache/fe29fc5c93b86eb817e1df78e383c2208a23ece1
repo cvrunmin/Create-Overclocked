@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-25T12:04:42.4700688	Registrate Provider for create_andertech [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
+// 1.21.1	2026-11-18T22:26:34.8020554	Registrate Provider for create_andertech [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
 98d26546200e4b2c0a00643fc9f027b49ef4594b assets/create_andertech/blockstates/andesite_encased_crimschist_cogwheel.json
 4dc0142d21221d69b52fb1acf47b46dc184a78a0 assets/create_andertech/blockstates/andesite_encased_crimschist_large_cogwheel.json
 4946d26000065d09b51752b6ad34d0050f829a0d assets/create_andertech/blockstates/andesite_encased_crimschist_shaft.json
@@ -49,8 +49,8 @@ d0af03aeed1de0fcd54098868465452cc97a7513 assets/create_andertech/blockstates/spe
 3f828a5bc7b3c130e7db05842a7c326b2ae96064 assets/create_andertech/blockstates/untopped_crimson_nylium.json
 d0f5051f7f532dfec5b116d510af0c134a7dd9ff assets/create_andertech/blockstates/untopped_warped_nylium.json
 8d8a692a5a97c13613585a3fd857c8201ce91c7e assets/create_andertech/blockstates/warped_nylium_transmuter.json
-3e63cdf30945195b275743b4a56009a25f130dae assets/create_andertech/lang/en_ud.json
-db7c71d1a4f304e5fc400f74e0a49617a80d3f09 assets/create_andertech/lang/en_us.json
+b270f0e72b0cb3b871416127437a8e9cab62386d assets/create_andertech/lang/en_ud.json
+d73d09066ed19e7e18fc967b821bbc757d1ddce3 assets/create_andertech/lang/en_us.json
 7f3e4636d521a67eb621d5d27d6b175d455179f8 assets/create_andertech/models/block/andesite_encased_crimschist_cogwheel.json
 5a5a3aac31c44030880774b96cfecc40568abe75 assets/create_andertech/models/block/andesite_encased_crimschist_cogwheel_bottom.json
 82ce3bec0d6b5332b4f5007245ca2cdd8e28b9c9 assets/create_andertech/models/block/andesite_encased_crimschist_cogwheel_top.json
@@ -181,6 +181,7 @@ a870a1d03017f0da05ebca10394adb35a27acd66 assets/create_andertech/models/item/and
 99602df3bdf3242499f68a300e27295d020eba65 assets/create_andertech/models/item/brass_encased_crimschist_shaft.json
 84432497af1c4f65b0f0a4aa3ef7526b8ff0c4d3 assets/create_andertech/models/item/chronendic_blaze_burner.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/create_andertech/models/item/chronendic_blaze_spawn_egg.json
+0b281e6544706f65914b83672a1ae75ab40f38c6 assets/create_andertech/models/item/chronendic_pearl.json
 134d0840aeef2eb6c92ef3b3e1c4352d01d25568 assets/create_andertech/models/item/chronendite_block.json
 526d0731bb2d997ec4bcd2e9db7315df26612b2d assets/create_andertech/models/item/chronendite_casing.json
 c9f0d0081da9dd1f66ff5aa224604a40794d7c3a assets/create_andertech/models/item/chronendite_crushing_wheel.json

@@ -14,6 +14,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.data.ParticleDescriptionProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
+import java.util.HexFormat;
+import java.util.Iterator;
 import java.util.concurrent.CompletableFuture;
 
 import static io.github.cvrunmin.create_andertech.CreateAndertech.REGISTRATE;
@@ -81,16 +83,22 @@ public class CADataGen {
         generator.addProvider(event.includeClient(), new ParticleDescriptionProvider(output, event.getExistingFileHelper()) {
             @Override
             protected void addDescriptions() {
-                spriteSet(CAAllParticleTypes.ADVANCED_AIR_FLOW.get(),
-                        ResourceLocation.withDefaultNamespace("generic_7"),
-                        ResourceLocation.withDefaultNamespace("generic_6"),
-                        ResourceLocation.withDefaultNamespace("generic_5"),
-                        ResourceLocation.withDefaultNamespace("generic_4"),
-                        ResourceLocation.withDefaultNamespace("generic_3"),
-                        ResourceLocation.withDefaultNamespace("generic_2"),
-                        ResourceLocation.withDefaultNamespace("generic_1"),
-                        ResourceLocation.withDefaultNamespace("generic_0")
-                );
+                spriteSet(CAAllParticleTypes.ADVANCED_AIR_FLOW.get(), ResourceLocation.withDefaultNamespace("generic"), 8, true);
+                spriteSet(CAAllParticleTypes.CYLINDER_MOTION_ENCHANT_GLYPH.get(), () -> new Iterator<ResourceLocation>() {
+                    private final ResourceLocation baseName = ResourceLocation.withDefaultNamespace("sga");
+                    private int counter = 0;
+                    @Override
+                    public boolean hasNext() {
+                        return counter < 26;
+                    }
+
+                    @Override
+                    public ResourceLocation next() {
+                        var texture = baseName.withSuffix("_" + (char)('a' + this.counter));
+                        this.counter++;
+                        return texture;
+                    }
+                });
             }
         });
         generator.addProvider(event.includeClient(), new CASoundDefProvider(output, event.getExistingFileHelper()));

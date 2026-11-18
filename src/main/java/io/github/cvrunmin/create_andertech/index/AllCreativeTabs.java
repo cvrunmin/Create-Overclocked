@@ -53,7 +53,8 @@ public class AllCreativeTabs {
                     AllBlocks.ANDESITE_ENCASED_CRIMSCHIST_LARGE_COGWHEEL,
                     AllBlocks.BRASS_ENCASED_CRIMSCHIST_LARGE_COGWHEEL,
                     AllBlocks.METAL_GIRDER_ENCASED_CRIMSCHIST_SHAFT,
-                    AllItems.INCOMPLETE_BLACKBOX_DIFFERENTIAL
+                    AllItems.INCOMPLETE_BLACKBOX_DIFFERENTIAL,
+                    AllItems.CHRONENDIC_PEARL
             );
             for (ItemProviderEntry<? extends FeatureElement, ?> itemProviderEntry : simpleBlacklist) {
                 exclusions.add(itemProviderEntry.asItem());

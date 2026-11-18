@@ -3,8 +3,10 @@ package io.github.cvrunmin.create_andertech.index;
 import com.tterrag.registrate.util.entry.EntityEntry;
 import io.github.cvrunmin.create_andertech.content.entity.ChronendicBlaze;
 import io.github.cvrunmin.create_andertech.content.entity.ChronendicBlazeRenderer;
+import io.github.cvrunmin.create_andertech.content.entity.ChronendicCharge;
 import io.github.cvrunmin.create_andertech.content.misc.NyliumTransmuterEntity;
 import io.github.cvrunmin.create_andertech.content.misc.NyliumTransmuterRenderer;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -27,6 +29,12 @@ public class AllEntityTypes {
             .loot((tables, entityType) -> tables.add(entityType, LootTable.lootTable()))
             .defaultSpawnEgg(0xeb1cbc, 0xbccdff)
             .renderer(() -> ChronendicBlazeRenderer::new)
+            .register();
+
+    public static EntityEntry<ChronendicCharge> CHRONENDIC_CHARGE = REGISTRATE
+            .<ChronendicCharge>entity("chronendic_charge", ChronendicCharge::new, MobCategory.MISC)
+            .properties(builder -> builder.sized(0.3125f, 0.3125f).clientTrackingRange(4))
+            .renderer(() -> ThrownItemRenderer::new)
             .register();
 
     public static void register(){}

@@ -61,6 +61,10 @@ public class AllItems {
             .model((c, p) -> p.withExistingParent(c.getName(), p.modLoc("block/crimschist_blackbox_differential/item")))
             .register();
 
+    public static final ItemEntry<Item> CHRONENDIC_PEARL = REGISTRATE.item("chronendic_pearl", Item::new)
+            .model((ctx, prov) -> prov.generated(ctx))
+            .register();
+
     public static void register() {
 
     }

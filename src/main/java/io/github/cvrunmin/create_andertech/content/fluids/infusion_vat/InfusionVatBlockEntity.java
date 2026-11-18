@@ -779,7 +779,13 @@ public class InfusionVatBlockEntity extends SmartBlockEntity implements IHaveGog
             this.reservedOutputItem = reservedOutputItem;
             this.reservedOutputFluid = reservedOutputFluid;
 
-            this.requiredProcessingTicks = Math.max(20, recipe.getProcessingDuration()) * (processedAmount / (lastSeenStack.getMaxStackSize() / 4) + 1);
+            int multiplier;
+            if(lastSeenStack.getMaxStackSize() < 4){
+                multiplier = processedAmount;
+            }else {
+                multiplier = processedAmount / (lastSeenStack.getMaxStackSize() / 4) + 1;
+            }
+            this.requiredProcessingTicks = Math.max(20, recipe.getProcessingDuration()) * multiplier;
         }
     }
 

@@ -1,31 +1,43 @@
 package io.github.cvrunmin.create_andertech.content.entity;
 
+import io.github.cvrunmin.create_andertech.content.decoration.particles.CylinderMotionParticleOptions;
 import io.github.cvrunmin.create_andertech.index.AllEntityTypes;
+import io.github.cvrunmin.create_andertech.index.CAAllParticleTypes;
 import io.github.cvrunmin.create_andertech.index.CAAllSoundEvents;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializer;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.MoveTowardsRestrictionGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
+
+import java.util.EnumSet;
 
 public class ChronendicBlaze extends Monster {
     public Quaternionf coreRot;
     public Vector3f coreRotV = new Vector3f();
     public Vector3f coreRotA = new Vector3f();
     private int remainingCoreRotAUpdateTick = 0;
+    private int remainingEnchantGlyphTick = 0;
+
+    private static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(ChronendicBlaze.class, EntityDataSerializers.BYTE);
 
     public ChronendicBlaze(EntityType<ChronendicBlaze> entityType, Level level) {
         super(entityType, level);
@@ -44,7 +56,7 @@ public class ChronendicBlaze extends Monster {
 
     @Override
     protected void registerGoals() {
-
+        this.goalSelector.addGoal(4, new ChronendicBlazeAttackGoal(this));
         this.goalSelector.addGoal(5, new MoveTowardsRestrictionGoal(this, 1.0));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0, 0.0F));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
@@ -54,6 +66,12 @@ public class ChronendicBlaze extends Monster {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 25.0f).add(Attributes.ATTACK_DAMAGE, 8.0).add(Attributes.MOVEMENT_SPEED, 0.27F).add(Attributes.FOLLOW_RANGE, 32.0);
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_FLAGS_ID, (byte)0);
     }
 
     @Override
@@ -75,6 +93,7 @@ public class ChronendicBlaze extends Monster {
     public float getLightLevelDependentMagicValue() {
         return 1.0F;
     }
+
     @Override
     public void aiStep() {
         if (!this.onGround() && this.getDeltaMovement().y < 0.0) {
@@ -115,6 +134,27 @@ public class ChronendicBlaze extends Monster {
     }
 
     @Override
+    public boolean isOnFire() {
+        return isCharged();
+    }
+
+    private boolean isCharged() {
+        return (this.entityData.get(DATA_FLAGS_ID) & 1) != 0;
+    }
+
+
+    void setCharged(boolean charged) {
+        byte b0 = this.entityData.get(DATA_FLAGS_ID);
+        if (charged) {
+            b0 = (byte)(b0 | 1);
+        } else {
+            b0 = (byte)(b0 & -2);
+        }
+
+        this.entityData.set(DATA_FLAGS_ID, b0);
+    }
+
+    @Override
     public void tick() {
         super.tick();
         if(level().isClientSide){
@@ -130,11 +170,167 @@ public class ChronendicBlaze extends Monster {
                 var dQ = new Quaternionf().fromAxisAngleRad(axis, vLen);
                 coreRot.add(dQ).normalize();
             }
+            if(remainingEnchantGlyphTick > 0){
+                remainingEnchantGlyphTick--;
+            }else{
+                remainingEnchantGlyphTick = 0;
+                if(isCharged()){
+                    this.level().addParticle(new CylinderMotionParticleOptions(
+                            CAAllParticleTypes.CYLINDER_MOTION_ENCHANT_GLYPH_EMITTER.get(),
+                            (this.getBbWidth()),
+                            3,
+                            0,
+                            2f,
+                            10,
+                            10),
+                            this.getX(), this.getY(), this.getZ(), 0, 0, 0);
+                    this.level().addParticle(new CylinderMotionParticleOptions(
+                            CAAllParticleTypes.CYLINDER_MOTION_ENCHANT_GLYPH_EMITTER.get(),
+                            (this.getBbWidth()),
+                            -3,
+                            0,
+                            -2f,
+                            10,
+                            10),
+                            this.getX(), this.getY(1.0), this.getZ(), 0, 0, 0);
+                    remainingEnchantGlyphTick = 10;
+                }
+            }
         }
     }
 
     @Override
     public boolean isSensitiveToWater() {
         return true;
+    }
+
+    static class ChronendicBlazeAttackGoal extends Goal {
+        private final ChronendicBlaze blaze;
+        private int attackStep;
+        private int attackTime;
+        private int lastSeen;
+        private Vec3[] cachedBallPos;
+
+        public ChronendicBlazeAttackGoal(ChronendicBlaze blaze){
+            this.blaze = blaze;
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        }
+
+        @Override
+        public boolean canUse() {
+            LivingEntity livingentity = this.blaze.getTarget();
+            return livingentity != null && livingentity.isAlive() && this.blaze.canAttack(livingentity);
+        }
+
+        @Override
+        public void start() {
+            this.attackStep = 0;
+        }
+
+        @Override
+        public void stop() {
+            this.blaze.setCharged(false);
+            this.lastSeen = 0;
+        }
+
+        @Override
+        public boolean requiresUpdateEveryTick() {
+            return true;
+        }
+        @Override
+        public void tick() {
+            this.attackTime--;
+            LivingEntity livingentity = this.blaze.getTarget();
+            if (livingentity != null) {
+                boolean flag = this.blaze.getSensing().hasLineOfSight(livingentity);
+                if (flag) {
+                    this.lastSeen = 0;
+                } else {
+                    this.lastSeen++;
+                }
+
+                double d0 = this.blaze.distanceToSqr(livingentity);
+                if (d0 < 4.0) {
+                    if (!flag) {
+                        return;
+                    }
+
+                    if (this.attackTime <= 0) {
+                        this.attackTime = 20;
+                        this.blaze.doHurtTarget(livingentity);
+                    }
+
+                    this.blaze.getMoveControl().setWantedPosition(livingentity.getX(), livingentity.getY(), livingentity.getZ(), 1.0);
+                } else if (d0 < this.getFollowDistance() * this.getFollowDistance() && flag) {
+                    if (this.attackTime <= 0) {
+                        this.attackStep++;
+                        if (this.attackStep == 1) {
+                            this.attackTime = 30;
+                            this.blaze.setCharged(true);
+                        } else if (this.attackStep <= 6) {
+                            if(attackStep % 2 == 0){
+                                this.attackTime = 40;
+                            }else {
+                                this.attackTime = 30;
+                            }
+                        } else {
+                            this.attackTime = 20;
+                            this.attackStep = 0;
+                            this.blaze.setCharged(false);
+                        }
+
+                        if(this.attackStep % 2 == 1){
+                            cachedBallPos = new Vec3[3];
+                            var targetPos = new Vec3(livingentity.getX(), livingentity.getY(0.5), livingentity.getZ());
+                            double baseDist = this.blaze.position().distanceTo(livingentity.position()) * 0.5;
+                            for (int i = 0; i < 3; i++) {
+                                var dist = (1 + (blaze.random.nextFloat() * 2 - 0.5)) * baseDist;
+                                var angle = blaze.random.nextDouble() * 2 * Math.PI;
+                                var offsetVec = new Vec3(dist, 0, 0).yRot((float) angle);
+                                Vec3 vec3 = targetPos.add(offsetVec);
+                                cachedBallPos[i] = vec3;
+                                Level level = this.blaze.level();
+                                if(this.blaze.level() instanceof ServerLevel serverLevel){
+                                    serverLevel.sendParticles(new CylinderMotionParticleOptions(
+                                                    CAAllParticleTypes.CYLINDER_MOTION_ENCHANT_GLYPH_EMITTER.get(),
+                                                    0.25f,
+                                                    6,
+                                                    0,
+                                                    2f,
+                                                    10,
+                                                    60),
+                                            vec3.x, vec3.y, vec3.z, 0, 0, 0, 0, 0);
+                                    serverLevel.sendParticles(new CylinderMotionParticleOptions(
+                                                    CAAllParticleTypes.CYLINDER_MOTION_ENCHANT_GLYPH_EMITTER.get(),
+                                                    0.25f,
+                                                    -6,
+                                                    0,
+                                                    -2f,
+                                                    10,
+                                                    60),
+                                            vec3.x, vec3.y, vec3.z, 0, 0, 0, 0, 0);
+                                }
+                            }
+                        }else if(this.attackStep > 1 && cachedBallPos != null){
+                            for (int i = 0; i < 3; i++) {
+                                var fireball = new ChronendicCharge(this.blaze.level(), this.blaze);
+                                fireball.setPos(cachedBallPos[i]);
+                                this.blaze.level().addFreshEntity(fireball);
+                            }
+                        }
+                    }
+
+                    this.blaze.getLookControl().setLookAt(livingentity, 10.0F, 10.0F);
+                } else if (this.lastSeen < 5) {
+                    this.blaze.getMoveControl().setWantedPosition(livingentity.getX(), livingentity.getY(), livingentity.getZ(), 1.0);
+                }
+
+                super.tick();
+            }
+        }
+
+        private double getFollowDistance() {
+            return this.blaze.getAttributeValue(Attributes.FOLLOW_RANGE);
+        }
     }
 }
